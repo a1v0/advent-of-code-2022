@@ -12,7 +12,7 @@ const mostCalorificElf = Math.max(...elfCaloriesTotals);
 console.log(mostCalorificElf);
 // should return 68292
 
-module.exports = elfCaloriesTotals;
+module.exports = { elfCaloriesTotals };
 
 /*
 ORIGINAL FORM BEFORE REFACTOR
