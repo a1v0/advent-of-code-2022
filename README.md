@@ -4,8 +4,8 @@ My code for calculating correct answers for Advent of Code 2022, entirely in Jav
 
 | Day | Status |
 |-|-|
-|01|✅|
-|02||
+|01|Task 1:&nbsp;✅<br>Task 2:&nbsp;✅|
+|02|Task 1:&nbsp;✅<br>Task 2:&nbsp;✅|
 |03||
 |04||
 |05||
