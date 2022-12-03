@@ -6,7 +6,7 @@ My code for calculating correct answers for Advent of Code 2022, entirely in Jav
 |-|-|
 |01|Task 1:&nbsp;✅<br>Task 2:&nbsp;✅|
 |02|Task 1:&nbsp;✅<br>Task 2:&nbsp;✅|
-|03||
+|03|Task 1:&nbsp;✅<br>Task 2:&nbsp;|
 |04||
 |05||
 |06||

@@ -298,3 +298,5 @@ rvJBbbBNcLCtJZQL
 NfLlqLhbNPddLPqLhpgHwFFwFHHTwRHWwPFTrT
 MSMSCnjBnBjCscjVDVljTvHmmWnrwTrwFTrvTWTT
 JCMMBzDMJcZZCjDzSBDNJgdfdQlqlLNdhgGLhp`;
+
+module.exports = input;
