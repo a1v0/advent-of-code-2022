@@ -36,3 +36,5 @@ fullRangePairs.forEach((fullRangePair) => {
 });
 
 console.log(inclusionCounter);
+
+module.exports = hyphenatedPairs;
