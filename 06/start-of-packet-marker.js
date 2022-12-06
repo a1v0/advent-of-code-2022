@@ -34,3 +34,5 @@ for (let i = 0; i < groupsOfFour.length; ++i) {
 
 // log index of the first substring that passes the test, then return index + 4
 console.log(startOfPacketIndex + 4);
+
+module.exports = groupsOfFour;
