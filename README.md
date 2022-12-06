@@ -2,6 +2,8 @@
 
 My code for calculating correct answers for Advent of Code 2022, entirely in JavaScript.
 
+The tasks can be found **[here](https://adventofcode.com/2022)**, and each day's inputs are stored within that day's directory.
+
 | Day | Status |
 |-|-|
 |01|Task 1:&nbsp;✅<br>Task 2:&nbsp;✅|
