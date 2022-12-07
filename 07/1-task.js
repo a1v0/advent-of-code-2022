@@ -17,7 +17,7 @@ const commands = commandsStrings.map((commandsString) => {
 commands.shift(); // removes [""] that was left when we created commandsStrings
 
 // create root object, representing / directory. Each directory obj has a "size" property
-const root = { size: 0, parentName: "root" };
+const root = { size: 0 };
 
 // create array containing elements of the current path (which can be spliced as necessary)
 const currentPath = [];
@@ -30,7 +30,7 @@ commands.forEach((command) => {
     const cdCommand = command[0].split(" ")[1];
     switch (cdCommand) {
         case "/":
-            currentPath.pop();
+            currentPath.length = 0;
             break;
         case "..":
             currentPath.pop();
@@ -39,36 +39,48 @@ commands.forEach((command) => {
             currentPath.push(cdCommand);
             break;
     }
-    console.log(cdCommand, currentPath, "command / path");
-    const currentPathString = currentPath.join(" ");
+    const currentPathString = currentPath.reduce((path, currentElement) => {
+        return path + `["${currentElement}"]`;
+    }, "root");
     if (!allPaths.includes(currentPathString)) {
         allPaths.push(currentPathString);
     }
 
-    const currentDirectory = accessPath(root, currentPath);
-    console.log(currentDirectory, "currDir");
-    console.log("----------------");
-
+    const currentDirectory = eval(currentPathString);
     for (let i = 1; i < command.length; ++i) {
         const [sizeOrDir, name] = command[i].split(" ");
         if (sizeOrDir === "dir") {
-            currentDirectory[name] = { size: 0, parentName: name };
-            // } else {
-            //     currentDirectory[name] = Number(sizeOrDir);
-            //     currentDirectory.size += Number(sizeOrDir);
+            currentDirectory[name] = { size: 0 };
+        } else {
+            currentDirectory[name] = Number(sizeOrDir);
         }
     }
 });
 
-function accessPath(currentPathObject, remainderOfPath) {
-    if (!remainderOfPath.length) {
-        console.log(currentPathObject.parentName, "cPO.pN");
-        return currentPathObject;
+// loop through tree, counting total folder sizes
+allPaths.sort((a, b) => {
+    return b.split("[").length - a.split("[").length;
+});
+
+const allDirSizes = [];
+allPaths.forEach((path) => {
+    const currentDirectory = eval(path);
+    for (let node in currentDirectory) {
+        if (typeof currentDirectory[node] === "object") {
+            currentDirectory.size += currentDirectory[node].size;
+            allDirSizes.push(currentDirectory[node].size);
+        } else {
+            currentDirectory.size += currentDirectory[node];
+        }
     }
+});
 
-    const newPathObject = currentPathObject[remainderOfPath.shift()];
-    console.log(newPathObject.parentName, "newPath.pN");
-    accessPath(newPathObject, remainderOfPath);
-}
+const sumOfDirsUpTo100000 = allDirSizes.reduce((accumulator, currentSize) => {
+    if (currentSize <= 100000) {
+        return accumulator + currentSize;
+    }
+    return accumulator;
+}, 0);
 
-// loop through tree, counting total folder sizes (how do I do this from the deepest folder(s) up?). Probably needs recursion
+console.log(sumOfDirsUpTo100000);
+// 1118405
