@@ -1,4 +1,4 @@
-const { input } = require("./input");
+const { input } = require("./input.js");
 
 // split input into array of lines
 const rowsOfTrees = input.split("\n");
@@ -52,3 +52,5 @@ const totalVisible = allTrees.reduce((totalVisibleInForest, currentRow) => {
     return totalVisibleInForest + totalInRow;
 }, 0);
 console.log(totalVisible);
+
+module.exports = allTrees;
