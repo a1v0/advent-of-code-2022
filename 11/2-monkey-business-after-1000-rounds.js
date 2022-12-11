@@ -1,4 +1,5 @@
-// I know I've technically been a bit too liberal with my BigInt coercions
+// This solution works for 1000 cycles, but always falters at 1070, presumably because the BigInt exceeds 1bn bits.
+// I will need to work out how to circumvent this issue to retrieve a result
 
 const { testInput: input } = require("./input");
 
@@ -7,7 +8,7 @@ const monkeysStrings = input.split("\n\n");
 
 // map monkeys into monkey objects (incl. a new 'objectsInspected' property)
 const monkeys = monkeysStrings.map((monkeyString) => {
-    const monkey = { objectsInspected: BigInt(0) };
+    const monkey = { objectsInspected: 0 };
 
     // get starting items
     const startingItemsRegex = /(?<=Starting items: )[\d+,*\s]+(?=\n)/;
@@ -35,8 +36,9 @@ const monkeys = monkeysStrings.map((monkeyString) => {
     const trueRegex = /(?<=true: throw to monkey )[0-9]+(?=\n)/;
     const falseRegex = /(?<=false: throw to monkey )[0-9]+/;
 
-    monkey.monkeyTrue = monkeyString.match(trueRegex)[0];
-    monkey.monkeyFalse = monkeyString.match(falseRegex)[0];
+    monkey.monkeyTrue = Number(monkeyString.match(trueRegex)[0]);
+    monkey.monkeyFalse = Number(monkeyString.match(falseRegex)[0]);
+
     return monkey;
 });
 
@@ -47,34 +49,24 @@ for (let i = 0; i < 10000; ++i) {
         monkey.startingItems.forEach((startingItem) => {
             const old = BigInt(startingItem);
             const operatedWorryLevel = eval(monkey.operation);
-            const nextMonkey =
-                operatedWorryLevel % monkey.divisor === 0
-                    ? monkey.monkeyTrue
-                    : monkey.monkeyFalse;
-            monkeys[nextMonkey].startingItems.push(BigInt(operatedWorryLevel));
-            monkey.objectsInspected += BigInt(1);
-            console.log(i);
+            const nextMonkey = !(operatedWorryLevel % monkey.divisor)
+                ? monkey.monkeyTrue
+                : monkey.monkeyFalse;
+            monkeys[nextMonkey].startingItems.push(operatedWorryLevel);
+            ++monkey.objectsInspected;
         });
-        monkey.startingItems.splice(0);
+        monkey.startingItems.length = 0;
     });
 }
+
 // identify two monkeys with highest level of inspected objects
 const objectsInspected = monkeys.map((monkey) => {
-    return BigInt(monkey.objectsInspected);
+    return monkey.objectsInspected;
 });
-console.log(objectsInspected);
 
-function findHighest(array) {
-    let highest = BigInt(0);
-    array.forEach((number) => {
-        if (BigInt(number) > highest) highest = BigInt(number);
-    });
-    return highest;
-}
-
-const highest = BigInt(findHighest(objectsInspected));
+const highest = Math.max(...objectsInspected);
 objectsInspected.splice(objectsInspected.indexOf(highest), 1);
-const secondHighest = BigInt(findHighest(objectsInspected));
+const secondHighest = Math.max(...objectsInspected);
 
 // return product of those two values
-console.log(BigInt(highest) * BigInt(secondHighest));
+console.log(highest * secondHighest);
