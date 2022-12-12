@@ -16,7 +16,7 @@ The tasks can be found **[here](https://adventofcode.com/2022)**, and each day's
 |08|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
 |09|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
 |10|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
-|11|Task 1:&nbsp;⭐<br>Task 2:&nbsp;❌&mdash;solution works in theory but I always exceed the maximum `BigInt` size.|
+|11|Task 1:&nbsp;⭐<br>Task 2:&nbsp;❌&mdash;solution works on test data but I always exceed the maximum `BigInt` size with my own input.|
 <!-- |12|| -->
 <!-- |13|| -->
 <!-- |14|| -->
