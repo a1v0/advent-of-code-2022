@@ -7,7 +7,7 @@ const rows = input.split("\n");
 const letters = "abcdefghijklmnopqrstuvwxyz";
 
 // create array to house all routes
-const routes = [];
+const routeLengths = [];
 
 // identify coordinates of start and end
 const start = new Array(2); // holds x,y values of start
@@ -39,17 +39,15 @@ rows[end[1]] = rows[end[1]].replace("E", "z");
 // create recursive function to move through array from a specific location
 // // add any complete route to routes array
 function findRoutes(
-    currentRoute,
+    currentRouteLength,
     currentX,
     currentY,
-    visitedCoordinates,
-    routeLength
+    visitedCoordinates
 ) {
-    console.log(routeLength);
+    console.log(currentRouteLength);
     if (currentY === end[1] && currentX === end[0]) {
         console.log("hooray!");
-        routes.push(currentRoute);
-        console.log(routes);
+        routeLengths.push(currentRouteLength);
     } else {
         const currentLetter = rows[currentY][currentX];
 
@@ -63,11 +61,10 @@ function findRoutes(
             const newVisited = [...visitedCoordinates];
             newVisited.push(`${currentX},${currentY}`);
             findRoutes(
-                currentRoute + "^",
+                currentRouteLength + 1,
                 currentX,
                 currentY - 1,
-                newVisited,
-                routeLength + 1
+                newVisited
             );
         }
 
@@ -81,11 +78,10 @@ function findRoutes(
             const newVisited = [...visitedCoordinates];
             newVisited.push(`${currentX},${currentY}`);
             findRoutes(
-                currentRoute + "v",
+                currentRouteLength + 1,
                 currentX,
                 currentY + 1,
-                newVisited,
-                routeLength + 1
+                newVisited
             );
         }
 
@@ -99,11 +95,10 @@ function findRoutes(
             const newVisited = [...visitedCoordinates];
             newVisited.push(`${currentX},${currentY}`);
             findRoutes(
-                currentRoute + "<",
+                currentRouteLength + 1,
                 currentX - 1,
                 currentY,
-                newVisited,
-                routeLength + 1
+                newVisited
             );
         }
 
@@ -117,20 +112,16 @@ function findRoutes(
             const newVisited = [...visitedCoordinates];
             newVisited.push(`${currentX},${currentY}`);
             findRoutes(
-                currentRoute + ">",
+                currentRouteLength + 1,
                 currentX + 1,
                 currentY,
-                newVisited,
-                routeLength + 1
+                newVisited
             );
         }
     }
 }
-findRoutes("", start[0], start[1], [], 1);
+findRoutes(0, start[0], start[1], []);
 
 // once routes have been assembled, find shortest one (it might be possible to simply return the first route that is returned by the recursive function)
-const routeLengths = routes.map((route) => {
-    return route.length;
-});
 const shortestRoute = Math.min(...routeLengths);
-console.log(shortestRoute);
+console.log("Shortest route", shortestRoute);
