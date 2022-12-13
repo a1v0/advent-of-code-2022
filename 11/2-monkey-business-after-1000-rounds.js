@@ -1,6 +1,8 @@
 // This solution works for 1000 cycles, but always falters at 1070, presumably because the BigInt exceeds 1bn bits.
 // I will need to work out how to circumvent this issue to retrieve a result
 
+// hint was to not use BigInts and instead divide the input by all the divisors before processing it. However, this is not yet working
+
 const { testInput: input } = require("./input");
 
 // split string into different monkeys
@@ -15,22 +17,16 @@ const monkeys = monkeysStrings.map((monkeyString) => {
     const startingItemsString = monkeyString.match(startingItemsRegex)[0];
     const startingItemsStrings = startingItemsString.split(", ");
     monkey.startingItems = startingItemsStrings.map((startingItemsString) => {
-        return BigInt(startingItemsString);
+        return startingItemsString;
     });
 
     // operation (will take a string and evaluate it later)
     const operationRegex = /(?<=new\s\=\s)[a-z0-9\s\+\*\-\/]+(?=\n)/;
-    const operation = monkeyString.match(operationRegex)[0];
-    const number = operation.match(/\d+/);
-    const operationWithoutNumber = operation.replace(/\d+/, "");
-    const bigIntOperation = Array.isArray(number)
-        ? `${operationWithoutNumber}BigInt(${number[0]})`
-        : operation;
-    monkey.operation = bigIntOperation;
+    monkey.operation = monkeyString.match(operationRegex)[0];
 
     // divisor
     const divisorRegex = /(?<=divisible by )[0-9]+(?=\n)/;
-    monkey.divisor = BigInt(monkeyString.match(divisorRegex)[0]);
+    monkey.divisor = Number(monkeyString.match(divisorRegex)[0]);
 
     // actions if true or false
     const trueRegex = /(?<=true: throw to monkey )[0-9]+(?=\n)/;
@@ -44,10 +40,10 @@ const monkeys = monkeysStrings.map((monkeyString) => {
 
 // loop through all monkeys twenty times
 // loop through each monkey's items in turn, processing as necessary, doing ++objectsInspected.
-for (let i = 0; i < 10000; ++i) {
+for (let i = 0; i < 20; ++i) {
     monkeys.forEach((monkey) => {
         monkey.startingItems.forEach((startingItem) => {
-            const old = BigInt(startingItem);
+            const old = startingItem / (23 * 19 * 13 * 17);
             const operatedWorryLevel = eval(monkey.operation);
             const nextMonkey = !(operatedWorryLevel % monkey.divisor)
                 ? monkey.monkeyTrue
@@ -58,11 +54,12 @@ for (let i = 0; i < 10000; ++i) {
         monkey.startingItems.length = 0;
     });
 }
-
+console.log(monkeys);
 // identify two monkeys with highest level of inspected objects
 const objectsInspected = monkeys.map((monkey) => {
     return monkey.objectsInspected;
 });
+console.log(objectsInspected);
 
 const highest = Math.max(...objectsInspected);
 objectsInspected.splice(objectsInspected.indexOf(highest), 1);
