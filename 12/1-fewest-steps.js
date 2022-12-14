@@ -1,8 +1,5 @@
 const { input } = require("./input");
 
-// heuristic needs fixing. It's finding a route, but it's not the shortest. It's just the first to be computed.
-// need to make an array of routes. Each time you evaluate a route, sort the routes array based on the heuristic, and only ever evaluate the first route in the array
-
 // split input into rows
 const rows = input.split("\n");
 
@@ -41,9 +38,6 @@ const distancesFromEnd = rows.map((row, y) => {
         const distanceFromEnd = Math.sqrt(
             xFromEnd * xFromEnd + (yFromEnd + yFromEnd)
         );
-
-        // const distanceFromEnd = xFromEnd + yFromEnd;
-
         rowDistances.push(distanceFromEnd);
     }
     return rowDistances;
@@ -57,97 +51,91 @@ rows[start[1]] = rows[start[1]].replace("S", "a");
 rows[end[1]] = rows[end[1]].replace("E", "z");
 
 let shortestRouteLength = undefined;
-let currentX = start[0],
-    currentY = start[1];
-const currentRoute = [];
+const routes = [{ nodes: [[start[0], start[1]]], distance: 0 }];
 
+// loop through all nodes according to A* heuristic
 while (shortestRouteLength === undefined) {
-    console.log(currentX, currentY);
-
-    visitedCoordinates.push(`${currentX},${currentY}`);
-    currentRoute.push([currentX, currentY]);
+    const currentRoute = routes[0];
+    const currentX = currentRoute.nodes[currentRoute.nodes.length - 1][0],
+        currentY = currentRoute.nodes[currentRoute.nodes.length - 1][1];
+    const currentLetter = rows[currentY][currentX];
 
     if (currentX === end[0] && currentY === end[1]) {
-        shortestRouteLength = currentRoute.length;
+        shortestRouteLength = currentRoute.nodes.length;
         break;
     }
 
-    const directions = {};
+    const upY = currentY - 1,
+        downY = currentY + 1,
+        leftX = currentX - 1,
+        rightX = currentX + 1;
 
-    while (directions.y === undefined || directions.x === undefined) {
-        const currentLetter = rows[currentY][currentX];
-        const upY = currentY - 1,
-            downY = currentY + 1,
-            leftX = currentX - 1,
-            rightX = currentX + 1;
-        directions.distanceFromEnd = Infinity;
+    // there must be a way of being less repetitive in what follows, but I can't think of it
 
-        // go up
-        if (
-            upY >= 0 &&
-            letters.indexOf(currentLetter) + 1 >=
-                letters.indexOf(rows[upY][currentX]) &&
-            !visitedCoordinates.includes(`${currentX},${upY}`) &&
-            directions.distanceFromEnd > distancesFromEnd[upY][currentX]
-        ) {
-            directions.distanceFromEnd = distancesFromEnd[upY][currentX];
-            directions.x = currentX;
-            directions.y = upY;
-        }
-
-        // go down
-        if (
-            downY < rows.length &&
-            letters.indexOf(currentLetter) + 1 >=
-                letters.indexOf(rows[downY][currentX]) &&
-            !visitedCoordinates.includes(`${currentX},${downY}`) &&
-            directions.distanceFromEnd > distancesFromEnd[downY][currentX]
-        ) {
-            directions.distanceFromEnd = distancesFromEnd[downY][currentX];
-            directions.x = currentX;
-            directions.y = downY;
-        }
-
-        // go left
-        if (
-            leftX >= 0 &&
-            letters.indexOf(currentLetter) + 1 >=
-                letters.indexOf(rows[currentY][leftX]) &&
-            !visitedCoordinates.includes(`${leftX},${currentY}`) &&
-            directions.distanceFromEnd > distancesFromEnd[currentY][leftX]
-        ) {
-            directions.distanceFromEnd = distancesFromEnd[currentY][leftX];
-            directions.x = leftX;
-            directions.y = currentY;
-        }
-
-        // go right
-        if (
-            rightX < rows[currentY].length &&
-            letters.indexOf(currentLetter) + 1 >=
-                letters.indexOf(rows[currentY][rightX]) &&
-            !visitedCoordinates.includes(`${rightX},${currentY}`) &&
-            directions.distanceFromEnd > distancesFromEnd[currentY][rightX]
-        ) {
-            directions.distanceFromEnd = distancesFromEnd[currentY][rightX];
-            directions.x = rightX;
-            directions.y = currentY;
-        }
-
-        // go back if there's a problem
-        if (directions.y === undefined || directions.x === undefined) {
-            currentRoute.pop();
-            if (!currentRoute.length) {
-                currentRoute.unshift([start[0], start[1]]);
-            }
-            currentX = currentRoute[currentRoute.length - 1][0];
-            currentY = currentRoute[currentRoute.length - 1][1];
-            console.log("popping");
-        }
+    // go up
+    if (
+        upY >= 0 &&
+        letters.indexOf(currentLetter) + 1 >=
+            letters.indexOf(rows[upY][currentX]) &&
+        !visitedCoordinates.includes(`${currentX},${upY}`)
+    ) {
+        visitedCoordinates.push(`${currentX},${upY}`);
+        const newRoute = [...currentRoute.nodes, [currentX, upY]];
+        routes.push({
+            nodes: newRoute,
+            distance: distancesFromEnd[upY][currentX] + newRoute.length
+        });
     }
 
-    currentX = directions.x;
-    currentY = directions.y;
+    // go down
+    if (
+        downY < rows.length &&
+        letters.indexOf(currentLetter) + 1 >=
+            letters.indexOf(rows[downY][currentX]) &&
+        !visitedCoordinates.includes(`${currentX},${downY}`)
+    ) {
+        visitedCoordinates.push(`${currentX},${downY}`);
+        const newRoute = [...currentRoute.nodes, [currentX, downY]];
+        routes.push({
+            nodes: newRoute,
+            distance: distancesFromEnd[downY][currentX] + newRoute.length
+        });
+    }
+
+    // go left
+    if (
+        leftX >= 0 &&
+        letters.indexOf(currentLetter) + 1 >=
+            letters.indexOf(rows[currentY][leftX]) &&
+        !visitedCoordinates.includes(`${leftX},${currentY}`)
+    ) {
+        visitedCoordinates.push(`${leftX},${currentY}`);
+        const newRoute = [...currentRoute.nodes, [leftX, currentY]];
+        routes.push({
+            nodes: newRoute,
+            distance: distancesFromEnd[currentY][leftX] + newRoute.length
+        });
+    }
+
+    // go right
+    if (
+        rightX < rows[currentY].length &&
+        letters.indexOf(currentLetter) + 1 >=
+            letters.indexOf(rows[currentY][rightX]) &&
+        !visitedCoordinates.includes(`${rightX},${currentY}`)
+    ) {
+        visitedCoordinates.push(`${rightX},${currentY}`);
+        const newRoute = [...currentRoute.nodes, [rightX, currentY]];
+        routes.push({
+            nodes: newRoute,
+            distance: distancesFromEnd[currentY][rightX] + newRoute.length
+        });
+    }
+
+    routes.shift();
+    routes.sort((a, b) => {
+        return a.distance - b.distance;
+    });
 }
 
 console.log(shortestRouteLength - 1);
