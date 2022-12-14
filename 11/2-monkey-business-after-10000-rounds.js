@@ -15,18 +15,18 @@ const monkeys = monkeysStrings.map((monkeyString) => {
     const startingItemsString = monkeyString.match(startingItemsRegex)[0];
     const startingItemsStrings = startingItemsString.split(", ");
     monkey.startingItems = startingItemsStrings.map((startingItemsString) => {
-        return BigInt(startingItemsString);
+        return Number(startingItemsString);
     });
 
     // operation (will take a string and evaluate it later)
     const operationRegex = /(?<=new\s\=\s)[a-z0-9\s\+\*\-\/]+(?=\n)/;
     const operation = monkeyString.match(operationRegex)[0];
-    const number = operation.match(/\d+/);
-    const operationWithoutNumber = operation.replace(/\d+/, "");
-    const bigIntOperation = Array.isArray(number)
-        ? `${operationWithoutNumber}BigInt(${number[0]})`
-        : operation;
-    monkey.operation = bigIntOperation;
+    // const number = operation.match(/\d+/);
+    // const operationWithoutNumber = operation.replace(/\d+/, "");
+    // const bigIntOperation = Array.isArray(number)
+    //     ? `${operationWithoutNumber}BigInt(${number[0]})`
+    //     : operation;
+    monkey.operation = operation;
 
     // divisor
     const divisorRegex = /(?<=divisible by )[0-9]+(?=\n)/;
@@ -49,8 +49,8 @@ for (let i = 0; i < 10000; ++i) {
         monkey.startingItems.forEach((startingItem) => {
             const old = startingItem;
             const operatedWorryLevel =
-                eval(monkey.operation) % BigInt(23 * 19 * 13 * 17);
-            const nextMonkey = !(operatedWorryLevel % BigInt(monkey.divisor))
+                eval(monkey.operation) % (23 * 19 * 13 * 17); // tbh not sure why this line works
+            const nextMonkey = !(operatedWorryLevel % monkey.divisor)
                 ? monkey.monkeyTrue
                 : monkey.monkeyFalse;
             monkeys[nextMonkey].startingItems.push(operatedWorryLevel);
