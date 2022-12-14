@@ -30,7 +30,7 @@ const monkeys = monkeysStrings.map((monkeyString) => {
 
     // divisor
     const divisorRegex = /(?<=divisible by )[0-9]+(?=\n)/;
-    monkey.divisor = BigInt(monkeyString.match(divisorRegex)[0]);
+    monkey.divisor = monkeyString.match(divisorRegex)[0];
 
     // actions if true or false
     const trueRegex = /(?<=true: throw to monkey )[0-9]+(?=\n)/;
@@ -47,9 +47,10 @@ const monkeys = monkeysStrings.map((monkeyString) => {
 for (let i = 0; i < 10000; ++i) {
     monkeys.forEach((monkey) => {
         monkey.startingItems.forEach((startingItem) => {
-            const old = BigInt(startingItem);
-            const operatedWorryLevel = eval(monkey.operation);
-            const nextMonkey = !(operatedWorryLevel % monkey.divisor)
+            const old = startingItem;
+            const operatedWorryLevel =
+                eval(monkey.operation) % BigInt(23 * 19 * 13 * 17);
+            const nextMonkey = !(operatedWorryLevel % BigInt(monkey.divisor))
                 ? monkey.monkeyTrue
                 : monkey.monkeyFalse;
             monkeys[nextMonkey].startingItems.push(operatedWorryLevel);
