@@ -1,7 +1,7 @@
 // This solution works for 1000 cycles, but always falters at 1070, presumably because the BigInt exceeds 1bn bits.
 // I will need to work out how to circumvent this issue to retrieve a result
 
-const { testInput: input } = require("./input");
+const { input } = require("./input");
 
 // split string into different monkeys
 const monkeysStrings = input.split("\n\n");
@@ -21,11 +21,6 @@ const monkeys = monkeysStrings.map((monkeyString) => {
     // operation (will take a string and evaluate it later)
     const operationRegex = /(?<=new\s\=\s)[a-z0-9\s\+\*\-\/]+(?=\n)/;
     const operation = monkeyString.match(operationRegex)[0];
-    // const number = operation.match(/\d+/);
-    // const operationWithoutNumber = operation.replace(/\d+/, "");
-    // const bigIntOperation = Array.isArray(number)
-    //     ? `${operationWithoutNumber}BigInt(${number[0]})`
-    //     : operation;
     monkey.operation = operation;
 
     // divisor
@@ -42,14 +37,16 @@ const monkeys = monkeysStrings.map((monkeyString) => {
     return monkey;
 });
 
-// loop through all monkeys twenty times
+const specialDivisor = monkeys.reduce((acc, monkey) => {
+    return acc * monkey.divisor;
+}, 1);
+
 // loop through each monkey's items in turn, processing as necessary, doing ++objectsInspected.
 for (let i = 0; i < 10000; ++i) {
     monkeys.forEach((monkey) => {
         monkey.startingItems.forEach((startingItem) => {
             const old = startingItem;
-            const operatedWorryLevel =
-                eval(monkey.operation) % (23 * 19 * 13 * 17); // tbh not sure why this line works
+            const operatedWorryLevel = eval(monkey.operation) % specialDivisor; // tbh not sure why this line works
             const nextMonkey = !(operatedWorryLevel % monkey.divisor)
                 ? monkey.monkeyTrue
                 : monkey.monkeyFalse;
