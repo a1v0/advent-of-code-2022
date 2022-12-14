@@ -1,13 +1,12 @@
 const { input } = require("./input");
 
+// heuristic needs fixing. It's finding a route, but it's not the shortest. It's just the first to be computed.
+
 // split input into rows
 const rows = input.split("\n");
 
 // create string listing all letters
 const letters = "abcdefghijklmnopqrstuvwxyz";
-
-// create array to house all routes
-const routeLengths = [];
 
 // identify coordinates of start and end
 const start = new Array(2); // holds x,y values of start
@@ -32,96 +31,120 @@ for (let y = 0; y < rows.length; ++y) {
     }
 }
 
+// create new array to list every node's distance from end
+const distancesFromEnd = rows.map((row, y) => {
+    const rowDistances = [];
+    for (let x = 0; x < row.length; ++x) {
+        const xFromEnd = Math.abs(end[0] - x),
+            yFromEnd = Math.abs(end[1] - y);
+        const distanceFromEnd = Math.sqrt(
+            xFromEnd * xFromEnd + (yFromEnd + yFromEnd)
+        );
+        rowDistances.push(distanceFromEnd);
+    }
+    return rowDistances;
+});
+
+// create array of visited nodes
+const visitedCoordinates = [];
+
 // replace E and S with normal letters to prevent confusion
 rows[start[1]] = rows[start[1]].replace("S", "a");
 rows[end[1]] = rows[end[1]].replace("E", "z");
 
-// create recursive function to move through array from a specific location
-// // add any complete route to routes array
-function findRoutes(
-    currentRouteLength,
-    currentX,
-    currentY,
-    visitedCoordinates
-) {
-    console.log(currentRouteLength);
-    if (currentY === end[1] && currentX === end[0]) {
-        console.log("hooray!");
-        routeLengths.push(currentRouteLength);
-    } else {
+// let shortestRouteLength = undefined;
+
+// while(shortestRouteLength===undefined){
+
+// }
+
+// make recursive function
+function findShortestRouteLength(currentRoute, currentX, currentY) {
+    console.log(currentX, currentY);
+
+    visitedCoordinates.push(`${currentX},${currentY}`);
+    currentRoute.push([currentX, currentY]);
+
+    if (currentX === end[0] && currentY === end[1]) {
+        return currentRoute.length;
+    }
+
+    const directions = {};
+
+    while (directions.y === undefined || directions.x === undefined) {
         const currentLetter = rows[currentY][currentX];
+        const upY = currentY - 1,
+            downY = currentY + 1,
+            leftX = currentX - 1,
+            rightX = currentX + 1;
+        directions.distanceFromEnd = Infinity;
 
         // go up
         if (
-            currentY - 1 >= 0 &&
+            upY >= 0 &&
             letters.indexOf(currentLetter) + 1 >=
-                letters.indexOf(rows[currentY - 1][currentX]) &&
-            !visitedCoordinates.includes(`${currentX},${currentY - 1}`)
+                letters.indexOf(rows[upY][currentX]) &&
+            !visitedCoordinates.includes(`${currentX},${upY}`) &&
+            directions.distanceFromEnd > distancesFromEnd[upY][currentX]
         ) {
-            const newVisited = [...visitedCoordinates];
-            newVisited.push(`${currentX},${currentY}`);
-            findRoutes(
-                currentRouteLength + 1,
-                currentX,
-                currentY - 1,
-                newVisited
-            );
+            directions.distanceFromEnd = distancesFromEnd[upY][currentX];
+            directions.x = currentX;
+            directions.y = upY;
         }
 
         // go down
         if (
-            currentY + 1 < rows.length &&
+            downY < rows.length &&
             letters.indexOf(currentLetter) + 1 >=
-                letters.indexOf(rows[currentY + 1][currentX]) &&
-            !visitedCoordinates.includes(`${currentX},${currentY + 1}`)
+                letters.indexOf(rows[downY][currentX]) &&
+            !visitedCoordinates.includes(`${currentX},${downY}`) &&
+            directions.distanceFromEnd > distancesFromEnd[downY][currentX]
         ) {
-            const newVisited = [...visitedCoordinates];
-            newVisited.push(`${currentX},${currentY}`);
-            findRoutes(
-                currentRouteLength + 1,
-                currentX,
-                currentY + 1,
-                newVisited
-            );
+            directions.distanceFromEnd = distancesFromEnd[downY][currentX];
+            directions.x = currentX;
+            directions.y = downY;
         }
 
         // go left
         if (
-            currentX - 1 >= 0 &&
+            leftX >= 0 &&
             letters.indexOf(currentLetter) + 1 >=
-                letters.indexOf(rows[currentY][currentX - 1]) &&
-            !visitedCoordinates.includes(`${currentX - 1},${currentY}`)
+                letters.indexOf(rows[currentY][leftX]) &&
+            !visitedCoordinates.includes(`${leftX},${currentY}`) &&
+            directions.distanceFromEnd > distancesFromEnd[currentY][leftX]
         ) {
-            const newVisited = [...visitedCoordinates];
-            newVisited.push(`${currentX},${currentY}`);
-            findRoutes(
-                currentRouteLength + 1,
-                currentX - 1,
-                currentY,
-                newVisited
-            );
+            directions.distanceFromEnd = distancesFromEnd[currentY][leftX];
+            directions.x = leftX;
+            directions.y = currentY;
         }
 
         // go right
         if (
-            currentX + 1 < rows[currentY].length &&
+            rightX < rows[currentY].length &&
             letters.indexOf(currentLetter) + 1 >=
-                letters.indexOf(rows[currentY][currentX + 1]) &&
-            !visitedCoordinates.includes(`${currentX + 1},${currentY}`)
+                letters.indexOf(rows[currentY][rightX]) &&
+            !visitedCoordinates.includes(`${rightX},${currentY}`) &&
+            directions.distanceFromEnd > distancesFromEnd[currentY][rightX]
         ) {
-            const newVisited = [...visitedCoordinates];
-            newVisited.push(`${currentX},${currentY}`);
-            findRoutes(
-                currentRouteLength + 1,
-                currentX + 1,
-                currentY,
-                newVisited
-            );
+            directions.distanceFromEnd = distancesFromEnd[currentY][rightX];
+            directions.x = rightX;
+            directions.y = currentY;
+        }
+
+        // go back if there's a problem
+        if (directions.y === undefined || directions.x === undefined) {
+            currentRoute.pop();
+            if (!currentRoute.length) {
+                currentRoute.unshift([start[0], start[1]]);
+            }
+            currentX = currentRoute[currentRoute.length - 1][0];
+            currentY = currentRoute[currentRoute.length - 1][1];
+            console.log("popping");
         }
     }
-}
-findRoutes(0, start[0], start[1], []);
 
-// once routes have been assembled, find shortest one (it might be possible to simply return the first route that is returned by the recursive function)
-const shortestRoute = Math.min(...routeLengths);
-console.log("Shortest route", shortestRoute);
+    return findShortestRouteLength(currentRoute, directions.x, directions.y);
+}
+
+const shortestRouteLength = findShortestRouteLength([], start[0], start[1]);
+console.log(shortestRouteLength - 1);
