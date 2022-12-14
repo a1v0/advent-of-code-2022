@@ -1,6 +1,7 @@
 const { input } = require("./input");
 
 // heuristic needs fixing. It's finding a route, but it's not the shortest. It's just the first to be computed.
+// need to make an array of routes. Each time you evaluate a route, sort the routes array based on the heuristic, and only ever evaluate the first route in the array
 
 // split input into rows
 const rows = input.split("\n");
