@@ -40,6 +40,9 @@ const distancesFromEnd = rows.map((row, y) => {
         const distanceFromEnd = Math.sqrt(
             xFromEnd * xFromEnd + (yFromEnd + yFromEnd)
         );
+
+        // const distanceFromEnd = xFromEnd + yFromEnd;
+
         rowDistances.push(distanceFromEnd);
     }
     return rowDistances;
@@ -52,21 +55,20 @@ const visitedCoordinates = [];
 rows[start[1]] = rows[start[1]].replace("S", "a");
 rows[end[1]] = rows[end[1]].replace("E", "z");
 
-// let shortestRouteLength = undefined;
+let shortestRouteLength = undefined;
+let currentX = start[0],
+    currentY = start[1];
+const currentRoute = [];
 
-// while(shortestRouteLength===undefined){
-
-// }
-
-// make recursive function
-function findShortestRouteLength(currentRoute, currentX, currentY) {
+while (shortestRouteLength === undefined) {
     console.log(currentX, currentY);
 
     visitedCoordinates.push(`${currentX},${currentY}`);
     currentRoute.push([currentX, currentY]);
 
     if (currentX === end[0] && currentY === end[1]) {
-        return currentRoute.length;
+        shortestRouteLength = currentRoute.length;
+        break;
     }
 
     const directions = {};
@@ -143,8 +145,8 @@ function findShortestRouteLength(currentRoute, currentX, currentY) {
         }
     }
 
-    return findShortestRouteLength(currentRoute, directions.x, directions.y);
+    currentX = directions.x;
+    currentY = directions.y;
 }
 
-const shortestRouteLength = findShortestRouteLength([], start[0], start[1]);
 console.log(shortestRouteLength - 1);
