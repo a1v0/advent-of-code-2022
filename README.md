@@ -18,7 +18,7 @@ The tasks can be found **[here](https://adventofcode.com/2022)**, and each day's
 |10|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
 |11|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐&mdash;admittedly solved by peeking at the subreddit.|
 |12|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
-<!-- |13|| -->
+|13|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
 <!-- |14|| -->
 <!-- |15|| -->
 <!-- |16|| -->
