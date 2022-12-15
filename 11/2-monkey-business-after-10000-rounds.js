@@ -1,6 +1,3 @@
-// This solution works for 1000 cycles, but always falters at 1070, presumably because the BigInt exceeds 1bn bits.
-// I will need to work out how to circumvent this issue to retrieve a result
-
 const { input } = require("./input");
 
 // split string into different monkeys
@@ -42,7 +39,7 @@ const specialDivisor = monkeys.reduce((acc, monkey) => {
 }, 1);
 
 // loop through each monkey's items in turn, processing as necessary, doing ++objectsInspected.
-for (let i = 0; i < 10000; ++i) {
+for (let i = 0; i < 20; ++i) {
     monkeys.forEach((monkey) => {
         monkey.startingItems.forEach((startingItem) => {
             const old = startingItem;
@@ -56,11 +53,12 @@ for (let i = 0; i < 10000; ++i) {
         monkey.startingItems.length = 0;
     });
 }
-
+console.log(monkeys);
 // identify two monkeys with highest level of inspected objects
 const objectsInspected = monkeys.map((monkey) => {
     return monkey.objectsInspected;
 });
+console.log(objectsInspected);
 
 const highest = Math.max(...objectsInspected);
 objectsInspected.splice(objectsInspected.indexOf(highest), 1);
