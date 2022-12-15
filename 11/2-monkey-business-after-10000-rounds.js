@@ -1,9 +1,4 @@
-// This solution works for 1000 cycles, but always falters at 1070, presumably because the BigInt exceeds 1bn bits.
-// I will need to work out how to circumvent this issue to retrieve a result
-
-// hint was to not use BigInts and instead divide the input by all the divisors before processing it. However, this is not yet working
-
-const { testInput: input } = require("./input");
+const { input } = require("./input");
 
 // split string into different monkeys
 const monkeysStrings = input.split("\n\n");
@@ -17,16 +12,17 @@ const monkeys = monkeysStrings.map((monkeyString) => {
     const startingItemsString = monkeyString.match(startingItemsRegex)[0];
     const startingItemsStrings = startingItemsString.split(", ");
     monkey.startingItems = startingItemsStrings.map((startingItemsString) => {
-        return startingItemsString;
+        return Number(startingItemsString);
     });
 
     // operation (will take a string and evaluate it later)
     const operationRegex = /(?<=new\s\=\s)[a-z0-9\s\+\*\-\/]+(?=\n)/;
-    monkey.operation = monkeyString.match(operationRegex)[0];
+    const operation = monkeyString.match(operationRegex)[0];
+    monkey.operation = operation;
 
     // divisor
     const divisorRegex = /(?<=divisible by )[0-9]+(?=\n)/;
-    monkey.divisor = Number(monkeyString.match(divisorRegex)[0]);
+    monkey.divisor = monkeyString.match(divisorRegex)[0];
 
     // actions if true or false
     const trueRegex = /(?<=true: throw to monkey )[0-9]+(?=\n)/;
@@ -38,13 +34,16 @@ const monkeys = monkeysStrings.map((monkeyString) => {
     return monkey;
 });
 
-// loop through all monkeys twenty times
+const specialDivisor = monkeys.reduce((acc, monkey) => {
+    return acc * monkey.divisor;
+}, 1);
+
 // loop through each monkey's items in turn, processing as necessary, doing ++objectsInspected.
 for (let i = 0; i < 20; ++i) {
     monkeys.forEach((monkey) => {
         monkey.startingItems.forEach((startingItem) => {
-            const old = startingItem / (23 * 19 * 13 * 17);
-            const operatedWorryLevel = eval(monkey.operation);
+            const old = startingItem;
+            const operatedWorryLevel = eval(monkey.operation) % specialDivisor; // tbh not sure why this line works
             const nextMonkey = !(operatedWorryLevel % monkey.divisor)
                 ? monkey.monkeyTrue
                 : monkey.monkeyFalse;
