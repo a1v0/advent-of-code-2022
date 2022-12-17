@@ -1,6 +1,24 @@
-const { input } = require("./input");
+const { testInput: input } = require("./input");
 
-// I have a feeling that my solution will be immensely inefficient
+//
+//
+//
+//
+//
+//
+//
+// maximum set size is being reached before even the first sensor has been processed
+// the code will need to be refactored to store the data in a different way
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 // split input into rows
 const sensorsBeaconsStrings = input.split("\n");
@@ -57,85 +75,55 @@ sensorsBeacons.forEach((sensorBeacon) => {
 });
 
 // create array to house all cells that can't be a beacon
-const cannotBeBeacon = [];
+const cannotBeBeacon = new Set();
 
 // loop through entire range of possible coordinates for every sensor and add all impossible coordinates to array
-sensorsBeacons.forEach(
-    ({ sensorCoordinates, manhattanDistance }) => {
-        console.log(sensorCoordinates, "----------------------");
-        let yDistanceFromSensor = manhattanDistance;
-        let xDistanceFromSensor = 0;
+sensorsBeacons.forEach(({ sensorCoordinates, manhattanDistance }) => {
+    console.log(sensorCoordinates, "----------------------");
+    let yDistanceFromSensor = manhattanDistance;
+    let xDistanceFromSensor = 0;
 
-        // if (sensorCoordinates[0] === 8 && sensorCoordinates[1] === 7) {
-        while (yDistanceFromSensor >= 0) {
-            for (
-                let x = sensorCoordinates[0] - xDistanceFromSensor;
-                x <= sensorCoordinates[0] + xDistanceFromSensor;
-                ++x
-            ) {
-                if (
-                    !cannotBeBeacon.includes(
-                        `${x},${sensorCoordinates[1] - yDistanceFromSensor}`
-                    )
-                ) {
-                    cannotBeBeacon.push(
-                        `${x},${sensorCoordinates[1] - yDistanceFromSensor}`
-                    );
-                }
+    while (yDistanceFromSensor >= 0) {
+        for (
+            let x = sensorCoordinates[0] - xDistanceFromSensor;
+            x <= sensorCoordinates[0] + xDistanceFromSensor;
+            ++x
+        ) {
+            cannotBeBeacon.add(
+                `${x},${sensorCoordinates[1] - yDistanceFromSensor}`
+            );
 
-                if (
-                    !cannotBeBeacon.includes(
-                        `${x},${sensorCoordinates[1] + yDistanceFromSensor}`
-                    )
-                ) {
-                    cannotBeBeacon.push(
-                        `${x},${sensorCoordinates[1] + yDistanceFromSensor}`
-                    );
-                }
-            }
-            --yDistanceFromSensor;
-            ++xDistanceFromSensor;
+            cannotBeBeacon.add(
+                `${x},${sensorCoordinates[1] + yDistanceFromSensor}`
+            );
         }
+        --yDistanceFromSensor;
+        ++xDistanceFromSensor;
+        console.log(yDistanceFromSensor);
     }
-    // }
-);
+});
 sensorsBeacons.forEach(({ sensorCoordinates, beaconCoordinates }) => {
     // delete sensor's coordinates from array if necessary
-    if (
-        cannotBeBeacon.includes(
+    if (cannotBeBeacon.has(`${sensorCoordinates[0]},${sensorCoordinates[1]}`)) {
+        cannotBeBeacon.delete(
             `${sensorCoordinates[0]},${sensorCoordinates[1]}`
-        )
-    ) {
-        cannotBeBeacon.splice(
-            cannotBeBeacon.indexOf(
-                `${sensorCoordinates[0]},${sensorCoordinates[1]}`
-            ),
-            1
         );
     }
     // delete beacon's coordinates from array if necessary
-    if (
-        cannotBeBeacon.includes(
+    if (cannotBeBeacon.has(`${beaconCoordinates[0]},${beaconCoordinates[1]}`)) {
+        cannotBeBeacon.delete(
             `${beaconCoordinates[0]},${beaconCoordinates[1]}`
-        )
-    ) {
-        cannotBeBeacon.splice(
-            cannotBeBeacon.indexOf(
-                `${beaconCoordinates[0]},${beaconCoordinates[1]}`
-            ),
-            1
         );
     }
 });
 
 // reduce array to a count of all values where y=2000000
-const cannotBeBeaconOnSpecificRow = cannotBeBeacon.reduce(
-    (accumulator, coordinates) => {
-        const splitCoordinates = coordinates.split(",");
-        return Number(splitCoordinates[1]) === 10
-            ? accumulator + 1
-            : accumulator;
-    },
-    0
-);
+let cannotBeBeaconOnSpecificRow = 0;
+cannotBeBeacon.forEach((coordinates) => {
+    const splitCoordinates = coordinates.split(",");
+    if (Number(splitCoordinates[1]) === 2000000) {
+        ++cannotBeBeaconOnSpecificRow;
+    }
+});
+
 console.log(cannotBeBeaconOnSpecificRow);
