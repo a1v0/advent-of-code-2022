@@ -8,7 +8,28 @@ const { testInput: input } = require("./input");
 //
 //
 // maximum set size is being reached before even the first sensor has been processed
-// the code will need to be refactored to store the data in a different way
+//
+// instead of logging every single coordinate that can't be a beacon, I should simply work out which cells are blocked on one particular row
+//
+//
+//
+//
+//
+//
+//
+//
+
+// NEW PLAN
+// split and map, as before
+// loop through to identify any sensors where 2000000 falls within their Manhattan range
+// // if sensor[1]+Manhattan OR sensor[1]-Manhattan is within rowToCheck
+// make a Set to house unique coordinates
+// loop through each relevant sensorBeacon to populate Set
+// // find difference in y coordinates between sensorBeacon and rowToCheck
+// // go to left from there by the remainder and go as far right as the equivalent position on the right side
+// loop through sensorsBeacons to remove any sensors/beacons on rowToCheck
+// return relevant quantity of positions on rowToCheck
+
 //
 //
 //
@@ -19,6 +40,18 @@ const { testInput: input } = require("./input");
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+// define row parameter
+const rowToCheck = 10;
 
 // split input into rows
 const sensorsBeaconsStrings = input.split("\n");
@@ -121,7 +154,7 @@ sensorsBeacons.forEach(({ sensorCoordinates, beaconCoordinates }) => {
 let cannotBeBeaconOnSpecificRow = 0;
 cannotBeBeacon.forEach((coordinates) => {
     const splitCoordinates = coordinates.split(",");
-    if (Number(splitCoordinates[1]) === 2000000) {
+    if (Number(splitCoordinates[1]) === rowToCheck) {
         ++cannotBeBeaconOnSpecificRow;
     }
 });
