@@ -1,6 +1,6 @@
 # advent-of-code-2022
 
-My code for calculating correct answers for Advent of Code 2022, entirely in JavaScript.
+My code for calculating the answers for Advent of Code 2022, entirely in JavaScript.
 
 The tasks can be found **[here](https://adventofcode.com/2022)**, and each day's inputs are stored within that day's directory.
 
@@ -20,7 +20,7 @@ The tasks can be found **[here](https://adventofcode.com/2022)**, and each day's
 |12|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
 |13|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
 |14|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
-|15|Task 1:&nbsp;❌&mdash;works on test data, but the maximum `Set` size is reached very fast with the real data. Needs a major rethink.|
+|15|Task 1:&nbsp;⭐<br>Task 2:&nbsp;|
 <!-- |16|| -->
 <!-- |17|| -->
 <!-- |18|| -->
