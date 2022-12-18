@@ -1,7 +1,4 @@
-const { input } = require("./input");
-
-// define row parameter
-const rowToCheck = 2000000;
+const { input, rowToCheck } = require("./input");
 
 // split input into rows
 const allSensorsBeaconsStrings = input.split("\n");

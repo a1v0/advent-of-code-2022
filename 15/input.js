@@ -21,6 +21,7 @@ Sensor at x=2825447, y=2045173: closest beacon is at x=3232809, y=2000000
 Sensor at x=2261212, y=2535886: closest beacon is at x=2928827, y=2611422
 Sensor at x=3956000, y=1616443: closest beacon is at x=3232809, y=2000000
 Sensor at x=3870784, y=2872668: closest beacon is at x=2928827, y=2611422`;
+exports.rowToCheck = 2000000;
 
 exports.testInput = `Sensor at x=2, y=18: closest beacon is at x=-2, y=15
 Sensor at x=9, y=16: closest beacon is at x=10, y=16
@@ -36,3 +37,4 @@ Sensor at x=17, y=20: closest beacon is at x=21, y=22
 Sensor at x=16, y=7: closest beacon is at x=15, y=3
 Sensor at x=14, y=3: closest beacon is at x=15, y=3
 Sensor at x=20, y=1: closest beacon is at x=15, y=3`;
+exports.testRowToCheck = 10;
