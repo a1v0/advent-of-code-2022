@@ -20,7 +20,7 @@ The tasks can be found **[here](https://adventofcode.com/2022)**, and each day's
 |12|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
 |13|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
 |14|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
-|15|Task 1:&nbsp;⭐<br>Task 2:&nbsp;|
+|15|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
 <!-- |16|| -->
 <!-- |17|| -->
 <!-- |18|| -->

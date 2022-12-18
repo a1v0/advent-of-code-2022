@@ -1,21 +1,4 @@
-const { testInput: input, testSizeLimit: sizeLimit } = require("./input");
-
-// storing stuff in an array is too memory intensive
-// instead of storing every row, simply check as you assemble the data for each row
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-// how to do this in such a way that it doesn't take a lifetime to run?
-
-// instead of adding each taken-up coordinate to set/array, add ranges of coordinates for each row
-// loop through each row, with its ranges, looking for an x coordinate that's outside of any given range
+const { input, sizeLimit } = require("./input");
 
 // split input into rows
 const allSensorsBeaconsStrings = input.split("\n");
@@ -65,13 +48,75 @@ for (let y = 0; y <= sizeLimit; ++y) {
             const manhattanRemainder =
                 manhattanDistance - differenceInYCoordinate;
 
-            const startX = sensorCoordinates[0] - manhattanRemainder;
-            const endX = sensorCoordinates[0] + manhattanRemainder;
-            return [startX < 0 ? 0 : startX, endX < 0 ? 0 : endX];
+            const startX =
+                sensorCoordinates[0] - manhattanRemainder < 0
+                    ? 0
+                    : sensorCoordinates[0] - manhattanRemainder;
+            const endX =
+                sensorCoordinates[0] + manhattanRemainder > sizeLimit
+                    ? sizeLimit
+                    : sensorCoordinates[0] + manhattanRemainder;
+            return [startX, endX];
         }
     );
 
-    // this bit is not very efficient...
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+
+    rowRanges.sort((a, b) => {
+        if (a[0] !== b[0]) {
+            return a[0] - b[0];
+        } else {
+            return a[1] - b[1];
+        }
+    });
+
+    // this statement checks in case the x coordinate is x. I happen to know that the x coordinate in my data set is not 0, so I am commenting it out for efficiency's sake
+    // if (rowRanges[0][0] > 0) {
+    //     beacon[0] = 0;
+    //     beacon[1] = y;
+    // }
+
+    let x = 0;
+
+    // console.log(rowRanges);
+    for (let i = 0; i < rowRanges.length; ++i) {
+        if (x + 1 < rowRanges[i][0]) {
+            beacon[0] = ++x; // because we want the coordinate adjacent to the last available one
+            beacon[1] = y;
+            // console.log(x, "x when breaking");
+            break;
+        }
+        x = rowRanges[i][1] > x ? rowRanges[i][1] : x;
+        // console.log(x, "x");
+    }
+
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    // THIS SECTION IS FAR TOO INEFFICIENT TO WORK AT SCALE
+    // takes 2.1s per row
+
+    /*
     // create set to house all used-up x coordinates
     const xCoordinates = new Set();
 
@@ -86,7 +131,8 @@ for (let y = 0; y <= sizeLimit; ++y) {
             beacon[0] = x;
             beacon[1] = y;
         }
-    }
+    }*/
+
     if (beacon[0] !== undefined) break;
 }
 
@@ -95,3 +141,5 @@ console.log(beacon);
 // multiply x by 4000000 and add y
 const tuningFrequency = beacon[0] * 4000000 + beacon[1];
 console.log(tuningFrequency);
+
+// 277972105916
