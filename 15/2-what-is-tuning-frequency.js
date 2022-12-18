@@ -60,19 +60,6 @@ for (let y = 0; y <= sizeLimit; ++y) {
         }
     );
 
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-
     rowRanges.sort((a, b) => {
         if (a[0] !== b[0]) {
             return a[0] - b[0];
@@ -89,49 +76,14 @@ for (let y = 0; y <= sizeLimit; ++y) {
 
     let x = 0;
 
-    // console.log(rowRanges);
     for (let i = 0; i < rowRanges.length; ++i) {
         if (x + 1 < rowRanges[i][0]) {
             beacon[0] = ++x; // because we want the coordinate adjacent to the last available one
             beacon[1] = y;
-            // console.log(x, "x when breaking");
             break;
         }
         x = rowRanges[i][1] > x ? rowRanges[i][1] : x;
-        // console.log(x, "x");
     }
-
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    // THIS SECTION IS FAR TOO INEFFICIENT TO WORK AT SCALE
-    // takes 2.1s per row
-
-    /*
-    // create set to house all used-up x coordinates
-    const xCoordinates = new Set();
-
-    rowRanges.forEach((rowRange) => {
-        for (let x = rowRange[0]; x <= rowRange[1]; ++x) {
-            xCoordinates.add(x);
-        }
-    });
-
-    for (let x = 0; x <= sizeLimit; ++x) {
-        if (!xCoordinates.has(x)) {
-            beacon[0] = x;
-            beacon[1] = y;
-        }
-    }*/
 
     if (beacon[0] !== undefined) break;
 }
@@ -141,5 +93,3 @@ console.log(beacon);
 // multiply x by 4000000 and add y
 const tuningFrequency = beacon[0] * 4000000 + beacon[1];
 console.log(tuningFrequency);
-
-// 277972105916
