@@ -68,7 +68,7 @@ for (let y = 0; y <= sizeLimit; ++y) {
         }
     });
 
-    // this statement checks in case the x coordinate is x. I happen to know that the x coordinate in my data set is not 0, so I am commenting it out for efficiency's sake
+    // this statement checks in case the x coordinate is 0. I happen to know that the x coordinate in my data set is not 0, so I am commenting it out for efficiency's sake
     // if (rowRanges[0][0] > 0) {
     //     beacon[0] = 0;
     //     beacon[1] = y;
