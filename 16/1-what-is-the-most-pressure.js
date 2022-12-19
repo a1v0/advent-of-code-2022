@@ -3,7 +3,7 @@ const { testInput: input } = require("./input");
 // split input into rows
 const valvesStrings = input.split("\n");
 
-// map rows into objects: { id: "AA", flowRate: Number, isFlowing: false, flowingSince: undefined, leadsTo: ["BB", ...] }
+// map rows into objects: { id: "AA", flowRate: Number, isFlowing: false, leadsTo: ["BB", ...] }
 const valves = valvesStrings.map((valveString) => {
     const valve = {};
     const letters = valveString.match(/[A-Z]{2}/g);
@@ -24,8 +24,6 @@ function sortValves() {
 }
 sortValves();
 
-console.log(valves);
-
 // calculate current flow
 function getCurrentFlow() {
     let currentFlow = 0;
@@ -44,31 +42,79 @@ function getValve(valveID) {
     });
 }
 
-let currentValve = "AA";
+let currentValveID = "AA";
 let totalFlow = 0;
 let clock = 0;
 
-while (clock <= 30) {
+while (clock < 30) {
     // identify next stop
-    const nextStop = findNextValve(currentValve);
+    const potentialNextStops = [];
+    valves.forEach((targetValve) => {
+        if (!targetValve.isFlowing) {
+            potentialNextStops.push(findNextValve(currentValveID, targetValve));
+        }
+    });
+
+    potentialNextStops.sort((a, b) => {
+        return b.heuristic - a.heuristic;
+    });
+
+    const nextStop = potentialNextStops[0];
 
     // update current valve, clock and flow
-    currentValve = nextStop.valve;
-    clock += nextStop.distance + 1; // +1 to account for switching on the valve
-    totalFlow += getCurrentFlow() * (nextStop.distance + 1);
+    currentValveID = nextStop.id;
+
+    const timeFactor =
+        clock + nextStop.distance <= 30 ? nextStop.distance : 30 - clock;
+    clock += timeFactor; // the distance already factors in the extra minute to switch on a valve
+    totalFlow += getCurrentFlow() * timeFactor; // retrospectively calculates flow rate based on number of minutes
+    console.log(currentValveID, 30 - clock);
 
     // update flowing status and sort valves
-    getValve(currentValve).isFlowing = true; // this must be set to true AFTER the flow has been calculated
+    getValve(currentValveID).isFlowing = true; // this must be set to true AFTER the flow has been calculated
     sortValves();
 }
 
-function findNextValve(currentValve) {
-    // recursively or otherwise, go through all valves, in descending order of flowRate
-    // find how many steps it would take to get to the highest-flow valve, and subtract this from the valve's flow
-    // e.g. valve's flow is 20, and it takes 7 steps to get there, so total score is 20 - 7 = 13
-    // go to the valve with the highest score, returing it as { valve: "AA", distance: Number }
+// recursively go through all routes to find target valve
+function findNextValve(currentValveID, targetValve) {
+    const routes = [];
+    const currentRoute = [currentValveID];
 
-    return { valve: "AA", distance: Number };
+    const currentValve = getValve(currentValveID);
+    evaluateOptions(currentValve.leadsTo, currentRoute);
+
+    function evaluateOptions(pathOptions, currentRoute) {
+        //
+        //
+        // perhaps add a limiter here to stop looking if the current route is too long to bother continuing with
+        //
+        //
+        if (currentRoute.includes(targetValve.id)) {
+            routes.push(currentRoute);
+        } else {
+            pathOptions.forEach((pathOption) => {
+                if (!currentRoute.includes(pathOption)) {
+                    const currentValve = getValve(pathOption);
+                    evaluateOptions(currentValve.leadsTo, [
+                        ...currentRoute,
+                        pathOption
+                    ]);
+                }
+            });
+        }
+    }
+    routes.sort((a, b) => {
+        // in theory it won't matter if they're both the same length
+        return a.length - b.length;
+    });
+    const timeLeftAfterSwitchingOn = 30 - routes[0].length;
+
+    return {
+        id: targetValve.id,
+        distance: routes[0].length,
+        heuristic: timeLeftAfterSwitchingOn * targetValve.flowRate
+    };
 }
 
+console.log(valves);
 console.log(totalFlow);
