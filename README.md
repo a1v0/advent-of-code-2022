@@ -21,7 +21,7 @@ The tasks can be found **[here](https://adventofcode.com/2022)**, and each day's
 |13|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
 |14|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
 |15|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
-<!-- |16|| -->
+|16|Task 1:&nbsp;❌&mdash;trying to implement a Dijkstra solution but it's a huge mess. To be revisited|
 <!-- |17|| -->
 <!-- |18|| -->
 <!-- |19|| -->
