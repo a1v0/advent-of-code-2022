@@ -1,3 +1,12 @@
+// This one started well, but I seem to have been wrong about my assumption that the changes in height per round of instructions repeats.
+// In the test data, it repeats every seven rounds, though I cannot work whether this is a coincidence. The real input doesn't repeat every seven rounds
+// But there MUST be some sort of point at which I can leap forward based off of data harvested from earlier rounds
+//
+//
+//
+//
+//
+
 // VAGUE PLAN
 // find out how high the highest Y coordinate is where current currentInstructionIndex === 0, where the shape is horizontalRock and where the x coordinates are the same as the very first shape to drop
 // do 1000000000000 / that height
@@ -6,10 +15,24 @@
 //
 //
 //
+// count highest y after five cycles
+// calculate total difference in height after every subsequent five cycles
+// find out how many times that number fits into 1000000000000 and calculate maximum y height
+// add a blank row at that max height to the set, then proceed as in Task 1 to work out the remainder of the height
+// // to do this, you need to work out which rock to restart with (this might just work automatically)
+//
+//
+//
+//
 //
 //
 
-const { testInput: input } = require("./input");
+const { input } = require("./input");
+
+const totalRocks = 1000000000000;
+const movesPerRound = input.length;
+// console.log(movesPerRound);
+// return;
 
 // create functions that create each of the rocks (a rock should be an array of coordinates)
 // // should take an argument of the lowest y coordinate
@@ -68,14 +91,14 @@ let currentInstructionIndex = 0;
 // store highest y coordinate
 let highestYCoordinate = -1;
 
-console.time();
-// while loop counter < 2022
-while (rocksCounter < 1000000000000) {
-    // console.log(rocksCounter);
-    if (rocksCounter === 1000000) console.timeEnd();
+let yAtStartOfInstructions;
+let changeInYAfterInstructions;
 
+// while loop counter < 1000000000000
+while (rocksCounter < totalRocks) {
     // create rock using switch (counter % 5)
     const currentRock = [];
+
     switch (rocksCounter % 5) {
         case 0:
             currentRock.push(...horizontalRock(highestYCoordinate + 4));
@@ -94,6 +117,43 @@ while (rocksCounter < 1000000000000) {
             break;
     }
     let isCurrentRockAtRest = false;
+
+    if (rocksCounter % movesPerRound === 0) {
+        if ((rocksCounter / movesPerRound) % 2 === 0) {
+            yAtStartOfInstructions = highestYCoordinate;
+        } else {
+            changeInYAfterInstructions =
+                highestYCoordinate - yAtStartOfInstructions;
+            console.log(changeInYAfterInstructions);
+        }
+    }
+
+    // if (rocksCounter === movesPerRound * 10) {
+    //     yAtStartOfInstructions = highestYCoordinate;
+    // }
+    // if (rocksCounter === movesPerRound * 11) {
+    //     changeInYAfterInstructions =
+    //         highestYCoordinate - yAtStartOfInstructions;
+    //     const rocksLeft = totalRocks - rocksCounter;
+    //     const roundsOfInstructionsLeft = Math.floor(rocksLeft / movesPerRound);
+    //     rocksCounter += roundsOfInstructionsLeft * movesPerRound;
+    //     --rocksCounter; // I think this is necessary but am not 100% sure
+    //     highestYCoordinate +=
+    //         changeInYAfterInstructions * roundsOfInstructionsLeft;
+    //     console.log(rocksCounter);
+
+    //     // add a blank row to blocked coordinates
+    //     blockedCoordinates.add(`0,${highestYCoordinate}`);
+    //     blockedCoordinates.add(`1,${highestYCoordinate}`);
+    //     blockedCoordinates.add(`2,${highestYCoordinate}`);
+    //     blockedCoordinates.add(`3,${highestYCoordinate}`);
+    //     blockedCoordinates.add(`4,${highestYCoordinate}`);
+    //     blockedCoordinates.add(`5,${highestYCoordinate}`);
+    //     blockedCoordinates.add(`6,${highestYCoordinate}`);
+    //     // console.log(blockedCoordinates);
+    //     continue;
+    // }
+    //console.log(changeInYAfterInstructions)
 
     // nest a while loop to go through instructions until rock comes to rest
     while (!isCurrentRockAtRest) {
@@ -125,9 +185,14 @@ while (rocksCounter < 1000000000000) {
 
         // at end of loop, increment instruction counter (or set to 0 if length is exceeded)
         currentInstructionIndex =
-            currentInstructionIndex < input.length - 1
+            currentInstructionIndex < movesPerRound - 1
                 ? currentInstructionIndex + 1
                 : 0;
+
+        //if (currentInstructionIndex === 0) {
+        //    console.log("diff:", highestYCoordinate - yAtStartOfInstructions);
+        //    yAtStartOfInstructions = highestYCoordinate;
+        //}
     }
     ++rocksCounter;
 }
