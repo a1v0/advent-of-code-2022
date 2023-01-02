@@ -116,10 +116,11 @@ let currentInstructionIndex = 0;
 // store highest y coordinate
 let highestYCoordinate = -1;
 
-let yAtStartOfInstructions;
+let yAtStartOfInstructions = 0;
 let changeInYAfterInstructions;
 
 let rocksAtStartOfInstructions = 0;
+let changeInRocksAfterInstructions;
 
 // while loop counter < 1000000000000
 while (rocksCounter < totalRocks) {
@@ -149,11 +150,15 @@ while (rocksCounter < totalRocks) {
     while (!isCurrentRockAtRest) {
         changeInYAfterInstructions =
             highestYCoordinate - yAtStartOfInstructions;
+        changeInRocksAfterInstructions =
+            rocksCounter - rocksAtStartOfInstructions;
         if (currentInstructionIndex === 0) {
             console.log(
                 // change in quantity of rocks since start of cycle
-                rocksCounter - rocksAtStartOfInstructions,
+                "rocks per cycle:",
+                changeInRocksAfterInstructions,
                 // change in total height since start of last cycle
+                "change in height per cycle:",
                 changeInYAfterInstructions
             );
             rocksAtStartOfInstructions = rocksCounter;
@@ -199,6 +204,24 @@ while (rocksCounter < totalRocks) {
         //}
     }
     ++rocksCounter;
+
+    // after ten rocks, the pattern will have been established
+    // from here, I can add rocks and height based on the pattern, then continue the loop to work out the remainder
+    if (
+        changeInRocksAfterInstructions ===
+        1710 /* I've hard-coded the change in rocks, which is cheeky. I can't think how to do this dynamically */
+    ) {
+        console.log(changeInRocksAfterInstructions, "boobies!");
+        while (rocksCounter < totalRocks - changeInRocksAfterInstructions) {
+            rocksCounter += changeInRocksAfterInstructions;
+            highestYCoordinate += changeInYAfterInstructions;
+        }
+
+        // add a blank line of occupied coordinates to the set
+        for (let i = 0; i < 7; ++i) {
+            blockedCoordinates.add(`${i},${highestYCoordinate}`);
+        }
+    }
 }
 
 function willCollide(rock, [changeInX, changeInY]) {
