@@ -1,3 +1,28 @@
+// new plan:
+// find out how many rocks per cycle
+// find out change in height after every cycle (doesn't matter if current rock isn't at rest yet)
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 // This one started well, but I seem to have been wrong about my assumption that the changes in height per round of instructions repeats.
 // In the test data, it repeats every seven rounds, though I cannot work whether this is a coincidence. The real input doesn't repeat every seven rounds
 // But there MUST be some sort of point at which I can leap forward based off of data harvested from earlier rounds
@@ -94,6 +119,8 @@ let highestYCoordinate = -1;
 let yAtStartOfInstructions;
 let changeInYAfterInstructions;
 
+let rocksAtStartOfInstructions = 0;
+
 // while loop counter < 1000000000000
 while (rocksCounter < totalRocks) {
     // create rock using switch (counter % 5)
@@ -118,45 +145,22 @@ while (rocksCounter < totalRocks) {
     }
     let isCurrentRockAtRest = false;
 
-    if (rocksCounter % movesPerRound === 0) {
-        if ((rocksCounter / movesPerRound) % 2 === 0) {
-            yAtStartOfInstructions = highestYCoordinate;
-        } else {
-            changeInYAfterInstructions =
-                highestYCoordinate - yAtStartOfInstructions;
-            console.log(changeInYAfterInstructions);
-        }
-    }
-
-    // if (rocksCounter === movesPerRound * 10) {
-    //     yAtStartOfInstructions = highestYCoordinate;
-    // }
-    // if (rocksCounter === movesPerRound * 11) {
-    //     changeInYAfterInstructions =
-    //         highestYCoordinate - yAtStartOfInstructions;
-    //     const rocksLeft = totalRocks - rocksCounter;
-    //     const roundsOfInstructionsLeft = Math.floor(rocksLeft / movesPerRound);
-    //     rocksCounter += roundsOfInstructionsLeft * movesPerRound;
-    //     --rocksCounter; // I think this is necessary but am not 100% sure
-    //     highestYCoordinate +=
-    //         changeInYAfterInstructions * roundsOfInstructionsLeft;
-    //     console.log(rocksCounter);
-
-    //     // add a blank row to blocked coordinates
-    //     blockedCoordinates.add(`0,${highestYCoordinate}`);
-    //     blockedCoordinates.add(`1,${highestYCoordinate}`);
-    //     blockedCoordinates.add(`2,${highestYCoordinate}`);
-    //     blockedCoordinates.add(`3,${highestYCoordinate}`);
-    //     blockedCoordinates.add(`4,${highestYCoordinate}`);
-    //     blockedCoordinates.add(`5,${highestYCoordinate}`);
-    //     blockedCoordinates.add(`6,${highestYCoordinate}`);
-    //     // console.log(blockedCoordinates);
-    //     continue;
-    // }
-    //console.log(changeInYAfterInstructions)
-
     // nest a while loop to go through instructions until rock comes to rest
     while (!isCurrentRockAtRest) {
+        changeInYAfterInstructions =
+            highestYCoordinate - yAtStartOfInstructions;
+        if (currentInstructionIndex === 0) {
+            console.log(
+                // change in quantity of rocks since start of cycle
+                rocksCounter - rocksAtStartOfInstructions,
+                // change in total height since start of last cycle
+                changeInYAfterInstructions
+            );
+            rocksAtStartOfInstructions = rocksCounter;
+
+            yAtStartOfInstructions = highestYCoordinate;
+        }
+
         // retrieve current instruction
         const currentInstruction = input[currentInstructionIndex];
 
