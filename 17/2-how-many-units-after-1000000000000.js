@@ -68,8 +68,12 @@ let changeInRocksAfterInstructions;
 
 let cycles = 0;
 
+let undefinedVariable; // crude use of a variable... sorry
+
 // while loop counter < 1000000000000
 while (rocksCounter < totalRocks) {
+    console.log(highestYCoordinate, rocksCounter);
+
     // create rock using switch (counter % 5)
     const currentRock = [];
 
@@ -94,11 +98,11 @@ while (rocksCounter < totalRocks) {
 
     // nest a while loop to go through instructions until rock comes to rest
     while (!isCurrentRockAtRest) {
-        changeInYAfterInstructions =
-            highestYCoordinate - yAtStartOfInstructions;
-        changeInRocksAfterInstructions =
-            rocksCounter - rocksAtStartOfInstructions;
         if (currentInstructionIndex === 0 && cycles % 5 === 0) {
+            changeInYAfterInstructions =
+                highestYCoordinate - yAtStartOfInstructions;
+            changeInRocksAfterInstructions =
+                rocksCounter - rocksAtStartOfInstructions;
             console.log(
                 // change in quantity of rocks since start of cycle
                 "rocks per cycle:",
@@ -145,27 +149,32 @@ while (rocksCounter < totalRocks) {
                 : 0;
         if (currentInstructionIndex === 0) ++cycles;
     }
-    ++rocksCounter;
 
     // after ten rocks, the pattern will have been established
     // from here, I can add rocks and height based on the pattern, then continue the loop to work out the remainder
     if (
         changeInRocksAfterInstructions ===
-        35 /* I've hard-coded the change in rocks, which is cheeky. I can't think how to do this dynamically */
+            35 /* I've hard-coded the change in rocks, which is cheeky. I can't think how to do this dynamically */ &&
+        !undefinedVariable
     ) {
         console.log(changeInRocksAfterInstructions, "change in rocks");
-        while (
-            rocksCounter <
-            totalRocks - changeInRocksAfterInstructions * 100
-        ) {
-            rocksCounter += changeInRocksAfterInstructions * 100;
-            highestYCoordinate += changeInYAfterInstructions * 100;
+        while (rocksCounter < totalRocks) {
+            rocksCounter += changeInRocksAfterInstructions * 1000; // * 1000 to make it go faster
+            highestYCoordinate += changeInYAfterInstructions * 1000;
+        }
+        // this is an inelegant way to counter any overshoot from the above loop
+        while (rocksCounter > totalRocks) {
+            rocksCounter -= changeInRocksAfterInstructions;
+            highestYCoordinate -= changeInYAfterInstructions;
         }
 
-        // add a blank line of occupied coordinates to the set
+        // add a full line of occupied coordinates to the set
         for (let i = 0; i < 7; ++i) {
             blockedCoordinates.add(`${i},${highestYCoordinate}`);
         }
+        undefinedVariable = 1;
+    } else {
+        ++rocksCounter;
     }
 }
 
