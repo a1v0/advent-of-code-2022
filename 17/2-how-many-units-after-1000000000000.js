@@ -1,5 +1,8 @@
 const { testInput: input } = require("./input");
 
+const testDifference = 35;
+const realDifference = 8550;
+
 const totalRocks = 1000000000000;
 const movesPerRound = input.length;
 
@@ -72,7 +75,7 @@ let undefinedVariable; // crude use of a variable... sorry
 
 // while loop counter < 1000000000000
 while (rocksCounter < totalRocks) {
-    console.log(highestYCoordinate, rocksCounter);
+    // console.log(highestYCoordinate, rocksCounter);
 
     // create rock using switch (counter % 5)
     const currentRock = [];
@@ -153,8 +156,9 @@ while (rocksCounter < totalRocks) {
     // after ten rocks, the pattern will have been established
     // from here, I can add rocks and height based on the pattern, then continue the loop to work out the remainder
     if (
+        // changeInRocksAfterInstructions === testDifference ||
         changeInRocksAfterInstructions ===
-            35 /* I've hard-coded the change in rocks, which is cheeky. I can't think how to do this dynamically */ &&
+            testDifference /* I've hard-coded the change in rocks, which is cheeky. I can't think how to do this dynamically */ &&
         !undefinedVariable
     ) {
         console.log(changeInRocksAfterInstructions, "change in rocks");
@@ -163,12 +167,35 @@ while (rocksCounter < totalRocks) {
             highestYCoordinate += changeInYAfterInstructions * 1000;
         }
         // this is an inelegant way to counter any overshoot from the above loop
+        // it also makes sure that the next rock is a horizontal rock
         while (rocksCounter > totalRocks) {
             rocksCounter -= changeInRocksAfterInstructions;
             highestYCoordinate -= changeInYAfterInstructions;
         }
 
         // add a full line of occupied coordinates to the set
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        // I THINK THE PROBLEM IS HERE. ADDING A STRAIGHT LINE HERE IS PROBABLY WRONG.
+        // INSTEAD, I NEED SOMEHOW TO WORK OUT WHICH OF THE CELLS IN THE TOP ROW WOULD BE USED UP
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
         for (let i = 0; i < 7; ++i) {
             blockedCoordinates.add(`${i},${highestYCoordinate}`);
         }
