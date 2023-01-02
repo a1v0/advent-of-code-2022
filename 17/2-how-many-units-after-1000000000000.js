@@ -1,63 +1,7 @@
-// new plan:
-// find out how many rocks per cycle
-// find out change in height after every cycle (doesn't matter if current rock isn't at rest yet)
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-// This one started well, but I seem to have been wrong about my assumption that the changes in height per round of instructions repeats.
-// In the test data, it repeats every seven rounds, though I cannot work whether this is a coincidence. The real input doesn't repeat every seven rounds
-// But there MUST be some sort of point at which I can leap forward based off of data harvested from earlier rounds
-//
-//
-//
-//
-//
-
-// VAGUE PLAN
-// find out how high the highest Y coordinate is where current currentInstructionIndex === 0, where the shape is horizontalRock and where the x coordinates are the same as the very first shape to drop
-// do 1000000000000 / that height
-// calculate height * result of above
-// add a blank row at that max height to the set, then proceed as in Task 1 to work out the rest of the height
-//
-//
-//
-// count highest y after five cycles
-// calculate total difference in height after every subsequent five cycles
-// find out how many times that number fits into 1000000000000 and calculate maximum y height
-// add a blank row at that max height to the set, then proceed as in Task 1 to work out the remainder of the height
-// // to do this, you need to work out which rock to restart with (this might just work automatically)
-//
-//
-//
-//
-//
-//
-
 const { input } = require("./input");
 
 const totalRocks = 1000000000000;
 const movesPerRound = input.length;
-// console.log(movesPerRound);
-// return;
 
 // create functions that create each of the rocks (a rock should be an array of coordinates)
 // // should take an argument of the lowest y coordinate
@@ -197,11 +141,6 @@ while (rocksCounter < totalRocks) {
             currentInstructionIndex < movesPerRound - 1
                 ? currentInstructionIndex + 1
                 : 0;
-
-        //if (currentInstructionIndex === 0) {
-        //    console.log("diff:", highestYCoordinate - yAtStartOfInstructions);
-        //    yAtStartOfInstructions = highestYCoordinate;
-        //}
     }
     ++rocksCounter;
 
