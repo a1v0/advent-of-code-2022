@@ -1,4 +1,4 @@
-const { input } = require("./input");
+const { testInput: input } = require("./input");
 
 const totalRocks = 1000000000000;
 const movesPerRound = input.length;
@@ -66,6 +66,8 @@ let changeInYAfterInstructions;
 let rocksAtStartOfInstructions = 0;
 let changeInRocksAfterInstructions;
 
+let cycles = 0;
+
 // while loop counter < 1000000000000
 while (rocksCounter < totalRocks) {
     // create rock using switch (counter % 5)
@@ -96,7 +98,7 @@ while (rocksCounter < totalRocks) {
             highestYCoordinate - yAtStartOfInstructions;
         changeInRocksAfterInstructions =
             rocksCounter - rocksAtStartOfInstructions;
-        if (currentInstructionIndex === 0) {
+        if (currentInstructionIndex === 0 && cycles % 5 === 0) {
             console.log(
                 // change in quantity of rocks since start of cycle
                 "rocks per cycle:",
@@ -141,6 +143,7 @@ while (rocksCounter < totalRocks) {
             currentInstructionIndex < movesPerRound - 1
                 ? currentInstructionIndex + 1
                 : 0;
+        if (currentInstructionIndex === 0) ++cycles;
     }
     ++rocksCounter;
 
@@ -148,12 +151,15 @@ while (rocksCounter < totalRocks) {
     // from here, I can add rocks and height based on the pattern, then continue the loop to work out the remainder
     if (
         changeInRocksAfterInstructions ===
-        1710 /* I've hard-coded the change in rocks, which is cheeky. I can't think how to do this dynamically */
+        35 /* I've hard-coded the change in rocks, which is cheeky. I can't think how to do this dynamically */
     ) {
-        console.log(changeInRocksAfterInstructions, "boobies!");
-        while (rocksCounter < totalRocks - changeInRocksAfterInstructions) {
-            rocksCounter += changeInRocksAfterInstructions;
-            highestYCoordinate += changeInYAfterInstructions;
+        console.log(changeInRocksAfterInstructions, "change in rocks");
+        while (
+            rocksCounter <
+            totalRocks - changeInRocksAfterInstructions * 100
+        ) {
+            rocksCounter += changeInRocksAfterInstructions * 100;
+            highestYCoordinate += changeInYAfterInstructions * 100;
         }
 
         // add a blank line of occupied coordinates to the set
