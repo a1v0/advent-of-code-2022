@@ -1,38 +1,10 @@
-// This one started well, but I seem to have been wrong about my assumption that the changes in height per round of instructions repeats.
-// In the test data, it repeats every seven rounds, though I cannot work whether this is a coincidence. The real input doesn't repeat every seven rounds
-// But there MUST be some sort of point at which I can leap forward based off of data harvested from earlier rounds
-//
-//
-//
-//
-//
+const { testInput: input } = require("./input");
 
-// VAGUE PLAN
-// find out how high the highest Y coordinate is where current currentInstructionIndex === 0, where the shape is horizontalRock and where the x coordinates are the same as the very first shape to drop
-// do 1000000000000 / that height
-// calculate height * result of above
-// add a blank row at that max height to the set, then proceed as in Task 1 to work out the rest of the height
-//
-//
-//
-// count highest y after five cycles
-// calculate total difference in height after every subsequent five cycles
-// find out how many times that number fits into 1000000000000 and calculate maximum y height
-// add a blank row at that max height to the set, then proceed as in Task 1 to work out the remainder of the height
-// // to do this, you need to work out which rock to restart with (this might just work automatically)
-//
-//
-//
-//
-//
-//
-
-const { input } = require("./input");
+const testDifference = 35;
+const realDifference = 8550;
 
 const totalRocks = 1000000000000;
 const movesPerRound = input.length;
-// console.log(movesPerRound);
-// return;
 
 // create functions that create each of the rocks (a rock should be an array of coordinates)
 // // should take an argument of the lowest y coordinate
@@ -91,11 +63,20 @@ let currentInstructionIndex = 0;
 // store highest y coordinate
 let highestYCoordinate = -1;
 
-let yAtStartOfInstructions;
+let yAtStartOfInstructions = 0;
 let changeInYAfterInstructions;
+
+let rocksAtStartOfInstructions = 0;
+let changeInRocksAfterInstructions;
+
+let cycles = 0;
+
+let undefinedVariable; // crude use of a variable... sorry
 
 // while loop counter < 1000000000000
 while (rocksCounter < totalRocks) {
+    // console.log(highestYCoordinate, rocksCounter);
+
     // create rock using switch (counter % 5)
     const currentRock = [];
 
@@ -118,45 +99,26 @@ while (rocksCounter < totalRocks) {
     }
     let isCurrentRockAtRest = false;
 
-    if (rocksCounter % movesPerRound === 0) {
-        if ((rocksCounter / movesPerRound) % 2 === 0) {
-            yAtStartOfInstructions = highestYCoordinate;
-        } else {
-            changeInYAfterInstructions =
-                highestYCoordinate - yAtStartOfInstructions;
-            console.log(changeInYAfterInstructions);
-        }
-    }
-
-    // if (rocksCounter === movesPerRound * 10) {
-    //     yAtStartOfInstructions = highestYCoordinate;
-    // }
-    // if (rocksCounter === movesPerRound * 11) {
-    //     changeInYAfterInstructions =
-    //         highestYCoordinate - yAtStartOfInstructions;
-    //     const rocksLeft = totalRocks - rocksCounter;
-    //     const roundsOfInstructionsLeft = Math.floor(rocksLeft / movesPerRound);
-    //     rocksCounter += roundsOfInstructionsLeft * movesPerRound;
-    //     --rocksCounter; // I think this is necessary but am not 100% sure
-    //     highestYCoordinate +=
-    //         changeInYAfterInstructions * roundsOfInstructionsLeft;
-    //     console.log(rocksCounter);
-
-    //     // add a blank row to blocked coordinates
-    //     blockedCoordinates.add(`0,${highestYCoordinate}`);
-    //     blockedCoordinates.add(`1,${highestYCoordinate}`);
-    //     blockedCoordinates.add(`2,${highestYCoordinate}`);
-    //     blockedCoordinates.add(`3,${highestYCoordinate}`);
-    //     blockedCoordinates.add(`4,${highestYCoordinate}`);
-    //     blockedCoordinates.add(`5,${highestYCoordinate}`);
-    //     blockedCoordinates.add(`6,${highestYCoordinate}`);
-    //     // console.log(blockedCoordinates);
-    //     continue;
-    // }
-    //console.log(changeInYAfterInstructions)
-
     // nest a while loop to go through instructions until rock comes to rest
     while (!isCurrentRockAtRest) {
+        if (currentInstructionIndex === 0 && cycles % 5 === 0) {
+            changeInYAfterInstructions =
+                highestYCoordinate - yAtStartOfInstructions;
+            changeInRocksAfterInstructions =
+                rocksCounter - rocksAtStartOfInstructions;
+            console.log(
+                // change in quantity of rocks since start of cycle
+                "rocks per cycle:",
+                changeInRocksAfterInstructions,
+                // change in total height since start of last cycle
+                "change in height per cycle:",
+                changeInYAfterInstructions
+            );
+            rocksAtStartOfInstructions = rocksCounter;
+
+            yAtStartOfInstructions = highestYCoordinate;
+        }
+
         // retrieve current instruction
         const currentInstruction = input[currentInstructionIndex];
 
@@ -188,13 +150,59 @@ while (rocksCounter < totalRocks) {
             currentInstructionIndex < movesPerRound - 1
                 ? currentInstructionIndex + 1
                 : 0;
-
-        //if (currentInstructionIndex === 0) {
-        //    console.log("diff:", highestYCoordinate - yAtStartOfInstructions);
-        //    yAtStartOfInstructions = highestYCoordinate;
-        //}
+        if (currentInstructionIndex === 0) ++cycles;
     }
-    ++rocksCounter;
+
+    // after ten rocks, the pattern will have been established
+    // from here, I can add rocks and height based on the pattern, then continue the loop to work out the remainder
+    if (
+        // changeInRocksAfterInstructions === testDifference ||
+        changeInRocksAfterInstructions ===
+            testDifference /* I've hard-coded the change in rocks, which is cheeky. I can't think how to do this dynamically */ &&
+        !undefinedVariable
+    ) {
+        console.log(changeInRocksAfterInstructions, "change in rocks");
+        while (rocksCounter < totalRocks) {
+            rocksCounter += changeInRocksAfterInstructions * 1000; // * 1000 to make it go faster
+            highestYCoordinate += changeInYAfterInstructions * 1000;
+        }
+        // this is an inelegant way to counter any overshoot from the above loop
+        // it also makes sure that the next rock is a horizontal rock
+        while (rocksCounter > totalRocks) {
+            rocksCounter -= changeInRocksAfterInstructions;
+            highestYCoordinate -= changeInYAfterInstructions;
+        }
+
+        // add a full line of occupied coordinates to the set
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        // I THINK THE PROBLEM IS HERE. ADDING A STRAIGHT LINE HERE IS PROBABLY WRONG.
+        // INSTEAD, I NEED SOMEHOW TO WORK OUT WHICH OF THE CELLS IN THE TOP ROW WOULD BE USED UP
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        for (let i = 0; i < 7; ++i) {
+            blockedCoordinates.add(`${i},${highestYCoordinate}`);
+        }
+        undefinedVariable = 1;
+    } else {
+        ++rocksCounter;
+    }
 }
 
 function willCollide(rock, [changeInX, changeInY]) {
