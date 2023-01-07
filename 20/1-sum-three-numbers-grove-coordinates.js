@@ -12,14 +12,13 @@ const numbers = inputStrings.map((inputString, index) => {
 
 // loop through mapped array, but in order of originalIndex
 for (let i = 0; i < inputLength; ++i) {
-    // do a findIndex where originalIndex === i
     const currentIndex = numbers.findIndex((number) => {
         return number.originalIndex === i;
     });
     const currentNumber = numbers[currentIndex];
 
     // calculate new position of object
-    // // do a while loop to ensure the wraparound works correctly
+    // // while loop to ensure the wraparound works correctly
     // // remember that position 0 is equivalent to position length-1. Array is like a circle, where each end is connected. So if -1 is at index 0, it would end up at length-2
     let newIndex = currentIndex + currentNumber.move;
     while (newIndex < 0 || newIndex >= inputLength) {
@@ -31,7 +30,7 @@ for (let i = 0; i < inputLength; ++i) {
         }
     }
 
-    // splice/slice (can't remember which) object and reinsert at new location
+    // splice object and reinsert at new location
     // WARNING: this could get buggy if there's a lot of wrapping around. Let's see what happens
     numbers.splice(currentIndex, 1);
     numbers.splice(newIndex, 0, currentNumber);
