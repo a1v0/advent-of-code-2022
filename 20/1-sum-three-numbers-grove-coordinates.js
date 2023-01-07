@@ -18,7 +18,8 @@ for (let i = 0; i < inputLength; ++i) {
     });
     const currentNumber = numbers[currentIndex];
 
-    // calculate new position of object
+    // 
+    calculate new position of object
     // // do a while loop to ensure the wraparound works correctly
     // // remember that position 0 is equivalent to position length-1. Array is like a circle, where each end is connected. So if -1 is at index 0, it would end up at length-2
     let newIndex = currentIndex + currentNumber.move;
