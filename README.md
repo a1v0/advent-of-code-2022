@@ -24,7 +24,7 @@ The tasks can be found **[here](https://adventofcode.com/2022)**, and each day's
 |16|Task 1:&nbsp;❌&mdash;trying to implement a Dijkstra solution but it's a huge mess. To be revisited|
 <!-- |17|| -->
 <!-- |18|| -->
-<!-- |19|| -->
+|19|Task 1:&nbsp;❌&mdash;completely stuck on this one, alas.|
 <!-- |20|| -->
 <!-- |21|| -->
 <!-- |22|| -->
