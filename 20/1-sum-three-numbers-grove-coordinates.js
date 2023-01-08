@@ -50,21 +50,25 @@ function day20Task1(input) {
 
     // once loop is complete, loop through array again to identify 1000th, 2000th and 3000th 'index' (using a while loop again), summing the values
 
-    let oneThouIndex = 999;
+    const indexOfZero = numbers.findIndex((number) => {
+        return number.move === 0;
+    });
+
+    let oneThouIndex = 1000 + indexOfZero;
     while (oneThouIndex >= inputLength) {
-        oneThouIndex -= inputLength - 1;
+        oneThouIndex -= inputLength;
     }
     const oneThou = numbers[oneThouIndex].move;
 
-    let twoThouIndex = 2000;
+    let twoThouIndex = 2000 + indexOfZero;
     while (twoThouIndex >= inputLength) {
-        twoThouIndex -= inputLength - 1;
+        twoThouIndex -= inputLength;
     }
     const twoThou = numbers[twoThouIndex].move;
 
-    let threeThouIndex = 3001;
+    let threeThouIndex = 3000 + indexOfZero;
     while (threeThouIndex >= inputLength) {
-        threeThouIndex -= inputLength - 1;
+        threeThouIndex -= inputLength;
     }
     const threeThou = numbers[threeThouIndex].move;
 
