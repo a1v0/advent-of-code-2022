@@ -26,11 +26,18 @@ function day20Task1(input) {
         let newIndex = currentIndex + currentNumber.move;
         while (newIndex < 0 || newIndex >= inputLength) {
             // PROBLEM: I think that, if we're going left, any newIndex of 0 should go to inputLength-1, and the inverse if we're going right
+
             if (newIndex < 0) {
-                newIndex += inputLength - 2;
+                newIndex += inputLength - 1;
             } else {
                 newIndex -= inputLength - 1;
             }
+        }
+        if (currentNumber.move < 0 && newIndex == 0) {
+            newIndex = inputLength - 1;
+        }
+        if (currentNumber.move > 0 && newIndex == inputLength - 1) {
+            newIndex = 0;
         }
 
         // splice object and reinsert at new location
