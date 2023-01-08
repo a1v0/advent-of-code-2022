@@ -50,9 +50,34 @@ function day20Task1(input) {
         });
         numbersStrings.push(currentStateOfNumbers.join(", "));
     }
+
     // once loop is complete, loop through array again to identify 1000th, 2000th and 3000th 'index' (using a while loop again), summing the values
-    console.log(numbersStrings);
-    return { numbersStrings };
+
+    let oneThouIndex = 999;
+    while (oneThouIndex >= inputLength) {
+        oneThouIndex -= inputLength - 1;
+    }
+    const oneThou = numbers[oneThouIndex].move;
+
+    let twoThouIndex = 2000;
+    while (twoThouIndex >= inputLength) {
+        twoThouIndex -= inputLength - 1;
+    }
+    const twoThou = numbers[twoThouIndex].move;
+
+    let threeThouIndex = 3001;
+    while (threeThouIndex >= inputLength) {
+        threeThouIndex -= inputLength - 1;
+    }
+    const threeThou = numbers[threeThouIndex].move;
+
+    return {
+        numbersStrings,
+        oneThou,
+        twoThou,
+        threeThou,
+        sumOfThree: oneThou + twoThou + threeThou
+    };
 }
 day20Task1(input);
 module.exports = { day20Task1 };
