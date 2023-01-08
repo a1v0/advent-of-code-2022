@@ -1,4 +1,4 @@
-const { testInput: input } = require("./input");
+const { input } = require("./input");
 
 // wrapping the whole file in a function is not an elegant way to test, I admit
 function day20Task1(input) {
@@ -25,8 +25,6 @@ function day20Task1(input) {
         // // remember that position 0 is equivalent to position length-1. Array is like a circle, where each end is connected. So if -1 is at index 0, it would end up at length-2
         let newIndex = currentIndex + currentNumber.move;
         while (newIndex < 0 || newIndex >= inputLength) {
-            // PROBLEM: I think that, if we're going left, any newIndex of 0 should go to inputLength-1, and the inverse if we're going right
-
             if (newIndex < 0) {
                 newIndex += inputLength - 1;
             } else {
@@ -41,7 +39,6 @@ function day20Task1(input) {
         }
 
         // splice object and reinsert at new location
-        // WARNING: this could get buggy if there's a lot of wrapping around. Let's see what happens
         numbers.splice(currentIndex, 1);
         numbers.splice(newIndex, 0, currentNumber);
 
@@ -79,5 +76,5 @@ function day20Task1(input) {
         sumOfThree: oneThou + twoThou + threeThou
     };
 }
-day20Task1(input);
+console.log("Sum of three: ", day20Task1(input).sumOfThree);
 module.exports = { day20Task1 };
