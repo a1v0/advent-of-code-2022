@@ -14,5 +14,9 @@ describe("Day 20", () => {
             expect(numbersStrings[6]).toBe("1, 2, -3, 0, 3, 4, -2");
             expect(numbersStrings[7]).toBe("1, 2, -3, 4, 0, 3, -2");
         });
+        test("should return correct sumOfThree value", () => {
+            const sumOfThree = day20Task1(input).sumOfThree;
+            expect(sumOfThree).toBe(3);
+        });
     });
 });
