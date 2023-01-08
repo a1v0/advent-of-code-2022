@@ -21,16 +21,7 @@ function day20Task1(input) {
         const currentNumber = numbers[currentIndex];
 
         // calculate new position of object
-        // // while loop to ensure the wraparound works correctly
-        // // remember that position 0 is equivalent to position length-1. Array is like a circle, where each end is connected. So if -1 is at index 0, it would end up at length-2
-        let newIndex = currentIndex + currentNumber.move;
-        while (newIndex < 0 || newIndex >= inputLength) {
-            if (newIndex < 0) {
-                newIndex += inputLength - 1;
-            } else {
-                newIndex -= inputLength - 1;
-            }
-        }
+        let newIndex = (currentIndex + currentNumber.move) % (inputLength - 1);
         if (currentNumber.move < 0 && newIndex == 0) {
             newIndex = inputLength - 1;
         }
