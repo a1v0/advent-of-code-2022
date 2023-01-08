@@ -44,29 +44,9 @@ function day20Task1(input) {
         return number.move === 0;
     });
 
-    let oneThouIndex = 1000 + indexOfZero,
-        twoThouIndex = 2000 + indexOfZero,
-        threeThouIndex = 3000 + indexOfZero;
-
-    while (
-        oneThouIndex >= inputLength ||
-        twoThouIndex >= inputLength ||
-        threeThouIndex >= inputLength
-    ) {
-        if (oneThouIndex >= inputLength) {
-            oneThouIndex -= inputLength;
-        }
-        if (twoThouIndex >= inputLength) {
-            twoThouIndex -= inputLength;
-        }
-        if (threeThouIndex >= inputLength) {
-            threeThouIndex -= inputLength;
-        }
-    }
-
-    const oneThou = numbers[oneThouIndex].move;
-    const twoThou = numbers[twoThouIndex].move;
-    const threeThou = numbers[threeThouIndex].move;
+    const oneThou = numbers[(indexOfZero + 1000) % inputLength].move;
+    const twoThou = numbers[(indexOfZero + 2000) % inputLength].move;
+    const threeThou = numbers[(indexOfZero + 3000) % inputLength].move;
 
     return {
         numbersStrings,
