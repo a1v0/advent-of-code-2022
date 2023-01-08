@@ -14,6 +14,12 @@ describe("Day 20", () => {
             expect(numbersStrings[6]).toBe("1, 2, -3, 0, 3, 4, -2");
             expect(numbersStrings[7]).toBe("1, 2, -3, 4, 0, 3, -2");
         });
+        test("should return the correct 1000th, 2000th and 3000th values", () => {
+            const { oneThou, twoThou, threeThou } = day20Task1(input);
+            expect(oneThou).toBe(4);
+            expect(twoThou).toBe(-3);
+            expect(threeThou).toBe(2);
+        });
         test("should return correct sumOfThree value", () => {
             const sumOfThree = day20Task1(input).sumOfThree;
             expect(sumOfThree).toBe(3);
