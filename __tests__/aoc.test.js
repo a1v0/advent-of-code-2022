@@ -1,8 +1,10 @@
 const { day20Task1 } = require("../20/1-sum-three-numbers-grove-coordinates");
 const { day20Task2 } = require("../20/2-sum-after-ten-rounds");
 const { day21Task1 } = require("../21/1-what-number-will-root-yell");
+const { day22Task1 } = require("../22/1-what-is-final-password");
 const { testInput: day20Input } = require("../20/input");
 const { testInput: day21Input } = require("../21/input");
+const { testInput: day22Input } = require("../22/input");
 
 describe("Day 20", () => {
     describe("Task 1", () => {
@@ -78,10 +80,18 @@ describe("Day 20", () => {
     });
 });
 
-describe.only("Day 21", () => {
+describe("Day 21", () => {
     describe("Task 1", () => {
         test("returns correct value", () => {
             expect(day21Task1(day21Input)).toBe(152);
+        });
+    });
+});
+
+describe.only("Day 22", () => {
+    describe("Task 1", () => {
+        test("returns correct value", () => {
+            expect(day22Task1(day22Input)).toBe(6032);
         });
     });
 });
