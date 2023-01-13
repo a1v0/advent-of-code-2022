@@ -4,7 +4,7 @@ const { day21Task1 } = require("../21/1-what-number-will-root-yell");
 const { day22Task1 } = require("../22/1-what-is-final-password");
 const { testInput: day20Input } = require("../20/input");
 const { testInput: day21Input } = require("../21/input");
-const { testInput: day22Input } = require("../22/input");
+const { testInput: day22Input, basicInput } = require("../22/input");
 
 describe("Day 20", () => {
     describe("Task 1", () => {
@@ -90,7 +90,10 @@ describe("Day 21", () => {
 
 describe.only("Day 22", () => {
     describe("Task 1", () => {
-        test("returns correct value", () => {
+        test("returns correct value with my own input data", () => {
+            expect(day22Task1(basicInput)).toBe(6005);
+        });
+        test("returns correct value with test data", () => {
             expect(day22Task1(day22Input)).toBe(6032);
         });
     });

@@ -216,3 +216,12 @@ exports.testInput = `        ...#
         ......#.
 
 10R5L5R10L4R5L5`;
+
+exports.basicInput = `     ....#
+     .#...
+     #....
+     ....#
+...#........#
+.......#.....
+
+2L12R1R37R1R1R1R1L50L1L1L1R5L2`;
