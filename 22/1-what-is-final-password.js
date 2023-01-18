@@ -12,7 +12,7 @@ function day22Task1(input) {
             return instruction;
         });
 
-    const boardString = input.match(/^[\s\#\.!]+(?=\n\n)/)[0];
+    const boardString = input.match(/^[\s\#\.]+(?=\n\n)/)[0];
 
     // split board into rows and columns
     const board = [];
