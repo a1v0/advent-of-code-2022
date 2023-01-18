@@ -166,10 +166,12 @@ function day22Task1(input) {
 
     const multipliedRow = (currentCoordinates[1] + 1) * 1000, // + 1 because rows in the task aren't zero-indexed
         multipliedColumn = (currentCoordinates[0] + 1) * 4, // + 1 because columns in the task aren't zero-indexed
-        directionValue = Math.abs(direction % 4);
-    console.log(currentCoordinates, direction, directionValue);
+        directionValue =
+            direction < 0 && direction % 4 != 0
+                ? (direction % 4) + 4
+                : Math.abs(direction % 4);
     return multipliedRow + multipliedColumn + directionValue;
 }
 
-console.log(day22Task1(input)); // 192096, 103356 are wrong
+console.log(day22Task1(input));
 module.exports = { day22Task1 };
