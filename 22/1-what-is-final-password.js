@@ -27,7 +27,6 @@ function day22Task1(input) {
 
     // create var to chart direction. It'll be a counter, and its value % 4 defines direction (right: 0, down: 1, left: 2, up: 3)
     let direction = 0;
-
     // loop through instructions
     for (let instruction of instructions) {
         // if instruction isNaN, change direction
@@ -41,7 +40,10 @@ function day22Task1(input) {
     }
 
     function move(instruction) {
-        const directionValue = Math.abs(direction % 4);
+        const directionValue =
+            direction < 0 && direction % 4 != 0
+                ? (direction % 4) + 4
+                : Math.abs(direction % 4);
 
         // this code is very repetitive. I'd love to know how to reduce that
         for (let i = 0; i < instruction; ++i) {
@@ -114,7 +116,8 @@ function day22Task1(input) {
                     for (let j = 0; j < board.length; ++j) {
                         if (board[j][currentCoordinates[0]] === "#") {
                             break;
-                        } else if (board[j][currentCoordinates[0]] === ".") {
+                        }
+                        if (board[j][currentCoordinates[0]] === ".") {
                             currentCoordinates[1] = j;
                             break;
                         }
@@ -141,7 +144,8 @@ function day22Task1(input) {
                     for (let j = board.length - 1; j >= 0; --j) {
                         if (board[j][currentCoordinates[0]] === "#") {
                             break;
-                        } else if (board[j][currentCoordinates[0]] === ".") {
+                        }
+                        if (board[j][currentCoordinates[0]] === ".") {
                             currentCoordinates[1] = j;
                             break;
                         }
