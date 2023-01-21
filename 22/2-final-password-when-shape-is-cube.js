@@ -1,6 +1,14 @@
+// APPROACH FOR TASK 2
+// So far, this is just a copy of Task 1
+// move() needs to be modified
+// find width of square: identify thinnest point, i.e. shortest row. This won't work with ANY shape of flattened square, but it will work with both inputs
+// dynamically work out which side of the cube connects to which. Perhaps make a graph object of some sort?
+// // how can I dynamically work out which direction I'll be facing when I arrive?
+// // how can I dynamically work out which part of the cube is which?
+
 const { input } = require("../22/input");
 
-function day22Task1(input) {
+function day22Task2(input) {
     // use regex to extract instructions and board from input
     const instructionsString = input.match(/\w+/)[0];
     const instructions = instructionsString
@@ -173,5 +181,5 @@ function day22Task1(input) {
     return multipliedRow + multipliedColumn + directionValue;
 }
 
-console.log(day22Task1(input));
-module.exports = { day22Task1 };
+// console.log(day22Task2(input));
+module.exports = { day22Task2 };
