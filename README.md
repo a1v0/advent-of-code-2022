@@ -26,7 +26,7 @@ The tasks can be found **[here](https://adventofcode.com/2022)**, and each day's
 |18|Task 1:&nbsp;⭐<br>Task 2:&nbsp;❌&mdash;works with test data but not with real data. Debugging has so far yielded nothing.|
 |19|Task 1:&nbsp;❌&mdash;completely stuck on this one, alas.|
 |20|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
-|21|Task 1:&nbsp;⭐<br>Task 2:&nbsp;❌&mdash;unsure how to approach this.|
+|21|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
 <!-- |22|| -->
 <!-- |23|| -->
 <!-- |24|| -->
