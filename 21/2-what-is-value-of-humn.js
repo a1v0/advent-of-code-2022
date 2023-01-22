@@ -173,10 +173,3 @@ function day21Task2(input) {
 console.log(day21Task2(input));
 
 module.exports = { day21Task2 };
-
-// alternative solution (though this might not work well with the test data):
-// do humn *= 2 until the value of the expression overshoots the desired result
-// undo the final *= 2 so that the expression is still on the right side of the desire result
-// repeat, but instead of multiplying, increment humn by a large number (e.g. 10000), until you overshoot
-// undo the final += 10000, then increment by 1 until you solve it
-// it's crude and not necessarily super scalable to an even bigger input
