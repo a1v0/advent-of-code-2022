@@ -9,7 +9,6 @@ function day21Task2(input) {
     inputStrings.forEach((inputString) => {
         const monkeyName = inputString.match(/^\w{4}/)[0];
         const monkeyCry = inputString.match(/(?<=:\s).*$/)[0];
-        // monkeys[monkeyName] = [monkeyCry, false];
         monkeys[monkeyName] = monkeyCry;
     });
 
@@ -20,17 +19,11 @@ function day21Task2(input) {
     const [firstQuartet, secondQuartet] = monkeys.root.match(/\w{4}/g);
 
     // evaluate everything except the value of humn
-    const quartetRegex = /\w{4}/;
     let evaluationComplete = false;
     while (
         // I know this is not an ideal solution, but, after endless experimenting, I couldn't find another solution that would work
         !evaluationComplete
     ) {
-        //
-        // at some point in this loop we'll need to surround stuff in parentheses to ensure they get evaluated in the correct order
-        //
-        //
-        //
         for (let quartet in monkeys) {
             // find quartet that uses that value and update
             for (let quartetSearch in monkeys) {
@@ -94,16 +87,12 @@ function day21Task2(input) {
         },
         0
     );
-    const squareOfPatternIntervals = Math.pow(sumOfPatternIntervals, 2);
 
     // reset humn to value that produces first integer
     humn = humnValuePerInteger[0];
 
     // while loop, incrementing humn by amount specified in pattern
-    let patternIndex = 2;
     const secondValueInRoot = eval(monkeys[secondQuartet]); // 28379346560301 with real input
-    //                                                         28379346590140
-    //                                                         28379346559509
 
     const firstQuartetEquation = simplify(monkeys[firstQuartet]);
 
@@ -114,43 +103,24 @@ function day21Task2(input) {
         eval(firstQuartetEquation) > secondValueInRoot
             ? "eval(alvoQuartetEquation) < secondValueInRoot"
             : "eval(alvoQuartetEquation) > secondValueInRoot";
-    // instead, do a countdown within a while loop
-    // for( 3; >0; --)
-    // while(... > secondValue...)
-    // add cube of pattern
-    // then square
-    // then sum
-    //
-    // by this point, we should be pretty close to the correct value, so from here we can just increment humn by 1
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    while (
-        // somehow these are occasionally being evaluated with .01 or .99 on the end
-        Math.round(eval(firstQuartetEquation)) !== secondValueInRoot &&
-        eval(firstQuartetEquation) >= secondValueInRoot
-    ) {
-        const alvo = humn + squareOfPatternIntervals;
-        if (!eval(comparisonOvershoot)) {
-            humn = alvo;
-        } else {
-            humn += pattern[patternIndex % lengthOfPattern];
-            ++patternIndex;
-            console.log(
-                eval(firstQuartetEquation),
-                Math.round(eval(firstQuartetEquation))
-            );
+
+    // this should reduce the numbers nice and quickly
+    for (let order = 3; order >= 0; --order) {
+        // while(true) is not my ideal solution...
+        while (true) {
+            const alvo = humn + Math.pow(sumOfPatternIntervals, order);
+            if (!eval(comparisonOvershoot)) {
+                humn = alvo;
+            } else {
+                break;
+            }
         }
     }
+
     return humn;
 
     // to reduce the effort required by the eval function in the while loop
+    // this function might be redundant, now that the code runs very quickly
     function simplify(equation) {
         const simplifyRegex = /\([\d\s\+\-\*\/]+\)/g;
         while (simplifyRegex.test(equation)) {
@@ -170,6 +140,6 @@ function day21Task2(input) {
         return equation;
     }
 }
-console.log(day21Task2(input));
+console.log(day21Task2(input)); // 3221245824363
 
 module.exports = { day21Task2 };
