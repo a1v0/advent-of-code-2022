@@ -8,7 +8,7 @@ function day21Task2(input) {
     const monkeys = {};
     inputStrings.forEach((inputString) => {
         const monkeyName = inputString.match(/^\w{4}/)[0];
-        let monkeyCry = inputString.match(/(?<=:\s).*$/)[0];
+        const monkeyCry = inputString.match(/(?<=:\s).*$/)[0];
         // monkeys[monkeyName] = [monkeyCry, false];
         monkeys[monkeyName] = monkeyCry;
     });
@@ -21,21 +21,10 @@ function day21Task2(input) {
 
     // evaluate everything except the value of humn
     const quartetRegex = /\w{4}/;
+    let evaluationComplete = false;
     while (
-        RegExp(firstQuartet).test(monkeys.root) &&
-        RegExp(secondQuartet).test(monkeys.root)
-        // this condition isn't robust enough to stop the loop at the right point
-        //
-        // it doesn't seem like there are any quartets that are anagrams of humn, so it may be possible to make a regex that'll ignore anything that's not m, u, n or h
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
+        // I know this is not an ideal solution, but, after endless experimenting, I couldn't find another solution that would work
+        !evaluationComplete
     ) {
         //
         // at some point in this loop we'll need to surround stuff in parentheses to ensure they get evaluated in the correct order
@@ -48,19 +37,28 @@ function day21Task2(input) {
                 if (RegExp(quartet).test(monkeys[quartetSearch])) {
                     monkeys[quartetSearch] = monkeys[quartetSearch].replace(
                         quartet,
-                        monkeys[quartet]
+                        `(${monkeys[quartet]})`
                     );
-                    break;
                 }
             }
         }
+        if (
+            monkeys.root.match(/(humn)/g) &&
+            monkeys.root.match(/(humn)/g).length ===
+                monkeys.root.match(/[a-z]{4}/g).length
+        ) {
+            evaluationComplete = true;
+        }
     }
 
-    // this should yield two expressions, each containing humn as an unknown value
-    console.log(monkeys);
     // let humn = 0 (assuming that values will only ever be positive)
+    let humn = 0;
     // while loop to increment humn until both expressions are equal (in a sense this is brute force, but the previous code makes it much faster)
+    while (eval(monkeys[firstQuartet]) !== eval(monkeys[secondQuartet])) {
+        ++humn;
+    }
     // return value of humn
+    return humn;
 }
 
 module.exports = { day21Task2 };
