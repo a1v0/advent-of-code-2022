@@ -4,6 +4,7 @@ const { day21Task1 } = require("../21/1-what-number-will-root-yell");
 const { day22Task1 } = require("../22/1-what-is-final-password");
 const { testInput: day20Input } = require("../20/input");
 const { testInput: day21Input } = require("../21/input");
+const { day21Task2 } = require("../21/2-what-is-value-of-humn");
 const { testInput: day22Input, basicInput } = require("../22/input");
 const { day22Task2 } = require("../22/2-final-password-when-shape-is-cube");
 
@@ -85,6 +86,11 @@ describe("Day 21", () => {
     describe("Task 1", () => {
         test("returns correct value", () => {
             expect(day21Task1(day21Input)).toBe(152);
+        });
+    });
+    describe("Task 2", () => {
+        test("returns correct value", () => {
+            expect(day21Task2(day21Input)).toBe(301);
         });
     });
 });
