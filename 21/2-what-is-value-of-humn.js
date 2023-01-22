@@ -50,47 +50,82 @@ function day21Task2(input) {
             evaluationComplete = true;
         }
     }
-    return;
-    // given the size of the real input, brute-forcing the value of humn by incrementing by 1 is too inefficient
+
+    // given the size of the real input, brute-forcing the value of humn by incrementing by 1 each time is too inefficient
     // however, there is a repeating: after x increments, the result is an int. Then, after further y increments, it is also an int, etc.
     // I need to programmatically identify the pattern (according to Excel, it's something like 150, 150, 3000, 150, 150, 3500), then increment humn by the value dictated by the pattern
-    // loop through code until we have 50 integers (should be enough to spot any pattern in test and real data)
-    // add differences in increment values to an array
-    // nested for loop: i = length of pattern
-    // check array[0] === array[i]
-    // check array[1] === array[i+1]...
-    // if you make it to the end of the array without any test returning false, you know the size of the pattern
-    // splice to create an array containing the intervals
-    // while loop, incrementing humn by amount specified in pattern
-    // by my calculations, the time to complete the while loop should be 15–20 minutes
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
 
-    // let humn = 0 (assuming that values will only ever be positive)
-    let humn = 0;
-    // while loop to increment humn until both expressions are equal (in a sense this is brute force, but the previous code makes it much faster)
-    const secondValueInRoot = eval(monkeys[secondQuartet]); // 28379346560301 with real input
-    console.log((59078404545070 - 28379346560301) / 9.5); // 3231479787870
-    while (eval(monkeys[firstQuartet]) !== secondValueInRoot) {
-        // if (eval(monkeys[firstQuartet]) % 10 === 0) {
-        //     console.log(humn);
-        // }
-        // console.log(eval(monkeys[firstQuartet]));
-        // doing a simple ++ is far too inefficient with the real data
-        // increment/decrement by a larger number (or do something like humn *= 2) each time
-        // // create an exponent that's either 1 or -1 depending on whether the target value is higher or lower
+    // loop through code until we have 50 integers (should be enough to spot any pattern in test and real data)
+    const humnValuePerInteger = [];
+    let humn = 0; // assuming that values will only ever be positive
+    while (humnValuePerInteger.length <= 50) {
+        if (eval(monkeys[firstQuartet]) % 10 === 0) {
+            humnValuePerInteger.push(humn);
+        }
         ++humn;
     }
-    // return value of humn
+
+    // add differences in increment values to an array (final value is NaN)
+    const allDifferences = humnValuePerInteger.map((humnValue, index) => {
+        return humnValuePerInteger[index + 1] - humnValue;
+    });
+
+    // nested for loop: i = length of pattern (this loop isn't the cleanest of things I've ever written...)
+    let lengthOfPattern;
+    for (let i = 1; i < allDifferences.length; ++i) {
+        for (let j = 0; j < allDifferences.length; ++j) {
+            // check array[0] === array[i]
+            // check array[1] === array[i+1]...
+            if (isNaN(allDifferences[j + i])) {
+                // if you make it to the end of the array without any test returning false, you know the size of the pattern
+                lengthOfPattern = i;
+                break;
+            }
+            if (allDifferences[j] !== allDifferences[j + i]) break;
+        }
+        if (lengthOfPattern) break;
+    }
+
+    // splice to create an array containing the intervals
+    const pattern = allDifferences.splice(0, lengthOfPattern);
+
+    // reset humn to value that produces first integer
+    humn = humnValuePerInteger[0];
+
+    // while loop, incrementing humn by amount specified in pattern
+    let patternIndex = 0;
+    const secondValueInRoot = eval(monkeys[secondQuartet]); // 28379346560301 with real input
+
+    const firstQuartetEquation = simplify(monkeys[firstQuartet]);
+
+    while (eval(firstQuartetEquation) !== secondValueInRoot) {
+        humn += pattern[patternIndex % lengthOfPattern];
+        ++patternIndex;
+        console.log(eval(firstQuartetEquation));
+    }
     return humn;
+
+    // to reduce the effort required by the eval function in the while loop
+    function simplify(equation) {
+        const simplifyRegex = /\([\d\s\+\-\*\/]+\)/g;
+        while (simplifyRegex.test(equation)) {
+            const subEquations = equation.match(simplifyRegex);
+            subEquations.forEach((subEquation) => {
+                equation = equation.replace(
+                    subEquation,
+                    String(eval(subEquation))
+                );
+            });
+        }
+
+        const humnRegex = /\(humn\)/g;
+        while (humnRegex.test(equation)) {
+            equation = equation.replace("(humn)", "humn");
+        }
+        return equation;
+    }
 }
-// console.log(day21Task2(input));
+console.log(day21Task2(input));
 
 module.exports = { day21Task2 };
 
