@@ -2,7 +2,7 @@
 
 My code for calculating the answers for Advent of Code 2022, entirely in JavaScript.
 
-The tasks can be found **[here](https://adventofcode.com/2022)**, and each day's inputs are stored within that day's directory.
+The tasks can be found **[here](https://adventofcode.com/2022)**, and each day's inputs are stored within that day's directory. Towards the latter half of the month, I began to add (primarily primitive) unit tests, using Jest.
 
 | Day | Status |
 |-|-|
