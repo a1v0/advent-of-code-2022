@@ -56,5 +56,5 @@ function day20Task1(input) {
         sumOfThree: oneThou + twoThou + threeThou
     };
 }
-console.log("Sum of three: ", day20Task1(input).sumOfThree);
+// console.log("Sum of three: ", day20Task1(input).sumOfThree);
 module.exports = { day20Task1 };
