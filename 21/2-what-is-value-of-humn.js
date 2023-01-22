@@ -88,20 +88,65 @@ function day21Task2(input) {
 
     // splice to create an array containing the intervals
     const pattern = allDifferences.splice(0, lengthOfPattern);
+    const sumOfPatternIntervals = pattern.reduce(
+        (accumulator, currentValue) => {
+            return accumulator + currentValue;
+        },
+        0
+    );
+    const squareOfPatternIntervals = Math.pow(sumOfPatternIntervals, 2);
 
     // reset humn to value that produces first integer
     humn = humnValuePerInteger[0];
 
     // while loop, incrementing humn by amount specified in pattern
-    let patternIndex = 0;
+    let patternIndex = 2;
     const secondValueInRoot = eval(monkeys[secondQuartet]); // 28379346560301 with real input
+    //                                                         28379346590140
+    //                                                         28379346559509
 
     const firstQuartetEquation = simplify(monkeys[firstQuartet]);
 
-    while (eval(firstQuartetEquation) !== secondValueInRoot) {
-        humn += pattern[patternIndex % lengthOfPattern];
-        ++patternIndex;
-        console.log(eval(firstQuartetEquation));
+    // create expression to check if we overshoot our goal
+    const alvoQuartetEquation = firstQuartetEquation.replace("humn", "alvo");
+
+    const comparisonOvershoot =
+        eval(firstQuartetEquation) > secondValueInRoot
+            ? "eval(alvoQuartetEquation) < secondValueInRoot"
+            : "eval(alvoQuartetEquation) > secondValueInRoot";
+    // instead, do a countdown within a while loop
+    // for( 3; >0; --)
+    // while(... > secondValue...)
+    // add cube of pattern
+    // then square
+    // then sum
+    //
+    // by this point, we should be pretty close to the correct value, so from here we can just increment humn by 1
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    while (
+        // somehow these are occasionally being evaluated with .01 or .99 on the end
+        Math.round(eval(firstQuartetEquation)) !== secondValueInRoot &&
+        eval(firstQuartetEquation) >= secondValueInRoot
+    ) {
+        const alvo = humn + squareOfPatternIntervals;
+        if (!eval(comparisonOvershoot)) {
+            humn = alvo;
+        } else {
+            humn += pattern[patternIndex % lengthOfPattern];
+            ++patternIndex;
+            console.log(
+                eval(firstQuartetEquation),
+                Math.round(eval(firstQuartetEquation))
+            );
+        }
     }
     return humn;
 
