@@ -63,7 +63,7 @@ function day23Task1(input) {
             // if moves["x,y"]===1, update current position in elf object AND move reference to elf within the map
             if (movesInRound[elf.proposal] === 1) {
                 const [x, y] = elf.position;
-                const coordinates = elf.proposal.match(/\w+/g);
+                const coordinates = elf.proposal.match(/\d+/g);
                 const newX = Number(coordinates[0]);
                 const newY = Number(coordinates[1]);
 
@@ -213,5 +213,5 @@ function day23Task1(input) {
         return canIGo ? `${x + 1},${y}` : null;
     }
 }
-// console.log(day23Task1(input));
+console.log(day23Task1(input));
 module.exports = { day23Task1 };
