@@ -42,19 +42,36 @@ function day23Task1(input) {
             if (!occupiedPositions) {
                 elf.proposal = null;
             } else {
-                // put each move into moves object: "x,y":1. If move already exists, ++
                 for (let direction of elf.directions) {
                     const proposal = direction(elf, occupiedPositions);
                     elf.proposal = proposal;
-                    if (proposal) break;
+                    if (proposal) {
+                        // put each move into moves object: "x,y":1. If move already exists, ++
+                        movesInRound[proposal] = movesInRound[proposal]
+                            ? movesInRound[proposal] + 1
+                            : 1;
+                        break;
+                    }
                 }
             }
         });
+
+        // loop through elves again, updating values
+        elves.forEach((elf) => {
+            // if moves["x,y"]===1, update current position in elf object AND move reference to elf within the map
+            if (movesInRound[elf.proposal] === 1) {
+                const [x, y] = elf.position;
+                const newX = Number(elf.proposal.match(/\w/g)[0]);
+                const newY = Number(elf.proposal.match(/\w/g)[1]);
+
+                groveMap[y][x] = null;
+                groveMap[newY][newX] = elf;
+                elf.position = [newX, newY];
+            }
+
+            // move first direction in directions array to back (I think this is only if a move was proposed)
+        });
     }
-    console.log(elves);
-    // loop through elves again, updating values:
-    // if moves["x,y"]===1, update current position in elf object AND move reference to elf within the map
-    // move first direction in directions array to back (I think this is only if a move was proposed)
     // after ten rounds...
     // identify bounds of the rectangle
     // loop through map and count the empty spaces
