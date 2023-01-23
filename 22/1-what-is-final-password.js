@@ -173,5 +173,5 @@ function day22Task1(input) {
     return multipliedRow + multipliedColumn + directionValue;
 }
 
-console.log(day22Task1(input));
+// console.log(day22Task1(input));
 module.exports = { day22Task1 };
