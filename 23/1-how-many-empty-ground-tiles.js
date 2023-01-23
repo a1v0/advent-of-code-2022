@@ -91,13 +91,37 @@ function day23Task1(input) {
     }
 
     // create four checker functions that return true if the elf should propose to go somewhere
-    function shouldIProposeNorth(directions) {}
+    function shouldIProposeNorth(directions) {
+        return !(
+            directions.north &&
+            directions.northwest &&
+            directions.northeast
+        );
+    }
 
-    function shouldIProposeSouth(directions) {}
+    function shouldIProposeSouth(directions) {
+        return !(
+            directions.south &&
+            directions.southwest &&
+            directions.southeast
+        );
+    }
 
-    function shouldIProposeWest(directions) {}
+    function shouldIProposeWest(directions) {
+        return !(
+            directions.west &&
+            directions.northwest &&
+            directions.southwest
+        );
+    }
 
-    function shouldIProposeEast(directions) {}
+    function shouldIProposeEast(directions) {
+        return !(
+            directions.east &&
+            directions.northeast &&
+            directions.southeast
+        );
+    }
 }
 // console.log(day23Task1(input));
 module.exports = { day23Task1 };
