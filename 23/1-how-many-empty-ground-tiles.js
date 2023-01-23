@@ -75,9 +75,36 @@ function day23Task1(input) {
         // move first direction in directions array to back
         allDirections.push(allDirections.shift());
     }
-    // after ten rounds...
+
     // identify bounds of the rectangle
+    const rectangle = {
+        north: groveMap.length,
+        south: 0,
+        west: groveMap[0].length,
+        east: 0
+    };
+    groveMap.forEach((row, rowIndex) => {
+        row.forEach((position, positionIndex) => {
+            if (position) {
+                if (rowIndex < rectangle.north) rectangle.north = rowIndex;
+                if (rowIndex > rectangle.south) rectangle.south = rowIndex;
+                if (positionIndex < rectangle.west)
+                    rectangle.west = positionIndex;
+                if (positionIndex > rectangle.east)
+                    rectangle.east = positionIndex;
+            }
+        });
+    });
+
     // loop through map and count the empty spaces
+    let emptySpaces = 0;
+    for (let i = rectangle.north; i <= rectangle.south; ++i) {
+        for (let j = rectangle.west; j <= rectangle.east; ++j) {
+            if (!groveMap[i][j]) ++emptySpaces;
+        }
+    }
+    return emptySpaces;
+
     // function to identify occupied positions surrounding elf
 
     function checkOccupiedPositions({ position: [x, y] }) {
