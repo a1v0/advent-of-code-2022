@@ -34,7 +34,7 @@ function day23Task1(input) {
     });
 
     // for loop to go through procedure ten times
-    for (let round = 0; round < 1; ++round) {
+    for (let round = 0; round < 10; ++round) {
         // create empty moves object
         const movesInRound = {};
 
@@ -63,8 +63,9 @@ function day23Task1(input) {
             // if moves["x,y"]===1, update current position in elf object AND move reference to elf within the map
             if (movesInRound[elf.proposal] === 1) {
                 const [x, y] = elf.position;
-                const newX = Number(elf.proposal.match(/\w/g)[0]);
-                const newY = Number(elf.proposal.match(/\w/g)[1]);
+                const coordinates = elf.proposal.match(/\w+/g);
+                const newX = Number(coordinates[0]);
+                const newY = Number(coordinates[1]);
 
                 groveMap[y][x] = null;
                 groveMap[newY][newX] = elf;
