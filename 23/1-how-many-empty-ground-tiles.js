@@ -7,6 +7,14 @@ function day23Task1(input) {
     // create array to store elves
     const elves = [];
 
+    // store all direction checkers
+    const allDirections = [
+        proposeNorth,
+        proposeSouth,
+        proposeWest,
+        proposeEast
+    ];
+
     // map rows into this format [null (if empty), reference to elf object]
     const groveMap = rowsStrings.map((rowString, rowNo) => {
         const row = [];
@@ -16,12 +24,6 @@ function day23Task1(input) {
             } else {
                 // create elf objects { directions: [], position: [x, y], proposal: "x,y" }, push them to elves array and add reference to it in rows array
                 elves.unshift({
-                    directions: [
-                        proposeNorth,
-                        proposeSouth,
-                        proposeWest,
-                        proposeEast
-                    ],
                     position: [i, rowNo],
                     proposal: null
                 });
@@ -42,7 +44,7 @@ function day23Task1(input) {
             if (!occupiedPositions) {
                 elf.proposal = null;
             } else {
-                for (let direction of elf.directions) {
+                for (let direction of allDirections) {
                     const proposal = direction(elf, occupiedPositions);
                     elf.proposal = proposal;
                     if (proposal) {
@@ -68,9 +70,10 @@ function day23Task1(input) {
                 groveMap[newY][newX] = elf;
                 elf.position = [newX, newY];
             }
-
-            // move first direction in directions array to back (I think this is only if a move was proposed)
         });
+
+        // move first direction in directions array to back
+        allDirections.push(allDirections.shift());
     }
     // after ten rounds...
     // identify bounds of the rectangle
@@ -89,40 +92,42 @@ function day23Task1(input) {
         //
         //
 
-        const directions = {};
+        const occupiedPositions = {};
 
         // north
-        if (groveMap[y - 1] && groveMap[y - 1][x]) directions.north = true;
+        if (groveMap[y - 1] && groveMap[y - 1][x])
+            occupiedPositions.north = true;
 
         // northwest
         if (groveMap[y - 1] && groveMap[y - 1][x - 1])
-            directions.northwest = true;
+            occupiedPositions.northwest = true;
 
         // northeast
         if (groveMap[y - 1] && groveMap[y - 1][x + 1])
-            directions.northeast = true;
+            occupiedPositions.northeast = true;
 
         // south
-        if (groveMap[y + 1] && groveMap[y + 1][x]) directions.south = true;
+        if (groveMap[y + 1] && groveMap[y + 1][x])
+            occupiedPositions.south = true;
 
         // southwest
         if (groveMap[y + 1] && groveMap[y + 1][x - 1])
-            directions.southwest = true;
+            occupiedPositions.southwest = true;
 
         // southeast
         if (groveMap[y + 1] && groveMap[y + 1][x + 1])
-            directions.southeast = true;
+            occupiedPositions.southeast = true;
 
         // west
-        if (groveMap[y][x - 1]) directions.west = true;
+        if (groveMap[y][x - 1]) occupiedPositions.west = true;
 
         // east
-        if (groveMap[y][x + 1]) directions.east = true;
+        if (groveMap[y][x + 1]) occupiedPositions.east = true;
 
         // returns null if all surrounding positions are empty
         // or an object { N: true, ... }
-        if (!Object.keys(directions).length) return null;
-        else return directions;
+        if (!Object.keys(occupiedPositions).length) return null;
+        else return occupiedPositions;
     }
 
     // create four checker functions that return a coordinate string if the elf can go there, otherwise null
