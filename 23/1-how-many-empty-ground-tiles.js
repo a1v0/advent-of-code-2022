@@ -17,10 +17,10 @@ function day23Task1(input) {
                 // create elf objects { directions: [], position: [x, y], proposal: "x,y" }, push them to elves array and add reference to it in rows array
                 elves.unshift({
                     directions: [
-                        shouldIProposeNorth,
-                        shouldIProposeSouth,
-                        shouldIProposeWest,
-                        shouldIProposeEast
+                        proposeNorth,
+                        proposeSouth,
+                        proposeWest,
+                        proposeEast
                     ],
                     position: [i, rowNo]
                 });
@@ -29,12 +29,24 @@ function day23Task1(input) {
         }
         return row;
     });
-    return checkOccupiedPositions({ position: [6, 2] });
 
     // for loop to go through procedure ten times
-    // create empty moves object
-    // loop through elves, proposing moves (string of coordinates or null if we're staying put)
-    // put each move into moves object: "x,y":1. If move already exists, ++
+    for (let round = 0; round < 10; ++round) {
+        // create empty moves object
+        const movesInRound = {};
+
+        // loop through elves, proposing moves (string of coordinates or null if we're staying put)
+        elves.forEach((elf) => {
+            const occupiedPositions = checkOccupiedPositions(elf);
+            if (!occupiedPositions) {
+                elf.proposal = null;
+            } else {
+                // put each move into moves object: "x,y":1. If move already exists, ++
+                for (let direction of elf.directions) {
+                }
+            }
+        });
+    }
     // loop through elves again, updating values:
     // if moves["x,y"]===1, update current position in elf object AND move reference to elf within the map
     // move first direction in directions array to back (I think this is only if a move was proposed)
@@ -42,6 +54,7 @@ function day23Task1(input) {
     // identify bounds of the rectangle
     // loop through map and count the empty spaces
     // function to identify occupied positions surrounding elf
+
     function checkOccupiedPositions({ position: [x, y] }) {
         // this function currently treats positions beyond the perimeter of the square as unoccupied.
         // Presumably this is not the desired behaviour
@@ -90,37 +103,45 @@ function day23Task1(input) {
         else return directions;
     }
 
-    // create four checker functions that return true if the elf should propose to go somewhere
-    function shouldIProposeNorth(directions) {
-        return !(
+    // create four checker functions that return a coordinate string if the elf can go there, otherwise null
+    function proposeNorth({ position: [x, y] }, directions) {
+        const canIGo = !(
             directions.north &&
             directions.northwest &&
             directions.northeast
         );
+
+        return canIGo ? `${x},${y - 1}` : null;
     }
 
-    function shouldIProposeSouth(directions) {
-        return !(
+    function proposeSouth({ position: [x, y] }, directions) {
+        const canIGo = !(
             directions.south &&
             directions.southwest &&
             directions.southeast
         );
+
+        return canIGo ? `${x},${y + 1}` : null;
     }
 
-    function shouldIProposeWest(directions) {
-        return !(
+    function proposeWest({ position: [x, y] }, directions) {
+        const canIGo = !(
             directions.west &&
             directions.northwest &&
             directions.southwest
         );
+
+        return canIGo ? `${x - 1},${y}` : null;
     }
 
-    function shouldIProposeEast(directions) {
-        return !(
+    function proposeEast({ position: [x, y] }, directions) {
+        const canIGo = !(
             directions.east &&
             directions.northeast &&
             directions.southeast
         );
+
+        return canIGo ? `${x + 1},${y}` : null;
     }
 }
 // console.log(day23Task1(input));
