@@ -16,24 +16,12 @@ function day23Task1(input) {
             } else {
                 // create elf objects { directions: [], position: [x, y], proposal: "x,y" }, push them to elves array and add reference to it in rows array
                 elves.unshift({
-                    directions: [],
-                    //
-                    //
-                    //
-                    //
-                    // INSERT REFERENCE TO ALL FOUR FUNCTIONS HERE
-                    //
-                    //
-                    //
-                    //
-                    //
-                    //
-                    //
-                    //
-                    //
-                    //
-                    //
-                    //
+                    directions: [
+                        shouldIProposeNorth,
+                        shouldIProposeSouth,
+                        shouldIProposeWest,
+                        shouldIProposeEast
+                    ],
                     position: [i, rowNo]
                 });
                 row.push(elves[0]);
@@ -41,9 +29,8 @@ function day23Task1(input) {
         }
         return row;
     });
-    console.log(groveMap);
+    return checkOccupiedPositions({ position: [6, 2] });
 
-    // create four checker functions that return true if the elf should propose to go somewhere
     // for loop to go through procedure ten times
     // create empty moves object
     // loop through elves, proposing moves (string of coordinates or null if we're staying put)
@@ -54,12 +41,63 @@ function day23Task1(input) {
     // after ten rounds...
     // identify bounds of the rectangle
     // loop through map and count the empty spaces
+    // function to identify occupied positions surrounding elf
+    function checkOccupiedPositions({ position: [x, y] }) {
+        // this function currently treats positions beyond the perimeter of the square as unoccupied.
+        // Presumably this is not the desired behaviour
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+
+        const directions = {};
+
+        // north
+        if (groveMap[y - 1] && groveMap[y - 1][x]) directions.north = true;
+
+        // northwest
+        if (groveMap[y - 1] && groveMap[y - 1][x - 1])
+            directions.northwest = true;
+
+        // northeast
+        if (groveMap[y - 1] && groveMap[y - 1][x + 1])
+            directions.northeast = true;
+
+        // south
+        if (groveMap[y + 1] && groveMap[y + 1][x]) directions.south = true;
+
+        // southwest
+        if (groveMap[y + 1] && groveMap[y + 1][x - 1])
+            directions.southwest = true;
+
+        // southeast
+        if (groveMap[y + 1] && groveMap[y + 1][x + 1])
+            directions.southeast = true;
+
+        // west
+        if (groveMap[y][x - 1]) directions.west = true;
+
+        // east
+        if (groveMap[y][x + 1]) directions.east = true;
+
+        // returns null if all surrounding positions are empty
+        // or an object { N: true, ... }
+        if (!Object.keys(directions).length) return null;
+        else return directions;
+    }
+
+    // create four checker functions that return true if the elf should propose to go somewhere
+    function shouldIProposeNorth(directions) {}
+
+    function shouldIProposeSouth(directions) {}
+
+    function shouldIProposeWest(directions) {}
+
+    function shouldIProposeEast(directions) {}
 }
 // console.log(day23Task1(input));
 module.exports = { day23Task1 };
-
-// function to identify occupied positions surrounding elf
-function checkOccupiedPositions(elf) {
-    // returns null if all surrounding positions are empty
-    // or an object { N: true, NE: false, ... }
-}
