@@ -125,10 +125,25 @@ function day23Task1(input) {
     return emptySpaces;
 
     // function to identify occupied positions surrounding elf
-
     function checkOccupiedPositions({ position: [x, y] }) {
-        // this function currently treats positions beyond the perimeter of the square as unoccupied.
-        // Presumably this is not the desired behaviour
+        // this section needs to:
+        // - treat the perimeter like a blocked coordinate, so that we never attempt to go there
+        // BUT ALSO
+        // - ignore the perimeter when checking whether a certain position is not neighboured by anybody
+        //
+        // creat new variable e.g. emptySlots
+        // nested if inside each if: if position === undefined, ++emptySlots (whilst retaining all other functionality)
+        // add else to each if with ++emptySlots
+        // if emptySlots===8, return null
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
         //
         //
         //
@@ -141,34 +156,54 @@ function day23Task1(input) {
         const occupiedPositions = {};
 
         // north
-        if (groveMap[y - 1] && groveMap[y - 1][x])
+        if (
+            (groveMap[y - 1] && groveMap[y - 1][x]) ||
+            groveMap[y - 1] === undefined
+        )
             occupiedPositions.north = true;
 
         // northwest
-        if (groveMap[y - 1] && groveMap[y - 1][x - 1])
+        if (
+            (groveMap[y - 1] && groveMap[y - 1][x - 1]) ||
+            groveMap[y - 1] === undefined
+        )
             occupiedPositions.northwest = true;
 
         // northeast
-        if (groveMap[y - 1] && groveMap[y - 1][x + 1])
+        if (
+            (groveMap[y - 1] && groveMap[y - 1][x + 1]) ||
+            groveMap[y - 1] === undefined
+        )
             occupiedPositions.northeast = true;
 
         // south
-        if (groveMap[y + 1] && groveMap[y + 1][x])
+        if (
+            (groveMap[y + 1] && groveMap[y + 1][x]) ||
+            groveMap[y + 1] === undefined
+        )
             occupiedPositions.south = true;
 
         // southwest
-        if (groveMap[y + 1] && groveMap[y + 1][x - 1])
+        if (
+            (groveMap[y + 1] && groveMap[y + 1][x - 1]) ||
+            groveMap[y + 1] === undefined
+        )
             occupiedPositions.southwest = true;
 
         // southeast
-        if (groveMap[y + 1] && groveMap[y + 1][x + 1])
+        if (
+            (groveMap[y + 1] && groveMap[y + 1][x + 1]) ||
+            groveMap[y + 1] === undefined
+        )
             occupiedPositions.southeast = true;
 
         // west
-        if (groveMap[y][x - 1]) occupiedPositions.west = true;
+        if (groveMap[y][x - 1] || groveMap[y][x - 1] === undefined)
+            occupiedPositions.west = true;
 
         // east
-        if (groveMap[y][x + 1]) occupiedPositions.east = true;
+        if (groveMap[y][x + 1] || groveMap[y][x + 1] === undefined)
+            occupiedPositions.east = true;
 
         // returns null if all surrounding positions are empty
         // or an object { N: true, ... }
