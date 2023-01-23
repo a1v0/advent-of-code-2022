@@ -34,7 +34,7 @@ function day23Task1(input) {
     });
 
     // for loop to go through procedure ten times
-    for (let round = 0; round < 10; ++round) {
+    for (let round = 0; round < 1; ++round) {
         // create empty moves object
         const movesInRound = {};
 
@@ -103,6 +103,24 @@ function day23Task1(input) {
             if (!groveMap[i][j]) ++emptySpaces;
         }
     }
+
+    // -------------------------------------------------------------
+    // for visualisation
+    // -------------------------------------------------------------
+    let visualisationString = "";
+    for (let row of groveMap) {
+        for (let position of row) {
+            if (!position) {
+                visualisationString += ".";
+            } else {
+                visualisationString += "#";
+            }
+        }
+        visualisationString += "\n";
+    }
+    console.log(visualisationString);
+    // -------------------------------------------------------------
+
     return emptySpaces;
 
     // function to identify occupied positions surrounding elf
