@@ -22,7 +22,8 @@ function day23Task1(input) {
                         proposeWest,
                         proposeEast
                     ],
-                    position: [i, rowNo]
+                    position: [i, rowNo],
+                    proposal: null
                 });
                 row.push(elves[0]);
             }
@@ -43,10 +44,14 @@ function day23Task1(input) {
             } else {
                 // put each move into moves object: "x,y":1. If move already exists, ++
                 for (let direction of elf.directions) {
+                    const proposal = direction(elf, occupiedPositions);
+                    elf.proposal = proposal;
+                    if (proposal) break;
                 }
             }
         });
     }
+    console.log(elves);
     // loop through elves again, updating values:
     // if moves["x,y"]===1, update current position in elf object AND move reference to elf within the map
     // move first direction in directions array to back (I think this is only if a move was proposed)
@@ -104,42 +109,38 @@ function day23Task1(input) {
     }
 
     // create four checker functions that return a coordinate string if the elf can go there, otherwise null
-    function proposeNorth({ position: [x, y] }, directions) {
-        const canIGo = !(
-            directions.north &&
-            directions.northwest &&
-            directions.northeast
-        );
+    function proposeNorth({ position: [x, y] }, occupiedPositions) {
+        const canIGo =
+            !occupiedPositions.north &&
+            !occupiedPositions.northwest &&
+            !occupiedPositions.northeast;
 
         return canIGo ? `${x},${y - 1}` : null;
     }
 
-    function proposeSouth({ position: [x, y] }, directions) {
-        const canIGo = !(
-            directions.south &&
-            directions.southwest &&
-            directions.southeast
-        );
+    function proposeSouth({ position: [x, y] }, occupiedPositions) {
+        const canIGo =
+            !occupiedPositions.south &&
+            !occupiedPositions.southwest &&
+            !occupiedPositions.southeast;
 
         return canIGo ? `${x},${y + 1}` : null;
     }
 
-    function proposeWest({ position: [x, y] }, directions) {
-        const canIGo = !(
-            directions.west &&
-            directions.northwest &&
-            directions.southwest
-        );
+    function proposeWest({ position: [x, y] }, occupiedPositions) {
+        const canIGo =
+            !occupiedPositions.west &&
+            !occupiedPositions.northwest &&
+            !occupiedPositions.southwest;
 
         return canIGo ? `${x - 1},${y}` : null;
     }
 
-    function proposeEast({ position: [x, y] }, directions) {
-        const canIGo = !(
-            directions.east &&
-            directions.northeast &&
-            directions.southeast
-        );
+    function proposeEast({ position: [x, y] }, occupiedPositions) {
+        const canIGo =
+            !occupiedPositions.east &&
+            !occupiedPositions.northeast &&
+            !occupiedPositions.southeast;
 
         return canIGo ? `${x + 1},${y}` : null;
     }
