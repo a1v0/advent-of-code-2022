@@ -140,6 +140,6 @@ function day21Task2(input) {
         return equation;
     }
 }
-console.log(day21Task2(input)); // 3221245824363
+// console.log(day21Task2(input)); // 3221245824363
 
 module.exports = { day21Task2 };
