@@ -192,7 +192,7 @@ function day23Task1(input) {
         } else ++emptySlots;
 
         // returns null if all surrounding positions are empty
-        // or an object { N: true, ... }
+        // or an object { north: true, ... }
         if (emptySlots === 8) {
             return null;
         } else return occupiedPositions;
@@ -235,5 +235,5 @@ function day23Task1(input) {
         return canIGo ? `${x + 1},${y}` : null;
     }
 }
-console.log(day23Task1(input));
+console.log(day23Task1(input)); // not 2508
 module.exports = { day23Task1 };
