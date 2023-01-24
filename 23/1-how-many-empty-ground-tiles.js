@@ -1,9 +1,6 @@
 const { input } = require("./input");
 
 function day23Task1(input) {
-    // split input into rows
-    const rowsStrings = input.split("\n");
-
     // create array to store elves
     const elves = [];
 
@@ -14,6 +11,9 @@ function day23Task1(input) {
         proposeWest,
         proposeEast
     ];
+
+    // split input into rows
+    const rowsStrings = input.split("\n");
 
     // map rows into this format [null (if empty), reference to elf object]
     const groveMap = rowsStrings.map((rowString, rowNo) => {
@@ -48,7 +48,7 @@ function day23Task1(input) {
                     const proposal = direction(elf, occupiedPositions);
                     elf.proposal = proposal;
                     if (proposal) {
-                        // put each move into moves object: "x,y":1. If move already exists, ++
+                        // put each move into moves object: { "x,y": 1 }. If move already exists, ++
                         movesInRound[proposal] = movesInRound[proposal]
                             ? movesInRound[proposal] + 1
                             : 1;
@@ -60,7 +60,7 @@ function day23Task1(input) {
 
         // loop through elves again, updating values
         elves.forEach((elf) => {
-            // if moves["x,y"]===1, update current position in elf object AND move reference to elf within the map
+            // if moves["x,y"] === 1, update current position in elf object AND move reference to elf within the map
             if (movesInRound[elf.proposal] === 1) {
                 const [x, y] = elf.position;
                 const coordinates = elf.proposal.match(/\d+/g);
@@ -84,6 +84,12 @@ function day23Task1(input) {
             // unshift/push row/column of null to grove
             // cycle through all elves and set position to [position + xDiff, position + yDiff]
             // update positions of as yet unmoved elves to [newX + xDiff, newY + yDiff]
+            //
+            //
+            //
+            //
+            //
+            //
             //
             //
             //
