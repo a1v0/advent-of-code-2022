@@ -1,3 +1,39 @@
+// oh no! I misunderstood the task!
+// the ground extends indefinitely in each direction, meaning that I need to handle the boundaries differently
+// first, we need to allow elves to propose positions beyond the edges of the current grove map
+// during second half of round
+// // if proposal is valid but out of current bounds, store elf in a separate array to be dealt with later
+// // else, deal with move as normal
+// create two variables: xDiff and yDiff to store whether we're prepending a row/column to the grove
+// unshift/push row/column of null to grove
+// cycle through all elves and set position to [position + xDiff, position + yDiff]
+// update positions of as yet unmoved elves to [newX + xDiff, newY + yDiff]
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 const { input } = require("./input");
 
 function day23Task1(input) {
