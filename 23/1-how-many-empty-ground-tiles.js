@@ -1,39 +1,3 @@
-// oh no! I misunderstood the task!
-// the ground extends indefinitely in each direction, meaning that I need to handle the boundaries differently
-// first, we need to allow elves to propose positions beyond the edges of the current grove map
-// during second half of round
-// // if proposal is valid but out of current bounds, store elf in a separate array to be dealt with later
-// // else, deal with move as normal
-// create two variables: xDiff and yDiff to store whether we're prepending a row/column to the grove
-// unshift/push row/column of null to grove
-// cycle through all elves and set position to [position + xDiff, position + yDiff]
-// update positions of as yet unmoved elves to [newX + xDiff, newY + yDiff]
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 const { input } = require("./input");
 
 function day23Task1(input) {
@@ -107,6 +71,44 @@ function day23Task1(input) {
                 groveMap[newY][newX] = elf;
                 elf.position = [newX, newY];
             }
+
+            // oh no! I misunderstood the task!
+            // the ground extends indefinitely in each direction, meaning that I need to handle the boundaries differently
+            // first, we need to allow elves to propose positions beyond the edges of the current grove map
+            // ^^^^^^ I think this is now done, but can't test until all other stuff has been coded
+
+            // during second half of round
+            // // if proposal is valid but out of current bounds, store elf in a separate array to be dealt with later
+            // // else, deal with move as normal
+            // create two variables: xDiff and yDiff to store whether we're prepending a row/column to the grove
+            // unshift/push row/column of null to grove
+            // cycle through all elves and set position to [position + xDiff, position + yDiff]
+            // update positions of as yet unmoved elves to [newX + xDiff, newY + yDiff]
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
         });
 
         // move first direction in directions array to back
@@ -168,9 +170,9 @@ function day23Task1(input) {
         // northern positions
         if (groveMap[y - 1] === undefined) {
             emptySlots += 3;
-            occupiedPositions.north = true;
-            occupiedPositions.northwest = true;
-            occupiedPositions.northeast = true;
+            // occupiedPositions.north = true;
+            // occupiedPositions.northwest = true;
+            // occupiedPositions.northeast = true;
         } else {
             // north
             if (groveMap[y - 1] && groveMap[y - 1][x]) {
@@ -191,9 +193,9 @@ function day23Task1(input) {
         // southern positions
         if (groveMap[y + 1] === undefined) {
             emptySlots += 3;
-            occupiedPositions.south = true;
-            occupiedPositions.southwest = true;
-            occupiedPositions.southwest = true;
+            // occupiedPositions.south = true;
+            // occupiedPositions.southwest = true;
+            // occupiedPositions.southwest = true;
         } else {
             // south
             if (groveMap[y + 1] && groveMap[y + 1][x]) {
@@ -214,7 +216,7 @@ function day23Task1(input) {
         // west
         if (groveMap[y][x - 1] === undefined) {
             ++emptySlots;
-            occupiedPositions.west = true;
+            // occupiedPositions.west = true;
         } else if (groveMap[y][x - 1]) {
             occupiedPositions.west = true;
         } else ++emptySlots;
@@ -222,7 +224,7 @@ function day23Task1(input) {
         // east
         if (groveMap[y][x + 1] === undefined) {
             ++emptySlots;
-            occupiedPositions.east = true;
+            // occupiedPositions.east = true;
         } else if (groveMap[y][x + 1]) {
             occupiedPositions.east = true;
         } else ++emptySlots;
