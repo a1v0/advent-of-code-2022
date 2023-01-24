@@ -126,89 +126,76 @@ function day23Task1(input) {
 
     // function to identify occupied positions surrounding elf
     function checkOccupiedPositions({ position: [x, y] }) {
-        // this section needs to:
-        // - treat the perimeter like a blocked coordinate, so that we never attempt to go there
-        // BUT ALSO
-        // - ignore the perimeter when checking whether a certain position is not neighboured by anybody
-        //
-        // creat new variable e.g. emptySlots
-        // nested if inside each if: if position === undefined, ++emptySlots (whilst retaining all other functionality)
-        // add else to each if with ++emptySlots
-        // if emptySlots===8, return null
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-
         const occupiedPositions = {};
+        let emptySlots = 0;
 
-        // north
-        if (
-            (groveMap[y - 1] && groveMap[y - 1][x]) ||
-            groveMap[y - 1] === undefined
-        )
+        // northern positions
+        if (groveMap[y - 1] === undefined) {
+            emptySlots += 3;
             occupiedPositions.north = true;
-
-        // northwest
-        if (
-            (groveMap[y - 1] && groveMap[y - 1][x - 1]) ||
-            groveMap[y - 1] === undefined
-        )
             occupiedPositions.northwest = true;
-
-        // northeast
-        if (
-            (groveMap[y - 1] && groveMap[y - 1][x + 1]) ||
-            groveMap[y - 1] === undefined
-        )
             occupiedPositions.northeast = true;
+        } else {
+            // north
+            if (groveMap[y - 1] && groveMap[y - 1][x]) {
+                occupiedPositions.north = true;
+            } else ++emptySlots;
 
-        // south
-        if (
-            (groveMap[y + 1] && groveMap[y + 1][x]) ||
-            groveMap[y + 1] === undefined
-        )
+            // northwest
+            if (groveMap[y - 1] && groveMap[y - 1][x - 1]) {
+                occupiedPositions.northwest = true;
+            } else ++emptySlots;
+
+            // northeast
+            if (groveMap[y - 1] && groveMap[y - 1][x + 1]) {
+                occupiedPositions.northeast = true;
+            } else ++emptySlots;
+        }
+
+        // southern positions
+        if (groveMap[y + 1] === undefined) {
+            emptySlots += 3;
             occupiedPositions.south = true;
-
-        // southwest
-        if (
-            (groveMap[y + 1] && groveMap[y + 1][x - 1]) ||
-            groveMap[y + 1] === undefined
-        )
             occupiedPositions.southwest = true;
+            occupiedPositions.southwest = true;
+        } else {
+            // south
+            if (groveMap[y + 1] && groveMap[y + 1][x]) {
+                occupiedPositions.south = true;
+            } else ++emptySlots;
 
-        // southeast
-        if (
-            (groveMap[y + 1] && groveMap[y + 1][x + 1]) ||
-            groveMap[y + 1] === undefined
-        )
-            occupiedPositions.southeast = true;
+            // southwest
+            if (groveMap[y + 1] && groveMap[y + 1][x - 1]) {
+                occupiedPositions.southwest = true;
+            } else ++emptySlots;
+
+            // southeast
+            if (groveMap[y + 1] && groveMap[y + 1][x + 1]) {
+                occupiedPositions.southeast = true;
+            } else ++emptySlots;
+        }
 
         // west
-        if (groveMap[y][x - 1] || groveMap[y][x - 1] === undefined)
+        if (groveMap[y][x - 1] === undefined) {
+            ++emptySlots;
             occupiedPositions.west = true;
+        } else if (groveMap[y][x - 1]) {
+            occupiedPositions.west = true;
+        } else ++emptySlots;
 
         // east
-        if (groveMap[y][x + 1] || groveMap[y][x + 1] === undefined)
+        if (groveMap[y][x + 1] === undefined) {
+            ++emptySlots;
             occupiedPositions.east = true;
+        } else if (groveMap[y][x + 1]) {
+            occupiedPositions.east = true;
+        } else ++emptySlots;
 
         // returns null if all surrounding positions are empty
         // or an object { N: true, ... }
-        if (!Object.keys(occupiedPositions).length) return null;
-        else return occupiedPositions;
+        if (emptySlots === 8) {
+            return null;
+        } else return occupiedPositions;
     }
 
     // create four checker functions that return a coordinate string if the elf can go there, otherwise null
