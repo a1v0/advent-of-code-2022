@@ -58,64 +58,56 @@ function day23Task1(input) {
             }
         });
 
+        // if proposal is valid but out of current bounds, store elf in a separate array to be dealt with later
+        const elvesToDealWithLater = [];
+        // const movesToDealWithLater = [];
+
+        // store whether we're adding rows/columns to map
+        const groveDifferences = {
+            prependX: false,
+            prependY: false,
+            appendX: false,
+            appendY: false
+        };
+
         // loop through elves again, updating values
         elves.forEach((elf) => {
             // if moves["x,y"] === 1, update current position in elf object AND move reference to elf within the map
             if (movesInRound[elf.proposal] === 1) {
                 const [x, y] = elf.position;
-                const coordinates = elf.proposal.match(/\d+/g);
+                const coordinates = elf.proposal.match(/\-*\d+/g);
                 const newX = Number(coordinates[0]);
                 const newY = Number(coordinates[1]);
 
-                groveMap[y][x] = null;
-                groveMap[newY][newX] = elf;
-                elf.position = [newX, newY];
+                if (
+                    newX < 0 ||
+                    newX >= groveMap[0].length ||
+                    newY < 0 ||
+                    newY >= groveMap.length
+                ) {
+                    elvesToDealWithLater.push(elf);
+                    // movesToDealWithLater.push(elf.proposal);
+
+                    if (newX < 0) {
+                        groveDifferences.prependX = true;
+                    }
+                    if (newX >= groveMap[0].length) {
+                        groveDifferences.appendX = true;
+                    }
+                    if (newY < 0) {
+                        groveDifferences.prependY = true;
+                    }
+                    if (newY >= groveMap.length) {
+                        groveDifferences.appendY = true;
+                    }
+                } else {
+                    elf.position = [newX, newY];
+                    groveMap[y][x] = null;
+                    groveMap[newY][newX] = elf;
+                }
             }
-
-            // oh no! I misunderstood the task!
-            // the ground extends indefinitely in each direction, meaning that I need to handle the boundaries differently
-            // first, we need to allow elves to propose positions beyond the edges of the current grove map
-            // ^^^^^^ I think this is now done, but can't test until all other stuff has been coded
-
-            // during second half of round
-            // // if proposal is valid but out of current bounds, store elf in a separate array to be dealt with later
-            // // else, deal with move as normal
-            // create two variables: xDiff and yDiff to store whether we're prepending a row/column to the grove
-            // unshift/push row/column of null to grove
-            // cycle through all elves and set position to [position + xDiff, position + yDiff]
-            // update positions of as yet unmoved elves to [newX + xDiff, newY + yDiff]
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
         });
+        expandGrove(groveDifferences, elvesToDealWithLater);
 
         // move first direction in directions array to back
         allDirections.push(allDirections.shift());
@@ -152,18 +144,18 @@ function day23Task1(input) {
     // -------------------------------------------------------------
     // for visualisation
     // -------------------------------------------------------------
-    let visualisationString = "";
-    for (let row of groveMap) {
-        for (let position of row) {
-            if (!position) {
-                visualisationString += ".";
-            } else {
-                visualisationString += "#";
-            }
-        }
-        visualisationString += "\n";
-    }
-    console.log(visualisationString);
+    // let visualisationString = "";
+    // for (let row of groveMap) {
+    //     for (let position of row) {
+    //         if (!position) {
+    //             visualisationString += ".";
+    //         } else {
+    //             visualisationString += "#";
+    //         }
+    //     }
+    //     visualisationString += "\n";
+    // }
+    // console.log(visualisationString);
     // -------------------------------------------------------------
 
     return emptySpaces;
@@ -176,9 +168,6 @@ function day23Task1(input) {
         // northern positions
         if (groveMap[y - 1] === undefined) {
             emptySlots += 3;
-            // occupiedPositions.north = true;
-            // occupiedPositions.northwest = true;
-            // occupiedPositions.northeast = true;
         } else {
             // north
             if (groveMap[y - 1] && groveMap[y - 1][x]) {
@@ -199,9 +188,6 @@ function day23Task1(input) {
         // southern positions
         if (groveMap[y + 1] === undefined) {
             emptySlots += 3;
-            // occupiedPositions.south = true;
-            // occupiedPositions.southwest = true;
-            // occupiedPositions.southwest = true;
         } else {
             // south
             if (groveMap[y + 1] && groveMap[y + 1][x]) {
@@ -222,7 +208,6 @@ function day23Task1(input) {
         // west
         if (groveMap[y][x - 1] === undefined) {
             ++emptySlots;
-            // occupiedPositions.west = true;
         } else if (groveMap[y][x - 1]) {
             occupiedPositions.west = true;
         } else ++emptySlots;
@@ -230,7 +215,6 @@ function day23Task1(input) {
         // east
         if (groveMap[y][x + 1] === undefined) {
             ++emptySlots;
-            // occupiedPositions.east = true;
         } else if (groveMap[y][x + 1]) {
             occupiedPositions.east = true;
         } else ++emptySlots;
@@ -278,6 +262,54 @@ function day23Task1(input) {
 
         return canIGo ? `${x + 1},${y}` : null;
     }
+
+    function expandGrove(
+        { appendX, appendY, prependX, prependY },
+        elvesToDealWithLater
+    ) {
+        // console.log(elvesToDealWithLater);
+        const xDiff = Number(prependX);
+        const yDiff = Number(prependY);
+
+        if (prependX || appendX) {
+            groveMap.forEach((row) => {
+                if (prependX) row.unshift(null);
+                if (appendX) row.push(null);
+            });
+        }
+
+        if (prependY || appendY) {
+            const newRow = [];
+            for (let i = 0; i < groveMap[0].length; ++i) {
+                newRow.push(null);
+            }
+
+            if (prependY) {
+                groveMap.unshift([...newRow]);
+            }
+            if (appendY) {
+                groveMap.push([...newRow]);
+            }
+        }
+
+        // update position values of each elf
+        elves.forEach(({ position: [x, y] }) => {
+            x = x + xDiff;
+            y = y + yDiff;
+        });
+
+        // move unmoved elves to correct position in
+        elvesToDealWithLater.forEach((elf) => {
+            const [x, y] = elf.position;
+            const coordinates = elf.proposal.match(/\-*\d+/g);
+            const newX = Number(coordinates[0]);
+            const newY = Number(coordinates[1]);
+
+            elf.position = [newX + xDiff, newY + yDiff];
+            groveMap[y][x] = null;
+            groveMap[newY + yDiff][newX + xDiff] = elf;
+        });
+    }
 }
-console.log(day23Task1(input)); // not 2508
+console.log(day23Task1(input)); // not 2508, nor 4131
 module.exports = { day23Task1 };
