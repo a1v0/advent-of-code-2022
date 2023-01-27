@@ -264,7 +264,6 @@ function day23Task1(input) {
         { appendX, appendY, prependX, prependY },
         elvesToDealWithLater
     ) {
-        // console.log(elvesToDealWithLater);
         const xDiff = Number(prependX);
         const yDiff = Number(prependY);
 
