@@ -28,6 +28,6 @@ The tasks can be found **[here](https://adventofcode.com/2022)**, and each day's
 |20|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
 |21|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
 |22|Task 1:&nbsp;⭐<br>Task 2:&nbsp;❌&mdash;unsure how to approach this.|
-|23|Task 1:&nbsp;❌&mdash;works with test data but not with real data.|
+|23|Task 1:&nbsp;❌&mdash;works with test data but not with real data. Cannot identify source of bug.|
 <!-- |24|| -->
 <!-- |25|| -->
