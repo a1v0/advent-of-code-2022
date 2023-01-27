@@ -171,17 +171,17 @@ function day23Task1(input) {
             emptySlots += 3;
         } else {
             // north
-            if (groveMap[y - 1] && groveMap[y - 1][x]) {
+            if (groveMap[y - 1][x]) {
                 occupiedPositions.north = true;
             } else ++emptySlots;
 
             // northwest
-            if (groveMap[y - 1] && groveMap[y - 1][x - 1]) {
+            if (groveMap[y - 1][x - 1]) {
                 occupiedPositions.northwest = true;
             } else ++emptySlots;
 
             // northeast
-            if (groveMap[y - 1] && groveMap[y - 1][x + 1]) {
+            if (groveMap[y - 1][x + 1]) {
                 occupiedPositions.northeast = true;
             } else ++emptySlots;
         }
@@ -191,32 +191,28 @@ function day23Task1(input) {
             emptySlots += 3;
         } else {
             // south
-            if (groveMap[y + 1] && groveMap[y + 1][x]) {
+            if (groveMap[y + 1][x]) {
                 occupiedPositions.south = true;
             } else ++emptySlots;
 
             // southwest
-            if (groveMap[y + 1] && groveMap[y + 1][x - 1]) {
+            if (groveMap[y + 1][x - 1]) {
                 occupiedPositions.southwest = true;
             } else ++emptySlots;
 
             // southeast
-            if (groveMap[y + 1] && groveMap[y + 1][x + 1]) {
+            if (groveMap[y + 1][x + 1]) {
                 occupiedPositions.southeast = true;
             } else ++emptySlots;
         }
 
         // west
-        if (groveMap[y][x - 1] === undefined) {
-            ++emptySlots;
-        } else if (groveMap[y][x - 1]) {
+        if (groveMap[y][x - 1]) {
             occupiedPositions.west = true;
         } else ++emptySlots;
 
         // east
-        if (groveMap[y][x + 1] === undefined) {
-            ++emptySlots;
-        } else if (groveMap[y][x + 1]) {
+        if (groveMap[y][x + 1]) {
             occupiedPositions.east = true;
         } else ++emptySlots;
 
