@@ -22,7 +22,7 @@ function day23Task1(input) {
             if (rowString[i] === ".") {
                 row.push(null);
             } else {
-                // create elf objects { directions: [], position: [x, y], proposal: "x,y" }, push them to elves array and add reference to it in rows array
+                // create elf objects { position: [x, y], proposal: "x,y" }, push them to elves array and add reference to it in rows array
                 elves.unshift({
                     position: [i, rowNo],
                     proposal: null
@@ -49,7 +49,9 @@ function day23Task1(input) {
                     elf.proposal = proposal;
                     if (proposal) {
                         // put each move into moves object: { "x,y": 1 }. If move already exists, ++
-                        movesInRound[proposal] = movesInRound[proposal]
+                        movesInRound[proposal] = movesInRound.hasOwnProperty(
+                            proposal
+                        )
                             ? movesInRound[proposal] + 1
                             : 1;
                         break;
@@ -60,7 +62,6 @@ function day23Task1(input) {
 
         // if proposal is valid but out of current bounds, store elf in a separate array to be dealt with later
         const elvesToDealWithLater = [];
-        // const movesToDealWithLater = [];
 
         // store whether we're adding rows/columns to map
         const groveDifferences = {
