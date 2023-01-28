@@ -1,3 +1,41 @@
+// Possible flaw in code
+// what happens if one side of a cube is externally accessible, whereas the opposite side, which has no neighbour, is inaccessible?
+// Is my code counting those correctly?
+// Probably need to check the sidesShowing property
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 const { input } = require("./input");
 
 function day18Task2(input) {
@@ -161,7 +199,7 @@ function day18Task2(input) {
             }
 
             // if a cube exists with those coordinates
-            if (
+            else if (
                 cubes.find((cube) => {
                     return (
                         cube.coordinatesAsString ===
@@ -177,8 +215,7 @@ function day18Task2(input) {
         for (let i = highestX + 1; i >= coordsNumbers[0]; --i) {
             if (`${i},${coordsNumbers[1]},${coordsNumbers[2]}` === coordinate) {
                 return true;
-            }
-            if (
+            } else if (
                 cubes.find((cube) => {
                     return (
                         cube.coordinatesAsString ===
@@ -194,8 +231,7 @@ function day18Task2(input) {
         for (let i = highestY + 1; i >= coordsNumbers[1]; --i) {
             if (`${coordsNumbers[0]},${i},${coordsNumbers[2]}` === coordinate) {
                 return true;
-            }
-            if (
+            } else if (
                 cubes.find((cube) => {
                     return (
                         cube.coordinatesAsString ===
@@ -257,7 +293,6 @@ function day18Task2(input) {
                 break;
             }
         }
-        // console.log("inaccessible");
         return false;
     }
 
@@ -267,5 +302,5 @@ function day18Task2(input) {
     }, 0);
 }
 
-console.log(day18Task2(input));
+console.log(day18Task2(input), "Day 18");
 module.exports = { day18Task2 };
