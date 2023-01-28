@@ -307,5 +307,5 @@ function day23Task1(input) {
         });
     }
 }
-console.log(day23Task1(input)); // not 2508, nor 4131
+// console.log(day23Task1(input)); // not 2508, nor 4131
 module.exports = { day23Task1 };
