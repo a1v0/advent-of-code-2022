@@ -14,11 +14,10 @@ function day18Task2(input) {
         highestZ: -Infinity
     };
 
-    // map lines into some sort of pseudo-graph of objects, e.g. { coordinates: [], coordinatesAsString:'1,2,3', noOfSidesShowing: 6, topNeighbour: '1,2,3', bottomNeighbour: '2,3,4' }
+    // map lines into some sort of pseudo-graph of objects, e.g. { coordinatesAsString:'1,2,3', topNeighbour: '1,2,3', bottomNeighbour: '2,3,4' }
     const cubes = cubesStrings.map((cubeString) => {
         const cube = {
-            coordinatesAsString: cubeString,
-            noOfSidesShowing: 6
+            coordinatesAsString: cubeString
         };
 
         const coordinatesStrings = cubeString.split(",");
@@ -124,40 +123,28 @@ function day18Task2(input) {
             );
         });
 
-        // // if neighbour exists, deduct 1 from noOfSidesShowing from both objects
-        if (rightNeighbour) {
-            decreaseNoOfSidesShowing(cube);
-        } else {
+        // if no neighbour, add to openNeighbours
+        if (!rightNeighbour) {
             openNeighbours.add(cube.rightNeighbour);
         }
 
-        if (leftNeighbour) {
-            decreaseNoOfSidesShowing(cube);
-        } else {
+        if (!leftNeighbour) {
             openNeighbours.add(cube.leftNeighbour);
         }
 
-        if (topNeighbour) {
-            decreaseNoOfSidesShowing(cube);
-        } else {
+        if (!topNeighbour) {
             openNeighbours.add(cube.topNeighbour);
         }
 
-        if (bottomNeighbour) {
-            decreaseNoOfSidesShowing(cube);
-        } else {
+        if (!bottomNeighbour) {
             openNeighbours.add(cube.bottomNeighbour);
         }
 
-        if (frontNeighbour) {
-            decreaseNoOfSidesShowing(cube);
-        } else {
+        if (!frontNeighbour) {
             openNeighbours.add(cube.frontNeighbour);
         }
 
-        if (backNeighbour) {
-            decreaseNoOfSidesShowing(cube);
-        } else {
+        if (!backNeighbour) {
             openNeighbours.add(cube.backNeighbour);
         }
     });
@@ -179,11 +166,10 @@ function day18Task2(input) {
                 isOpen = true;
             }
         }
+
+        // if none of those coordinates we checked above yielded anything, mark them as closed
         if (!isOpen) {
-            insideCoordinates = new Set([
-                ...insideCoordinates,
-                ...potentiallyOpenCoordinates
-            ]);
+            setInsideCoordinates(potentiallyOpenCoordinates);
         }
     }
 
@@ -203,10 +189,6 @@ function day18Task2(input) {
     // -------------------------------------------------------------
     // Helper functions
     // -------------------------------------------------------------
-
-    function decreaseNoOfSidesShowing(cube) {
-        --cube.noOfSidesShowing;
-    }
 
     // create a set containing of all coordinates of a 'box' that surrounds the lava
     function generateCoordinateSet({
@@ -286,7 +268,7 @@ function day18Task2(input) {
             }
 
             if (insideCoordinates.has(newCoords)) {
-                setInsideCoordinates();
+                setInsideCoordinates(potentiallyOpenCoordinates);
                 return;
             }
 
@@ -308,7 +290,7 @@ function day18Task2(input) {
             }
 
             if (insideCoordinates.has(newCoords)) {
-                setInsideCoordinates();
+                setInsideCoordinates(potentiallyOpenCoordinates);
                 return;
             }
 
@@ -329,7 +311,7 @@ function day18Task2(input) {
             }
 
             if (insideCoordinates.has(newCoords)) {
-                setInsideCoordinates();
+                setInsideCoordinates(potentiallyOpenCoordinates);
                 return;
             }
 
@@ -350,7 +332,7 @@ function day18Task2(input) {
             }
 
             if (insideCoordinates.has(newCoords)) {
-                setInsideCoordinates();
+                setInsideCoordinates(potentiallyOpenCoordinates);
                 return;
             }
 
@@ -371,7 +353,7 @@ function day18Task2(input) {
             }
 
             if (insideCoordinates.has(newCoords)) {
-                setInsideCoordinates();
+                setInsideCoordinates(potentiallyOpenCoordinates);
                 return;
             }
 
@@ -392,7 +374,7 @@ function day18Task2(input) {
             }
 
             if (insideCoordinates.has(newCoords)) {
-                setInsideCoordinates();
+                setInsideCoordinates(potentiallyOpenCoordinates);
                 return;
             }
 
@@ -400,13 +382,13 @@ function day18Task2(input) {
 
             potentiallyOpenCoordinates.add(newCoords);
         }
+    }
 
-        function setInsideCoordinates() {
-            insideCoordinates = new Set([
-                ...insideCoordinates,
-                ...potentiallyOpenCoordinates
-            ]);
-        }
+    function setInsideCoordinates(potentiallyOpenCoordinates) {
+        insideCoordinates = new Set([
+            ...insideCoordinates,
+            ...potentiallyOpenCoordinates
+        ]);
     }
 }
 
