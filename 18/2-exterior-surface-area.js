@@ -128,35 +128,15 @@ function day18Task2(input) {
         return cube;
     });
 
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    // create a set containing of all coordinates of a 'box' that surrounds the lava
-    // // this will need six nested for loops, I believe
+    // set extremities to 1 above/below to account for the empty coordinates just outside the occupied ones
+    --extremities.lowestX;
+    --extremities.lowestY;
+    --extremities.lowestZ;
+    ++extremities.highestX;
+    ++extremities.highestY;
+    ++extremities.highestZ;
 
-    const outsideCoordinates = generateCoordinateSet();
-
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
+    const outsideCoordinates = generateCoordinateSet(extremities);
 
     // loop through objects, checking if any potential neighbours exist
     cubes.forEach((cube) => {
@@ -254,7 +234,7 @@ function day18Task2(input) {
         });
 
         // left to right
-        for (let i = extremities.lowestX - 1; i <= coordsNumbers[0]; ++i) {
+        for (let i = extremities.lowestX; i <= coordsNumbers[0]; ++i) {
             if (`${i},${coordsNumbers[1]},${coordsNumbers[2]}` === coordinate) {
                 return true;
             }
@@ -273,7 +253,7 @@ function day18Task2(input) {
         }
 
         // right to left
-        for (let i = extremities.highestX + 1; i >= coordsNumbers[0]; --i) {
+        for (let i = extremities.highestX; i >= coordsNumbers[0]; --i) {
             if (`${i},${coordsNumbers[1]},${coordsNumbers[2]}` === coordinate) {
                 return true;
             } else if (
@@ -289,7 +269,7 @@ function day18Task2(input) {
         }
 
         // top to bottom
-        for (let i = extremities.highestY + 1; i >= coordsNumbers[1]; --i) {
+        for (let i = extremities.highestY; i >= coordsNumbers[1]; --i) {
             if (`${coordsNumbers[0]},${i},${coordsNumbers[2]}` === coordinate) {
                 return true;
             } else if (
@@ -305,7 +285,7 @@ function day18Task2(input) {
         }
 
         // bottom to top
-        for (let i = extremities.lowestY - 1; i <= coordsNumbers[1]; ++i) {
+        for (let i = extremities.lowestY; i <= coordsNumbers[1]; ++i) {
             if (`${coordsNumbers[0]},${i},${coordsNumbers[2]}` === coordinate) {
                 return true;
             }
@@ -322,7 +302,7 @@ function day18Task2(input) {
         }
 
         // back to front
-        for (let i = extremities.lowestZ - 1; i <= coordsNumbers[2]; ++i) {
+        for (let i = extremities.lowestZ; i <= coordsNumbers[2]; ++i) {
             if (`${coordsNumbers[0]},${coordsNumbers[1]},${i}` === coordinate) {
                 return true;
             }
@@ -339,7 +319,7 @@ function day18Task2(input) {
         }
 
         // front to back
-        for (let i = extremities.highestZ + 1; i >= coordsNumbers[2]; --i) {
+        for (let i = extremities.highestZ; i >= coordsNumbers[2]; --i) {
             if (`${coordsNumbers[0]},${coordsNumbers[1]},${i}` === coordinate) {
                 return true;
             }
@@ -358,7 +338,60 @@ function day18Task2(input) {
     }
 
     // create a set containing of all coordinates of a 'box' that surrounds the lava
-    function generateCoordinateSet() {}
+    function generateCoordinateSet({
+        lowestX,
+        highestX,
+        lowestY,
+        highestY,
+        lowestZ,
+        highestZ
+    }) {
+        const outsideCoordinates = new Set();
+
+        // left face
+        for (let y = lowestY; y <= highestY; ++y) {
+            for (let z = lowestZ; z <= highestZ; ++z) {
+                outsideCoordinates.add(`${lowestX},${y},${z}`);
+            }
+        }
+
+        // right face
+        for (let y = lowestY; y <= highestY; ++y) {
+            for (let z = lowestZ; z <= highestZ; ++z) {
+                outsideCoordinates.add(`${highestX},${y},${z}`);
+            }
+        }
+
+        // front face
+        for (let y = lowestY; y <= highestY; ++y) {
+            for (let x = lowestX; x <= highestX; ++x) {
+                outsideCoordinates.add(`${x},${y},${highestZ}`);
+            }
+        }
+
+        // back face
+        for (let y = lowestY; y <= highestY; ++y) {
+            for (let x = lowestX; x <= highestX; ++x) {
+                outsideCoordinates.add(`${x},${y},${lowestZ}`);
+            }
+        }
+
+        // top face
+        for (let x = lowestX; x <= highestX; ++x) {
+            for (let z = lowestZ; z <= highestZ; ++z) {
+                outsideCoordinates.add(`${x},${highestY},${z}`);
+            }
+        }
+
+        // bottom face
+        for (let x = lowestX; x <= highestX; ++x) {
+            for (let z = lowestZ; z <= highestZ; ++z) {
+                outsideCoordinates.add(`${x},${lowestY},${z}`);
+            }
+        }
+
+        return outsideCoordinates;
+    }
 }
 
 console.log(day18Task2(input), "Day 18");
