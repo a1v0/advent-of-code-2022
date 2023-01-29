@@ -13,6 +13,7 @@
 // loop through every coordinate in shape
 // if sidesShowing > 0:
 // // create a set containing open neighbour of current coordinate
+
 // // run a for...in loop
 // // go in all six directions (like in current isAccessible function) and add each empty coordinate to the set
 // // if we reach a coordinate that is in the the set of all coordinates that are accessible, add all coordinates to original set, then return true
@@ -72,12 +73,11 @@ function day18Task2(input) {
         highestZ: -Infinity
     };
 
-    // map lines into some sort of pseudo-graph of objects, e.g. { coordinates: [], coordinatesAsString:'1,2,3', noOfSidesShowing: 6, topNeighbour: '1,2,3', bottomNeighbour: '2,3,4', sidesShowing: [] ... }
+    // map lines into some sort of pseudo-graph of objects, e.g. { coordinates: [], coordinatesAsString:'1,2,3', noOfSidesShowing: 6, topNeighbour: '1,2,3', bottomNeighbour: '2,3,4' }
     const cubes = cubesStrings.map((cubeString) => {
         const cube = {
             coordinatesAsString: cubeString,
-            noOfSidesShowing: 6,
-            sidesShowing: []
+            noOfSidesShowing: 6
         };
 
         const coordinatesStrings = cubeString.split(",");
@@ -136,7 +136,11 @@ function day18Task2(input) {
     ++extremities.highestY;
     ++extremities.highestZ;
 
-    const outsideCoordinates = generateCoordinateSet(extremities);
+    // set to house all coordinates known to be outside the lava
+    let outsideCoordinates = generateCoordinateSet(extremities);
+
+    // set to house any unoccupied neighbour cubes that might be external
+    const openNeighbours = new Set();
 
     // loop through objects, checking if any potential neighbours exist
     cubes.forEach((cube) => {
@@ -176,43 +180,54 @@ function day18Task2(input) {
             );
         });
 
-        // // if so, deduct 1 from noOfSidesShowing from both objects
-        if (rightNeighbour || !isAccessibleFromOutside(cube.rightNeighbour)) {
+        // // if neighbour exists, deduct 1 from noOfSidesShowing from both objects
+        if (rightNeighbour) {
             decreaseNoOfSidesShowing(cube);
         } else {
-            cube.sidesShowing.push(cube.rightNeighbour);
+            openNeighbours.add(cube.rightNeighbour);
         }
 
-        if (leftNeighbour || !isAccessibleFromOutside(cube.leftNeighbour)) {
+        if (leftNeighbour) {
             decreaseNoOfSidesShowing(cube);
         } else {
-            cube.sidesShowing.push(cube.leftNeighbour);
+            openNeighbours.add(cube.leftNeighbour);
         }
 
-        if (topNeighbour || !isAccessibleFromOutside(cube.topNeighbour)) {
+        if (topNeighbour) {
             decreaseNoOfSidesShowing(cube);
         } else {
-            cube.sidesShowing.push(cube.topNeighbour);
+            openNeighbours.add(cube.topNeighbour);
         }
 
-        if (bottomNeighbour || !isAccessibleFromOutside(cube.bottomNeighbour)) {
+        if (bottomNeighbour) {
             decreaseNoOfSidesShowing(cube);
         } else {
-            cube.sidesShowing.push(cube.bottomNeighbour);
+            openNeighbours.add(cube.bottomNeighbour);
         }
 
-        if (frontNeighbour || !isAccessibleFromOutside(cube.frontNeighbour)) {
+        if (frontNeighbour) {
             decreaseNoOfSidesShowing(cube);
         } else {
-            cube.sidesShowing.push(cube.frontNeighbour);
+            openNeighbours.add(cube.frontNeighbour);
         }
 
-        if (backNeighbour || !isAccessibleFromOutside(cube.backNeighbour)) {
+        if (backNeighbour) {
             decreaseNoOfSidesShowing(cube);
         } else {
-            cube.sidesShowing.push(cube.backNeighbour);
+            openNeighbours.add(cube.backNeighbour);
         }
     });
+
+    // identify open coordinates
+    for (let openNeighbour of openNeighbours) {
+        const potentiallyOpenCoordinates = new Set();
+        potentiallyOpenCoordinates.add(openNeighbour);
+
+        for (let potentiallyOpenCoordinate of potentiallyOpenCoordinates) {
+            exploreArea(potentiallyOpenCoordinate, potentiallyOpenCoordinates);
+        }
+    }
+    console.log(outsideCoordinates.size);
 
     // loop through objects to count sides showing
     return cubes.reduce((accumulator, currentCube) => {
@@ -391,6 +406,113 @@ function day18Task2(input) {
         }
 
         return outsideCoordinates;
+    }
+
+    function exploreArea(
+        potentiallyOpenCoordinate,
+        potentiallyOpenCoordinates
+    ) {
+        // go in all six directions and add each empty coordinate to the set
+        const coordsNumbersStrings = potentiallyOpenCoordinate.split(",");
+        const [x, y, z] = coordsNumbersStrings.map((coordsNumber) => {
+            return Number(coordsNumber);
+        });
+
+        // going right
+        for (let newX = x; x <= extremities.highestX; ++newX) {
+            const newCoords = `${newX},${y},${z}`;
+            if (outsideCoordinates.has(newCoords)) {
+                outsideCoordinates = new Set([
+                    ...outsideCoordinates,
+                    ...potentiallyOpenCoordinates
+                ]);
+                return;
+            }
+
+            if (cubesStrings.includes(newCoords)) break;
+
+            potentiallyOpenCoordinates.add(newCoords);
+        }
+
+        // going left
+        for (let newX = x; x >= extremities.lowestX; --newX) {
+            const newCoords = `${newX},${y},${z}`;
+            if (outsideCoordinates.has(newCoords)) {
+                outsideCoordinates = new Set([
+                    ...outsideCoordinates,
+                    ...potentiallyOpenCoordinates
+                ]);
+                return;
+            }
+
+            if (cubesStrings.includes(newCoords)) break;
+
+            potentiallyOpenCoordinates.add(newCoords);
+        }
+
+        // going up
+        for (let newY = y; y <= extremities.highestY; ++newY) {
+            const newCoords = `${x},${newY},${z}`;
+            if (outsideCoordinates.has(newCoords)) {
+                outsideCoordinates = new Set([
+                    ...outsideCoordinates,
+                    ...potentiallyOpenCoordinates
+                ]);
+                return;
+            }
+
+            if (cubesStrings.includes(newCoords)) break;
+
+            potentiallyOpenCoordinates.add(newCoords);
+        }
+
+        // going down
+        for (let newY = y; y >= extremities.lowestY; --newY) {
+            const newCoords = `${x},${newY},${z}`;
+            if (outsideCoordinates.has(newCoords)) {
+                outsideCoordinates = new Set([
+                    ...outsideCoordinates,
+                    ...potentiallyOpenCoordinates
+                ]);
+                return;
+            }
+
+            if (cubesStrings.includes(newCoords)) break;
+
+            potentiallyOpenCoordinates.add(newCoords);
+        }
+
+        // going front
+        for (let newZ = z; z <= extremities.highestZ; ++newZ) {
+            const newCoords = `${x},${y},${newZ}`;
+            if (outsideCoordinates.has(newCoords)) {
+                outsideCoordinates = new Set([
+                    ...outsideCoordinates,
+                    ...potentiallyOpenCoordinates
+                ]);
+                return;
+            }
+
+            if (cubesStrings.includes(newCoords)) break;
+
+            potentiallyOpenCoordinates.add(newCoords);
+        }
+
+        // going back
+        for (let newZ = z; z >= extremities.lowestZ; --newZ) {
+            const newCoords = `${x},${y},${newZ}`;
+            if (outsideCoordinates.has(newCoords)) {
+                outsideCoordinates = new Set([
+                    ...outsideCoordinates,
+                    ...potentiallyOpenCoordinates
+                ]);
+                return;
+            }
+
+            if (cubesStrings.includes(newCoords)) break;
+
+            potentiallyOpenCoordinates.add(newCoords);
+        }
     }
 }
 
