@@ -1,7 +1,27 @@
-// Possible flaw in code
-// what happens if one side of a cube is externally accessible, whereas the opposite side, which has no neighbour, is inaccessible?
-// Is my code counting those correctly?
-// Probably need to check the sidesShowing property
+// Flaw in code:
+// my checker ignores coordinates that are accessible but blocked (e.g. X below)
+// ########
+// ##X#####
+// #      #
+//        #
+// #      #
+// ########
+//
+// New plan:
+// create a set containing of all coordinates of a 'box' that surrounds the lava
+// // this will need six nested for loops, I believe
+// loop through every coordinate in shape
+// if sidesShowing > 0:
+// // create a set containing open neighbour of current coordinate
+// // run a for...in loop
+// // go in all six directions (like in current isAccessible function) and add each empty coordinate to the set
+// // if we reach a coordinate that is in the the set of all coordinates that are accessible, add all coordinates to original set, then return true
+// // if the loop ends without reaching outside, return false
+// create externalSidesShowing variable
+// loop through all coordinates in lava
+// // if neighbour is in set of all showing coordinates, ++externalSidesShowing
+//
+//
 //
 //
 //
