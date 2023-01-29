@@ -63,12 +63,14 @@ function day18Task2(input) {
     const cubesStrings = input.split("\n");
 
     // collect data on highest and lowest x,y,z values
-    let lowestX = Infinity,
-        highestX = -Infinity,
-        lowestY = Infinity,
-        highestY = -Infinity,
-        lowestZ = Infinity,
-        highestZ = -Infinity;
+    const extremities = {
+        lowestX: Infinity,
+        highestX: -Infinity,
+        lowestY: Infinity,
+        highestY: -Infinity,
+        lowestZ: Infinity,
+        highestZ: -Infinity
+    };
 
     // map lines into some sort of pseudo-graph of objects, e.g. { coordinates: [], coordinatesAsString:'1,2,3', noOfSidesShowing: 6, topNeighbour: '1,2,3', bottomNeighbour: '2,3,4', sidesShowing: [] ... }
     const cubes = cubesStrings.map((cubeString) => {
@@ -104,27 +106,57 @@ function day18Task2(input) {
         }`;
 
         // update lowest/highest values
-        if (coordinates[0] < lowestX) {
-            lowestX = coordinates[0];
+        if (coordinates[0] < extremities.lowestX) {
+            extremities.lowestX = coordinates[0];
         }
-        if (coordinates[0] > highestX) {
-            highestX = coordinates[0];
+        if (coordinates[0] > extremities.highestX) {
+            extremities.highestX = coordinates[0];
         }
-        if (coordinates[1] < lowestY) {
-            lowestY = coordinates[1];
+        if (coordinates[1] < extremities.lowestY) {
+            extremities.lowestY = coordinates[1];
         }
-        if (coordinates[1] > highestY) {
-            highestY = coordinates[1];
+        if (coordinates[1] > extremities.highestY) {
+            extremities.highestY = coordinates[1];
         }
-        if (coordinates[2] < lowestZ) {
-            lowestZ = coordinates[2];
+        if (coordinates[2] < extremities.lowestZ) {
+            extremities.lowestZ = coordinates[2];
         }
-        if (coordinates[2] > highestZ) {
-            highestZ = coordinates[2];
+        if (coordinates[2] > extremities.highestZ) {
+            extremities.highestZ = coordinates[2];
         }
 
         return cube;
     });
+
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    // create a set containing of all coordinates of a 'box' that surrounds the lava
+    // // this will need six nested for loops, I believe
+
+    const outsideCoordinates = generateCoordinateSet();
+
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
 
     // loop through objects, checking if any potential neighbours exist
     cubes.forEach((cube) => {
@@ -202,6 +234,15 @@ function day18Task2(input) {
         }
     });
 
+    // loop through objects to count sides showing
+    return cubes.reduce((accumulator, currentCube) => {
+        return accumulator + currentCube.noOfSidesShowing;
+    }, 0);
+
+    // -------------------------------------------------------------
+    // Helper functions
+    // -------------------------------------------------------------
+
     function decreaseNoOfSidesShowing(cube) {
         --cube.noOfSidesShowing;
     }
@@ -213,7 +254,7 @@ function day18Task2(input) {
         });
 
         // left to right
-        for (let i = lowestX - 1; i <= coordsNumbers[0]; ++i) {
+        for (let i = extremities.lowestX - 1; i <= coordsNumbers[0]; ++i) {
             if (`${i},${coordsNumbers[1]},${coordsNumbers[2]}` === coordinate) {
                 return true;
             }
@@ -232,7 +273,7 @@ function day18Task2(input) {
         }
 
         // right to left
-        for (let i = highestX + 1; i >= coordsNumbers[0]; --i) {
+        for (let i = extremities.highestX + 1; i >= coordsNumbers[0]; --i) {
             if (`${i},${coordsNumbers[1]},${coordsNumbers[2]}` === coordinate) {
                 return true;
             } else if (
@@ -248,7 +289,7 @@ function day18Task2(input) {
         }
 
         // top to bottom
-        for (let i = highestY + 1; i >= coordsNumbers[1]; --i) {
+        for (let i = extremities.highestY + 1; i >= coordsNumbers[1]; --i) {
             if (`${coordsNumbers[0]},${i},${coordsNumbers[2]}` === coordinate) {
                 return true;
             } else if (
@@ -264,7 +305,7 @@ function day18Task2(input) {
         }
 
         // bottom to top
-        for (let i = lowestY - 1; i <= coordsNumbers[1]; ++i) {
+        for (let i = extremities.lowestY - 1; i <= coordsNumbers[1]; ++i) {
             if (`${coordsNumbers[0]},${i},${coordsNumbers[2]}` === coordinate) {
                 return true;
             }
@@ -281,7 +322,7 @@ function day18Task2(input) {
         }
 
         // back to front
-        for (let i = lowestZ - 1; i <= coordsNumbers[2]; ++i) {
+        for (let i = extremities.lowestZ - 1; i <= coordsNumbers[2]; ++i) {
             if (`${coordsNumbers[0]},${coordsNumbers[1]},${i}` === coordinate) {
                 return true;
             }
@@ -298,7 +339,7 @@ function day18Task2(input) {
         }
 
         // front to back
-        for (let i = highestZ + 1; i >= coordsNumbers[2]; --i) {
+        for (let i = extremities.highestZ + 1; i >= coordsNumbers[2]; --i) {
             if (`${coordsNumbers[0]},${coordsNumbers[1]},${i}` === coordinate) {
                 return true;
             }
@@ -316,10 +357,8 @@ function day18Task2(input) {
         return false;
     }
 
-    // loop through objects to count sides showing
-    return cubes.reduce((accumulator, currentCube) => {
-        return accumulator + currentCube.noOfSidesShowing;
-    }, 0);
+    // create a set containing of all coordinates of a 'box' that surrounds the lava
+    function generateCoordinateSet() {}
 }
 
 console.log(day18Task2(input), "Day 18");
