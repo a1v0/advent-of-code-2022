@@ -1,3 +1,13 @@
+// This code is slow and inelegant, given how often it loops
+// I'm not fully sure how I'd refactor it without needing to loop in six directions each time, though
+//
+//
+//
+//
+//
+//
+//
+
 // Flaw in code:
 // my checker ignores coordinates that are accessible but blocked (e.g. X below)
 // ########
@@ -18,6 +28,7 @@
 // // go in all six directions (like in current isAccessible function) and add each empty coordinate to the set
 // // if we reach a coordinate that is in the the set of all coordinates that are accessible, add all coordinates to original set, then return true
 // // if the loop ends without reaching outside, return false
+
 // create externalSidesShowing variable
 // loop through all coordinates in lava
 // // if neighbour is in set of all showing coordinates, ++externalSidesShowing
@@ -139,6 +150,9 @@ function day18Task2(input) {
     // set to house all coordinates known to be outside the lava
     let outsideCoordinates = generateCoordinateSet(extremities);
 
+    // set to house all unoccupied coordinates inside the lava
+    let insideCoordinates = new Set();
+
     // set to house any unoccupied neighbour cubes that might be external
     const openNeighbours = new Set();
 
@@ -227,11 +241,18 @@ function day18Task2(input) {
             exploreArea(potentiallyOpenCoordinate, potentiallyOpenCoordinates);
         }
     }
-    console.log(outsideCoordinates.size);
 
     // loop through objects to count sides showing
     return cubes.reduce((accumulator, currentCube) => {
-        return accumulator + currentCube.noOfSidesShowing;
+        let sidesCount = 0;
+        if (outsideCoordinates.has(currentCube.leftNeighbour)) ++sidesCount;
+        if (outsideCoordinates.has(currentCube.rightNeighbour)) ++sidesCount;
+        if (outsideCoordinates.has(currentCube.frontNeighbour)) ++sidesCount;
+        if (outsideCoordinates.has(currentCube.backNeighbour)) ++sidesCount;
+        if (outsideCoordinates.has(currentCube.topNeighbour)) ++sidesCount;
+        if (outsideCoordinates.has(currentCube.bottomNeighbour)) ++sidesCount;
+
+        return accumulator + sidesCount;
     }, 0);
 
     // -------------------------------------------------------------
@@ -240,116 +261,6 @@ function day18Task2(input) {
 
     function decreaseNoOfSidesShowing(cube) {
         --cube.noOfSidesShowing;
-    }
-
-    function isAccessibleFromOutside(coordinate) {
-        const coordsNumbersStrings = coordinate.split(",");
-        const coordsNumbers = coordsNumbersStrings.map((coordsNumber) => {
-            return Number(coordsNumber);
-        });
-
-        // left to right
-        for (let i = extremities.lowestX; i <= coordsNumbers[0]; ++i) {
-            if (`${i},${coordsNumbers[1]},${coordsNumbers[2]}` === coordinate) {
-                return true;
-            }
-
-            // if a cube exists with those coordinates
-            else if (
-                cubes.find((cube) => {
-                    return (
-                        cube.coordinatesAsString ===
-                        `${i},${coordsNumbers[1]},${coordsNumbers[2]}`
-                    );
-                })
-            ) {
-                break;
-            }
-        }
-
-        // right to left
-        for (let i = extremities.highestX; i >= coordsNumbers[0]; --i) {
-            if (`${i},${coordsNumbers[1]},${coordsNumbers[2]}` === coordinate) {
-                return true;
-            } else if (
-                cubes.find((cube) => {
-                    return (
-                        cube.coordinatesAsString ===
-                        `${i},${coordsNumbers[1]},${coordsNumbers[2]}`
-                    );
-                })
-            ) {
-                break;
-            }
-        }
-
-        // top to bottom
-        for (let i = extremities.highestY; i >= coordsNumbers[1]; --i) {
-            if (`${coordsNumbers[0]},${i},${coordsNumbers[2]}` === coordinate) {
-                return true;
-            } else if (
-                cubes.find((cube) => {
-                    return (
-                        cube.coordinatesAsString ===
-                        `${coordsNumbers[0]},${i},${coordsNumbers[2]}`
-                    );
-                })
-            ) {
-                break;
-            }
-        }
-
-        // bottom to top
-        for (let i = extremities.lowestY; i <= coordsNumbers[1]; ++i) {
-            if (`${coordsNumbers[0]},${i},${coordsNumbers[2]}` === coordinate) {
-                return true;
-            }
-            if (
-                cubes.find((cube) => {
-                    return (
-                        cube.coordinatesAsString ===
-                        `${coordsNumbers[0]},${i},${coordsNumbers[2]}`
-                    );
-                })
-            ) {
-                break;
-            }
-        }
-
-        // back to front
-        for (let i = extremities.lowestZ; i <= coordsNumbers[2]; ++i) {
-            if (`${coordsNumbers[0]},${coordsNumbers[1]},${i}` === coordinate) {
-                return true;
-            }
-            if (
-                cubes.find((cube) => {
-                    return (
-                        cube.coordinatesAsString ===
-                        `${coordsNumbers[0]},${coordsNumbers[1]},${i}`
-                    );
-                })
-            ) {
-                break;
-            }
-        }
-
-        // front to back
-        for (let i = extremities.highestZ; i >= coordsNumbers[2]; --i) {
-            if (`${coordsNumbers[0]},${coordsNumbers[1]},${i}` === coordinate) {
-                return true;
-            }
-            if (
-                cubes.find((cube) => {
-                    return (
-                        cube.coordinatesAsString ===
-                        `${coordsNumbers[0]},${coordsNumbers[1]},${i}`
-                    );
-                })
-            ) {
-                break;
-            }
-        }
-        return false;
     }
 
     // create a set containing of all coordinates of a 'box' that surrounds the lava
@@ -429,8 +340,14 @@ function day18Task2(input) {
                 return;
             }
 
+            if (insideCoordinates.has(newCoords)) {
+                setInsideCoordinates();
+                return;
+            }
+
             if (cubesStrings.includes(newCoords)) break;
 
+            // adds coordinate to explore to potentiallyOpenCoordinates
             potentiallyOpenCoordinates.add(newCoords);
         }
 
@@ -442,6 +359,11 @@ function day18Task2(input) {
                     ...outsideCoordinates,
                     ...potentiallyOpenCoordinates
                 ]);
+                return;
+            }
+
+            if (insideCoordinates.has(newCoords)) {
+                setInsideCoordinates();
                 return;
             }
 
@@ -461,6 +383,11 @@ function day18Task2(input) {
                 return;
             }
 
+            if (insideCoordinates.has(newCoords)) {
+                setInsideCoordinates();
+                return;
+            }
+
             if (cubesStrings.includes(newCoords)) break;
 
             potentiallyOpenCoordinates.add(newCoords);
@@ -474,6 +401,11 @@ function day18Task2(input) {
                     ...outsideCoordinates,
                     ...potentiallyOpenCoordinates
                 ]);
+                return;
+            }
+
+            if (insideCoordinates.has(newCoords)) {
+                setInsideCoordinates();
                 return;
             }
 
@@ -493,6 +425,11 @@ function day18Task2(input) {
                 return;
             }
 
+            if (insideCoordinates.has(newCoords)) {
+                setInsideCoordinates();
+                return;
+            }
+
             if (cubesStrings.includes(newCoords)) break;
 
             potentiallyOpenCoordinates.add(newCoords);
@@ -509,9 +446,24 @@ function day18Task2(input) {
                 return;
             }
 
+            if (insideCoordinates.has(newCoords)) {
+                setInsideCoordinates();
+                return;
+            }
+
             if (cubesStrings.includes(newCoords)) break;
 
             potentiallyOpenCoordinates.add(newCoords);
+        }
+
+        // if we haven't returned by this point, the coordinate is closed, so we can add it to the closedCoordinates set
+        setInsideCoordinates();
+
+        function setInsideCoordinates() {
+            insideCoordinates = new Set([
+                ...insideCoordinates,
+                ...potentiallyOpenCoordinates
+            ]);
         }
     }
 }
