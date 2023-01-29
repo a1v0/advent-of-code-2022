@@ -1,14 +1,34 @@
+const { day18Task2 } = require("../18/2-exterior-surface-area");
+const {
+    testInput: day18Input,
+    simpleInput: day18SimpleInput
+} = require("../18/input");
+
 const { day20Task1 } = require("../20/1-sum-three-numbers-grove-coordinates");
 const { day20Task2 } = require("../20/2-sum-after-ten-rounds");
+const { testInput: day20Input } = require("../20/input");
+
 const { day21Task1 } = require("../21/1-what-number-will-root-yell");
 const { day21Task2 } = require("../21/2-what-is-value-of-humn");
+const { testInput: day21Input } = require("../21/input");
+
 const { day22Task1 } = require("../22/1-what-is-final-password");
 const { day22Task2 } = require("../22/2-final-password-when-shape-is-cube");
-const { day23Task1 } = require("../23/1-how-many-empty-ground-tiles");
-const { testInput: day20Input } = require("../20/input");
-const { testInput: day21Input } = require("../21/input");
 const { testInput: day22Input, basicInput } = require("../22/input");
+
+const { day23Task1 } = require("../23/1-how-many-empty-ground-tiles");
 const { testInput: day23Input } = require("../23/input");
+
+describe.only("Day 18", () => {
+    describe("Task 2", () => {
+        test("should return correct value with my own data", () => {
+            expect(day18Task2(day18SimpleInput)).toBe(102);
+        });
+        test("should return correct value with test data", () => {
+            expect(day18Task2(day18Input)).toBe(58);
+        });
+    });
+});
 
 describe("Day 20", () => {
     describe("Task 1", () => {
@@ -113,7 +133,7 @@ describe("Day 22", () => {
     });
 });
 
-describe.only("Day 23", () => {
+describe("Day 23", () => {
     describe("Task 1", () => {
         test("returns correct value with test data", () => {
             expect(day23Task1(day23Input)).toBe(110);
