@@ -1,73 +1,3 @@
-// This code is slow and inelegant, given how often it loops
-// I'm not fully sure how I'd refactor it without needing to loop in six directions each time, though
-//
-//
-//
-//
-//
-//
-//
-
-// Flaw in code:
-// my checker ignores coordinates that are accessible but blocked (e.g. X below)
-// ########
-// ##X#####
-// #      #
-//        #
-// #      #
-// ########
-//
-// New plan:
-// create a set containing of all coordinates of a 'box' that surrounds the lava
-// // this will need six nested for loops, I believe
-// loop through every coordinate in shape
-// if sidesShowing > 0:
-// // create a set containing open neighbour of current coordinate
-
-// // run a for...in loop
-// // go in all six directions (like in current isAccessible function) and add each empty coordinate to the set
-// // if we reach a coordinate that is in the the set of all coordinates that are accessible, add all coordinates to original set, then return true
-// // if the loop ends without reaching outside, return false
-
-// create externalSidesShowing variable
-// loop through all coordinates in lava
-// // if neighbour is in set of all showing coordinates, ++externalSidesShowing
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 const { input } = require("./input");
 
 function day18Task2(input) {
@@ -237,8 +167,23 @@ function day18Task2(input) {
         const potentiallyOpenCoordinates = new Set();
         potentiallyOpenCoordinates.add(openNeighbour);
 
+        let isOpen = false;
+
         for (let potentiallyOpenCoordinate of potentiallyOpenCoordinates) {
-            exploreArea(potentiallyOpenCoordinate, potentiallyOpenCoordinates);
+            if (
+                exploreArea(
+                    potentiallyOpenCoordinate,
+                    potentiallyOpenCoordinates
+                )
+            ) {
+                isOpen = true;
+            }
+        }
+        if (!isOpen) {
+            insideCoordinates = new Set([
+                ...insideCoordinates,
+                ...potentiallyOpenCoordinates
+            ]);
         }
     }
 
@@ -337,7 +282,7 @@ function day18Task2(input) {
                     ...outsideCoordinates,
                     ...potentiallyOpenCoordinates
                 ]);
-                return;
+                return true;
             }
 
             if (insideCoordinates.has(newCoords)) {
@@ -359,7 +304,7 @@ function day18Task2(input) {
                     ...outsideCoordinates,
                     ...potentiallyOpenCoordinates
                 ]);
-                return;
+                return true;
             }
 
             if (insideCoordinates.has(newCoords)) {
@@ -380,7 +325,7 @@ function day18Task2(input) {
                     ...outsideCoordinates,
                     ...potentiallyOpenCoordinates
                 ]);
-                return;
+                return true;
             }
 
             if (insideCoordinates.has(newCoords)) {
@@ -401,7 +346,7 @@ function day18Task2(input) {
                     ...outsideCoordinates,
                     ...potentiallyOpenCoordinates
                 ]);
-                return;
+                return true;
             }
 
             if (insideCoordinates.has(newCoords)) {
@@ -422,7 +367,7 @@ function day18Task2(input) {
                     ...outsideCoordinates,
                     ...potentiallyOpenCoordinates
                 ]);
-                return;
+                return true;
             }
 
             if (insideCoordinates.has(newCoords)) {
@@ -443,7 +388,7 @@ function day18Task2(input) {
                     ...outsideCoordinates,
                     ...potentiallyOpenCoordinates
                 ]);
-                return;
+                return true;
             }
 
             if (insideCoordinates.has(newCoords)) {
@@ -455,9 +400,6 @@ function day18Task2(input) {
 
             potentiallyOpenCoordinates.add(newCoords);
         }
-
-        // if we haven't returned by this point, the coordinate is closed, so we can add it to the closedCoordinates set
-        setInsideCoordinates();
 
         function setInsideCoordinates() {
             insideCoordinates = new Set([
