@@ -1,5 +1,8 @@
 const { day18Task2 } = require("../18/2-exterior-surface-area");
-const { testInput: day18Input } = require("../18/input");
+const {
+    testInput: day18Input,
+    simpleInput: day18SimpleInput
+} = require("../18/input");
 
 const { day20Task1 } = require("../20/1-sum-three-numbers-grove-coordinates");
 const { day20Task2 } = require("../20/2-sum-after-ten-rounds");
@@ -18,6 +21,9 @@ const { testInput: day23Input } = require("../23/input");
 
 describe.only("Day 18", () => {
     describe("Task 2", () => {
+        test("should return correct value with my own data", () => {
+            expect(day18Task2(day18SimpleInput)).toBe(102);
+        });
         test("should return correct value with test data", () => {
             expect(day18Task2(day18Input)).toBe(58);
         });
