@@ -392,5 +392,5 @@ function day18Task2(input) {
     }
 }
 
-console.log(day18Task2(input), "Day 18");
+// console.log(day18Task2(input), "Day 18");
 module.exports = { day18Task2 };
