@@ -1,17 +1,40 @@
 const { input } = require("./input");
 
 function day25Task1(input) {
-    // import input
-    // split input into rows
-    // create array of totals, [0s, 5s, 25s, 125s...]
-    // forEach for input rows:
-    // // split into individual chars
-    // // reverse so units first, then fives, 25s etc.
-    // // loop through chars
-    // // // switch to handle value:
-    // // // // handle - and =
-    // // // // default is Number(input)
-    // // // increment totals array by number
+    // in ascending order, i.e. [units, 5s, 25s, 125s]...
+    const placeValueTotals = [];
+
+    const inputSplitByRows = input.split("\n");
+
+    inputSplitByRows.forEach((snafu) => {
+        /**
+         *
+         * THIS CAN PROBABLY BE FARMED TO A SEPARATE METHOD
+         *
+         */
+        const chars = snafu.split("");
+        const charsAscending = chars.reverse();
+
+        charsAscending.forEach((char, index) => {
+            let increment;
+            switch (char) {
+                case "-":
+                    increment = -1;
+                    break;
+                case "=":
+                    increment = -2;
+                    break;
+                default:
+                    increment = Number(char);
+                    break;
+            }
+
+            if (!placeValueTotals[index]) placeValueTotals[index] = 0;
+
+            placeValueTotals[index] += increment;
+        });
+    });
+
     // convert totals array to correct format
     // (either mutate or create a new array)
     // wrap everything in a while loop to ensure it only stops once every value is between -2 and 2
