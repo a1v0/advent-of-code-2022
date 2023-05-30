@@ -10,25 +10,80 @@ const day25Task1 = (input) => {
         extractPlaceValueTotals(snafu, placeValueTotals);
     });
 
-    // convert totals array to correct format
-    // (either mutate or create a new array)
+    return adjustDecimalTotals(placeValueTotals);
+};
+
+const adjustDecimalTotals = (placeValueTotals) => {
+    for (let i = 0; i < placeValueTotals.length; ++i) {
+        let currentValue = placeValueTotals[i];
+        if (currentValue >= -2 && currentValue <= 2) continue;
+
+        /**
+         *
+         *
+         * THIS CODE FEELS LIKE IT MIGHT BE QUITE REPETITIVE.
+         * CONSIDER REFACTORING
+         *
+         *
+         */
+
+        if (currentValue > 2) {
+            const howManyFives = Math.floor(currentValue / 5);
+            if (howManyFives > 0) {
+                placeValueTotals[i + 1] += howManyFives;
+                // // // //
+                // // // //
+                // // // // add error handler in case next column doesn’t yet exist
+                // // // //
+                // // // //
+                const leftOver = currentValue % 5;
+                placeValueTotals[i] = leftOver;
+            } else {
+                placeValueTotals[i + 1] += 1;
+                const newValue = currentValue - 5;
+                placeValueTotals[i] = newValue;
+            }
+        }
+
+        if (currentValue < -2) {
+            /**
+             *
+             *
+             * CAN THIS SECTION BE REFACTORED TO ESSENTIALLY COPY THE ABOVE BUT USING SOMETHING LIKE MATH.SIGN?
+             *
+             *
+             *
+             */
+
+            const positiveCurrentValue = Math.abs(currentValue);
+            const howManyFives = Math.floor(positiveCurrentValue / 5);
+            if (howManyFives > 0) {
+                placeValueTotals[i + 1] -= howManyFives;
+                // // // //
+                // // // //
+                // // // // add error handler in case next column doesn’t yet exist
+                // // // //
+                // // // //
+                const leftOver = positiveCurrentValue % 5;
+                placeValueTotals[i] = leftOver * -1;
+            } else {
+                placeValueTotals[i + 1] -= 1;
+                const newValue = currentValue + 5;
+                placeValueTotals[i] = newValue;
+            }
+        }
+    }
+
+    return convertDecimalToSnafu(placeValueTotals);
+
     // wrap everything in a while loop to ensure it only stops once every value is between -2 and 2
-    // loop through totals
-    // if value is between -2 and 2, leave it
-    // if > 2, find how many times 5 goes into value
-    // // if 1 or more:
-    // // // add amount of times to next column
-    // // // // add error handler in case next column doesn’t yet exist
-    // // // add amount % 5 to current column
-    // // if < 1:
-    // // // add 1 to next column
-    // // // find amount – 5 and replace current column with that value
-    // if < -2, it’s basically as above, but we subtract from the next column, instead of adding
     // // make some fresh test data to test this out using values that give negative numbers in various columns
     // convert to correct format (- and =), stringify, return
 };
 
-const extractPlaceValueTotals = (snafu, totals) => {
+const convertDecimalToSnafu = (placeValueTotals) => {};
+
+const extractPlaceValueTotals = (snafu, placeValueTotals) => {
     const chars = snafu.split("");
     const charsAscending = chars.reverse();
 
@@ -46,9 +101,9 @@ const extractPlaceValueTotals = (snafu, totals) => {
                 break;
         }
 
-        if (!totals[index]) totals[index] = 0;
+        if (!placeValueTotals[index]) placeValueTotals[index] = 0;
 
-        totals[index] += increment;
+        placeValueTotals[index] += increment;
     });
 };
 
