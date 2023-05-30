@@ -29,13 +29,13 @@ const adjustDecimalTotals = (placeValueTotals) => {
             const absoluteCurrentValue = Math.abs(currentValue);
             const howManyFives = Math.floor(absoluteCurrentValue / 5);
 
-            if (howManyFives > 0) {
+            if (howManyFives >= 1) {
                 placeValueTotals[i + 1] += sign * howManyFives;
                 const leftOver = absoluteCurrentValue % 5;
                 placeValueTotals[i] = sign * leftOver;
             } else {
                 placeValueTotals[i + 1] += sign * 1;
-                const newValue = currentValue + sign * -1 * 5;
+                const newValue = currentValue - sign * 5;
                 placeValueTotals[i] = newValue;
             }
         }
@@ -46,6 +46,7 @@ const adjustDecimalTotals = (placeValueTotals) => {
 
 const convertDecimalToSnafu = (placeValueTotals) => {
     placeValueTotals.reverse();
+
     return placeValueTotals.reduce((accumulator, currentValue) => {
         let number;
         switch (currentValue) {
