@@ -22,6 +22,9 @@ const { testInput: day23Input } = require("../23/input");
 const { day24Task1 } = require("../24/1-fewest-minutes-to-avoid-blizzards");
 const { testInput: day24Input } = require("../24/input");
 
+const { day25Task1 } = require("../25/1-what-snafu-number");
+const { testInput: day25Input } = require("../25/input");
+
 describe("Day 18", () => {
     describe("Task 2", () => {
         test("should return correct value with my own data", () => {
@@ -144,10 +147,18 @@ describe("Day 23", () => {
     });
 });
 
-describe.only("Day 24", () => {
+describe("Day 24", () => {
     describe("Task 1", () => {
         test("returns correct value with test data", () => {
             expect(day24Task1(day24Input)).toBe(18);
+        });
+    });
+});
+
+describe.only("Day 25", () => {
+    describe("Task 1", () => {
+        test("returns correct value with test data", () => {
+            expect(day25Task1(day25Input)).toBe("2=-1=0");
         });
     });
 });
