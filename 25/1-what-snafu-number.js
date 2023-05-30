@@ -1,38 +1,13 @@
 const { input } = require("./input");
 
-function day25Task1(input) {
+const day25Task1 = (input) => {
     // in ascending order, i.e. [units, 5s, 25s, 125s]...
     const placeValueTotals = [];
 
     const inputSplitByRows = input.split("\n");
 
     inputSplitByRows.forEach((snafu) => {
-        /**
-         *
-         * THIS CAN PROBABLY BE FARMED TO A SEPARATE METHOD
-         *
-         */
-        const chars = snafu.split("");
-        const charsAscending = chars.reverse();
-
-        charsAscending.forEach((char, index) => {
-            let increment;
-            switch (char) {
-                case "-":
-                    increment = -1;
-                    break;
-                case "=":
-                    increment = -2;
-                    break;
-                default:
-                    increment = Number(char);
-                    break;
-            }
-
-            if (!placeValueTotals[index]) placeValueTotals[index] = 0;
-
-            placeValueTotals[index] += increment;
-        });
+        extractPlaceValueTotals(snafu, placeValueTotals);
     });
 
     // convert totals array to correct format
@@ -51,6 +26,30 @@ function day25Task1(input) {
     // if < -2, it’s basically as above, but we subtract from the next column, instead of adding
     // // make some fresh test data to test this out using values that give negative numbers in various columns
     // convert to correct format (- and =), stringify, return
-}
+};
+
+const extractPlaceValueTotals = (snafu, totals) => {
+    const chars = snafu.split("");
+    const charsAscending = chars.reverse();
+
+    charsAscending.forEach((char, index) => {
+        let increment;
+        switch (char) {
+            case "-":
+                increment = -1;
+                break;
+            case "=":
+                increment = -2;
+                break;
+            default:
+                increment = Number(char);
+                break;
+        }
+
+        if (!totals[index]) totals[index] = 0;
+
+        totals[index] += increment;
+    });
+};
 
 module.exports = { day25Task1 };
