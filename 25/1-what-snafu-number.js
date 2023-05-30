@@ -24,49 +24,19 @@ const adjustDecimalTotals = (placeValueTotals) => {
             if (currentValue >= -2 && currentValue <= 2) continue;
 
             isAdjustmentComplete = false;
-            /**
-             *
-             *
-             * THIS CODE FEELS LIKE IT MIGHT BE QUITE REPETITIVE.
-             * CONSIDER REFACTORING
-             *
-             *
-             */
 
-            if (currentValue > 2) {
-                const howManyFives = Math.floor(currentValue / 5);
-                if (howManyFives > 0) {
-                    placeValueTotals[i + 1] += howManyFives;
-                    const leftOver = currentValue % 5;
-                    placeValueTotals[i] = leftOver;
-                } else {
-                    placeValueTotals[i + 1] += 1;
-                    const newValue = currentValue - 5;
-                    placeValueTotals[i] = newValue;
-                }
-            }
+            const sign = Math.sign(currentValue);
+            const absoluteCurrentValue = Math.abs(currentValue);
+            const howManyFives = Math.floor(absoluteCurrentValue / 5);
 
-            if (currentValue < -2) {
-                /**
-                 *
-                 *
-                 * CAN THIS SECTION BE REFACTORED TO ESSENTIALLY COPY THE ABOVE BUT USING SOMETHING LIKE MATH.SIGN?
-                 *
-                 *
-                 *
-                 */
-
-                const positiveCurrentValue = Math.abs(currentValue);
-                const howManyFives = Math.floor(positiveCurrentValue / 5);
-                if (howManyFives > 0) {
-                    placeValueTotals[i + 1] -= howManyFives;
-                    const leftOver = positiveCurrentValue % 5;
-                    placeValueTotals[i] = leftOver * -1;
-                } else {
-                    placeValueTotals[i + 1] -= 1;
-                    const newValue = currentValue + 5;
-                    placeValueTotals[i] = newValue;
-                }
+            if (howManyFives > 0) {
+                placeValueTotals[i + 1] += sign * howManyFives;
+                const leftOver = absoluteCurrentValue % 5;
+                placeValueTotals[i] = sign * leftOver;
+            } else {
+                placeValueTotals[i + 1] += sign * 1;
+                const newValue = currentValue + sign * -1 * 5;
+                placeValueTotals[i] = newValue;
             }
         }
     }
