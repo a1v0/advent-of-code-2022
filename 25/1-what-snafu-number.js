@@ -37,11 +37,6 @@ const adjustDecimalTotals = (placeValueTotals) => {
                 const howManyFives = Math.floor(currentValue / 5);
                 if (howManyFives > 0) {
                     placeValueTotals[i + 1] += howManyFives;
-                    // // // //
-                    // // // //
-                    // // // // add error handler in case next column doesn’t yet exist
-                    // // // //
-                    // // // //
                     const leftOver = currentValue % 5;
                     placeValueTotals[i] = leftOver;
                 } else {
@@ -65,11 +60,6 @@ const adjustDecimalTotals = (placeValueTotals) => {
                 const howManyFives = Math.floor(positiveCurrentValue / 5);
                 if (howManyFives > 0) {
                     placeValueTotals[i + 1] -= howManyFives;
-                    // // // //
-                    // // // //
-                    // // // // add error handler in case next column doesn’t yet exist
-                    // // // //
-                    // // // //
                     const leftOver = positiveCurrentValue % 5;
                     placeValueTotals[i] = leftOver * -1;
                 } else {
@@ -80,10 +70,8 @@ const adjustDecimalTotals = (placeValueTotals) => {
             }
         }
     }
-    return convertDecimalToSnafu(placeValueTotals);
 
-    // wrap everything in a while loop to ensure it only stops once every value is between -2 and 2
-    // // make some fresh test data to test this out using values that give negative numbers in various columns
+    return convertDecimalToSnafu(placeValueTotals);
 };
 
 const convertDecimalToSnafu = (placeValueTotals) => {
@@ -129,5 +117,7 @@ const extractPlaceValueTotals = (snafu, placeValueTotals) => {
         placeValueTotals[index] += increment;
     });
 };
+
+console.log(day25Task1(input));
 
 module.exports = { day25Task1 };
