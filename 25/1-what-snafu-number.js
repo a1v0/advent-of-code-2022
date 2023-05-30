@@ -81,7 +81,25 @@ const adjustDecimalTotals = (placeValueTotals) => {
     // convert to correct format (- and =), stringify, return
 };
 
-const convertDecimalToSnafu = (placeValueTotals) => {};
+const convertDecimalToSnafu = (placeValueTotals) => {
+    placeValueTotals.reverse();
+    return placeValueTotals.reduce((accumulator, currentValue) => {
+        let number;
+        switch (currentValue) {
+            case -2:
+                number = "=";
+                break;
+            case -1:
+                number = "-";
+                break;
+            default:
+                number = String(currentValue);
+                break;
+        }
+
+        return accumulator + number;
+    }, "");
+};
 
 const extractPlaceValueTotals = (snafu, placeValueTotals) => {
     const chars = snafu.split("");
