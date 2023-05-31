@@ -1,20 +1,16 @@
 const { input } = require("./input");
 
-// split input into lines of instructions
 const instructionLines = input.split("\n");
 
-// map instructions into two-part arrays
 const instructions = instructionLines.map((instructionLine) => {
     return instructionLine.split(" ");
 });
 
-// create an object to hold all locations visited by tail (something like this: { [x,y]:true, [a,b]:true })
-const visitedByTail = {};
+const visitedByTail = {}; // formatted like { "x,y": true, "a,b": true }
 
 // create object to house latest x/y coordinates of head and tail
 const coordinates = { head: [0, 0], tail: [0, 0] };
 
-// loop through instructions, updating objects as I go
 instructions.forEach(([direction, distance]) => {
     for (let i = 0; i < distance; ++i) {
         switch (direction) {
@@ -87,5 +83,4 @@ instructions.forEach(([direction, distance]) => {
     }
 });
 
-// return length of keys of locations object
 console.log(Object.keys(visitedByTail).length);
