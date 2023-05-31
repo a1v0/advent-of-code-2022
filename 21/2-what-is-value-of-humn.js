@@ -22,12 +22,13 @@ function day21Task2(input) {
     ) {
         for (let quartet in monkeys) {
             for (let quartetSearch in monkeys) {
-                if (RegExp(quartet).test(monkeys[quartetSearch])) {
-                    monkeys[quartetSearch] = monkeys[quartetSearch].replace(
+                
+                if (!RegExp(quartet).test(monkeys[quartetSearch])) continue;
+                monkeys[quartetSearch] = monkeys[quartetSearch].replace(
                         quartet,
                         `(${monkeys[quartet]})`
                     );
-                }
+
             }
         }
         if (
@@ -95,11 +96,13 @@ function day21Task2(input) {
     for (let order = 3; order >= 0; --order) {
         while (true) {
             const alvo = humn + Math.pow(sumOfPatternIntervals, order);
+            
             if (!eval(comparisonOvershoot)) {
                 humn = alvo;
-            } else {
+                continue;
+            } 
                 break;
-            }
+            
         }
     }
 
