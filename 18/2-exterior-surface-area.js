@@ -66,12 +66,7 @@ function day18Task2(input) {
     });
 
     // set extremities to 1 above/below to account for the empty coordinates just outside the occupied ones
-    --extremities.lowestX;
-    --extremities.lowestY;
-    --extremities.lowestZ;
-    ++extremities.highestX;
-    ++extremities.highestY;
-    ++extremities.highestZ;
+    extendExtremities(extremities)
 
     let outsideCoordinates = generateCoordinateSet(extremities);
 
@@ -180,6 +175,15 @@ function day18Task2(input) {
 }
 
 // console.log(day18Task2(input), "Day 18");
+
+function extendExtremities(extremities) {
+--extremities.lowestX;
+    --extremities.lowestY;
+    --extremities.lowestZ;
+    ++extremities.highestX;
+    ++extremities.highestY;
+    ++extremities.highestZ;
+}
 
 function generateCoordinateSet({
         lowestX,
