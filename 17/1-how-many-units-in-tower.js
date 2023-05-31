@@ -1,47 +1,6 @@
 const { input } = require("./input");
 
-const horizontalRock = (lowestYCoordinate) => {
-    return [
-        [2, lowestYCoordinate],
-        [3, lowestYCoordinate],
-        [4, lowestYCoordinate],
-        [5, lowestYCoordinate]
-    ];
-};
-const crossRock = (lowestYCoordinate) => {
-    return [
-        [3, lowestYCoordinate + 2],
-        [2, lowestYCoordinate + 1],
-        [3, lowestYCoordinate + 1],
-        [4, lowestYCoordinate + 1],
-        [3, lowestYCoordinate]
-    ];
-};
-const reverseLRock = (lowestYCoordinate) => {
-    return [
-        [4, lowestYCoordinate + 2],
-        [4, lowestYCoordinate + 1],
-        [2, lowestYCoordinate],
-        [3, lowestYCoordinate],
-        [4, lowestYCoordinate]
-    ];
-};
-const verticalRock = (lowestYCoordinate) => {
-    return [
-        [2, lowestYCoordinate + 3],
-        [2, lowestYCoordinate + 2],
-        [2, lowestYCoordinate + 1],
-        [2, lowestYCoordinate]
-    ];
-};
-const squareRock = (lowestYCoordinate) => {
-    return [
-        [2, lowestYCoordinate + 1],
-        [3, lowestYCoordinate + 1],
-        [2, lowestYCoordinate],
-        [3, lowestYCoordinate]
-    ];
-};
+
 
 const blockedCoordinates = new Set();
 
@@ -106,6 +65,11 @@ while (rocksCounter < 2022) {
     ++rocksCounter;
 }
 
+console.log(
+    "highestYCoordinate =",
+    highestYCoordinate + 1
+); // +1 because we're counting "units", not coordinates
+
 function willCollide(rock, [changeInX, changeInY]) {
     for (let coordinates of rock) {
         // check for collisions with walls
@@ -149,8 +113,51 @@ function addBlockedCoordinates(rock) {
     });
 }
 
-console.log(
-    "highestYCoordinate =",
-    highestYCoordinate + 1,
-    "(test data ought to be 3068)"
-); // +1 because we're counting "units", not coordinates
+
+
+const horizontalRock = (lowestYCoordinate) => {
+    return [
+        [2, lowestYCoordinate],
+        [3, lowestYCoordinate],
+        [4, lowestYCoordinate],
+        [5, lowestYCoordinate]
+    ];
+};
+
+const crossRock = (lowestYCoordinate) => {
+    return [
+        [3, lowestYCoordinate + 2],
+        [2, lowestYCoordinate + 1],
+        [3, lowestYCoordinate + 1],
+        [4, lowestYCoordinate + 1],
+        [3, lowestYCoordinate]
+    ];
+};
+
+const reverseLRock = (lowestYCoordinate) => {
+    return [
+        [4, lowestYCoordinate + 2],
+        [4, lowestYCoordinate + 1],
+        [2, lowestYCoordinate],
+        [3, lowestYCoordinate],
+        [4, lowestYCoordinate]
+    ];
+};
+
+const verticalRock = (lowestYCoordinate) => {
+    return [
+        [2, lowestYCoordinate + 3],
+        [2, lowestYCoordinate + 2],
+        [2, lowestYCoordinate + 1],
+        [2, lowestYCoordinate]
+    ];
+};
+
+const squareRock = (lowestYCoordinate) => {
+    return [
+        [2, lowestYCoordinate + 1],
+        [3, lowestYCoordinate + 1],
+        [2, lowestYCoordinate],
+        [3, lowestYCoordinate]
+    ];
+};
