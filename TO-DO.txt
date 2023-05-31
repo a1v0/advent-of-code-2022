@@ -1,0 +1,4 @@
+To-do list:
+
+- format with Prettier
+- 04.2: create separate callback function to map strings directly into full range, skipping the hyphenation mapping stage
