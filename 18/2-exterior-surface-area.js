@@ -1,10 +1,8 @@
 const { input } = require("./input");
 
 function day18Task2(input) {
-    // split input to lines
     const cubesStrings = input.split("\n");
 
-    // collect data on highest and lowest x,y,z values
     const extremities = {
         lowestX: Infinity,
         highestX: -Infinity,
@@ -45,7 +43,6 @@ function day18Task2(input) {
             coordinates[2] - 1
         }`;
 
-        // update lowest/highest values
         if (coordinates[0] < extremities.lowestX) {
             extremities.lowestX = coordinates[0];
         }
@@ -76,16 +73,12 @@ function day18Task2(input) {
     ++extremities.highestY;
     ++extremities.highestZ;
 
-    // set to house all coordinates known to be outside the lava
     let outsideCoordinates = generateCoordinateSet(extremities);
 
-    // set to house all unoccupied coordinates inside the lava
     let insideCoordinates = new Set();
 
-    // set to house any unoccupied neighbour cubes that might be external
     const openNeighbours = new Set();
 
-    // loop through objects, checking if any potential neighbours exist
     cubes.forEach((cube) => {
         const rightNeighbour = cubes.find((potentialNeighbourCube) => {
             return (
@@ -149,7 +142,6 @@ function day18Task2(input) {
         }
     });
 
-    // identify open coordinates
     for (let openNeighbour of openNeighbours) {
         const potentiallyOpenCoordinates = new Set();
         potentiallyOpenCoordinates.add(openNeighbour);
@@ -167,13 +159,11 @@ function day18Task2(input) {
             }
         }
 
-        // if none of those coordinates we checked above yielded anything, mark them as closed
         if (!isOpen) {
             setInsideCoordinates(potentiallyOpenCoordinates);
         }
     }
 
-    // loop through objects to count sides showing
     return cubes.reduce((accumulator, currentCube) => {
         let sidesCount = 0;
         if (outsideCoordinates.has(currentCube.leftNeighbour)) ++sidesCount;
@@ -186,11 +176,6 @@ function day18Task2(input) {
         return accumulator + sidesCount;
     }, 0);
 
-    // -------------------------------------------------------------
-    // Helper functions
-    // -------------------------------------------------------------
-
-    // create a set containing of all coordinates of a 'box' that surrounds the lava
     function generateCoordinateSet({
         lowestX,
         highestX,
@@ -274,8 +259,7 @@ function day18Task2(input) {
 
             if (cubesStrings.includes(newCoords)) break;
 
-            // adds coordinate to explore to potentiallyOpenCoordinates
-            potentiallyOpenCoordinates.add(newCoords);
+                       potentiallyOpenCoordinates.add(newCoords);
         }
 
         // going left
