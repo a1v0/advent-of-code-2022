@@ -20,13 +20,14 @@ function day21Task1(input) {
                 monkeys[quartet][1] = true;
 
                 for (let quartetSearch in monkeys) {
-                    if (RegExp(quartet).test(monkeys[quartetSearch][0])) {
+                    if(!RegExp(quartet).test(monkeys[quartetSearch][0])) continue;
+                    
+                    
                         monkeys[quartetSearch][0] = monkeys[
                             quartetSearch
                         ][0].replace(quartet, monkeys[quartet][0]);
                         break;
-                    }
-                }
+                                    }
             } catch {}
         }
     }
