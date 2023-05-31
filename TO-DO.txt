@@ -12,3 +12,4 @@ To-do list:
 - 12.1: see if you can reduce repetition below multi-line comment
 - 12.1: xFromEnd * xFromEnd + (yFromEnd + yFromEnd): shouldn't that be  xFromEnd * xFromEnd + yFromEnd * yFromEnd?
 - 15.1: see if you can combine last forEach into the preceding one
+- 20.2: check re: test (see first comment), then refactor as normal
