@@ -1,7 +1,5 @@
 const { input } = require("./input.js");
 
-// may God have mercy on the inefficiency of this...
-
 // need to find the no. of characters right up to the end of the first four-character start-of-packet marker
 
 // map string into overlapping substrings, i.e. "1234", "2345", "3456"
@@ -14,8 +12,6 @@ for (let i = 0; i < input.length; ++i) {
     groupOfFour += input[i + 3];
     groupsOfFour.push(groupOfFour);
 }
-
-// loop through each substring, checking if indexOf of each letter === lastIndexOf of each letter
 
 const startOfPacketIndex = getStartOfPacketIndex(groupsOfFour);
 
