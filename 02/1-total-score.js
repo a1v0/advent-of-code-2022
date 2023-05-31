@@ -14,23 +14,26 @@ const rounds = roundsStrings.map((roundString) => {
 let wins = 0,
     losses = 0,
     draws = 0;
-const attackMethods = [];
 
-rounds.forEach((round) => {
+const attackMethods = rounds.map((round) => {
     const elfAttack = round[0];
     const myAttack = round[1];
-    if (
-        (elfAttack === "A" && myAttack === "B") ||
-        (elfAttack === "B" && myAttack === "C") ||
-        (elfAttack === "C" && myAttack === "A")
-    ) {
-        ++wins;
-    } else if (elfAttack === myAttack) {
-        ++draws;
-    } else {
-        ++losses;
+    
+    switch (true) {
+        case elfAttack === "A" && myAttack === "B":
+        case elfAttack === "B" && myAttack === "C":
+        case elfAttack === "C" && myAttack === "A":
+            ++wins;
+            break;
+        case elfAttack === myAttack:
+            ++draws;
+            break;
+        default:
+            ++losses;
+            break;
     }
-    attackMethods.push(myAttack);
+    
+    return myAttack;
 });
 
 let totalScore = 0;
