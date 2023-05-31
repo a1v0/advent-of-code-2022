@@ -2,11 +2,8 @@ const input = require("./input.js");
 
 const pairStrings = input.split("\n");
 
-const hyphenatedPairs = pairStrings.map((pairString) => {
-    return pairString.split(",");
-});
-
-const fullRangePairs = hyphenatedPairs.map((hyphenatedPair) => {
+const fullRangePairs = pairStrings.map((pairString) => {
+    const hyphenatedPair = pairString.split(",");
     const firstPair = hyphenatedPair[0].split("-");
     let firstRange = " ";
     for (let i = Number(firstPair[0]); i <= Number(firstPair[1]); ++i) {
