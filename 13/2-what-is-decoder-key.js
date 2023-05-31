@@ -30,16 +30,13 @@ function comparePackets(leftPacket, rightPacket) {
         if (leftPacket[i] === undefined) return -1;
         else if (rightPacket[i] === undefined) return 1;
         
-        // if both are numbers, compare
+        // if both are numbers
         else if (
             typeof leftPacket[i] === "number" &&
             typeof rightPacket[i] === "number"
         ) {
-            // if left > right, break without adding to counter
             if (leftPacket[i] > rightPacket[i]) return 1;
-            // if left < right, add to counter, then break
             else if (leftPacket[i] < rightPacket[i]) return -1;
-            // else continue
         }
         
         // if one is array
