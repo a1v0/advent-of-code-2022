@@ -1,14 +1,11 @@
 const input = require("./input.js");
 
-// split into pairs
 const pairStrings = input.split("\n");
 
-// split each pair into nested array with two strings
 const hyphenatedPairs = pairStrings.map((pairString) => {
     return pairString.split(",");
 });
 
-// map each item into a string of the full range, e.g. 1-4 => 1234
 const fullRangePairs = hyphenatedPairs.map((hyphenatedPair) => {
     const firstPair = hyphenatedPair[0].split("-");
     let firstRange = " ";
@@ -24,7 +21,6 @@ const fullRangePairs = hyphenatedPairs.map((hyphenatedPair) => {
     return [firstRange, secondRange];
 });
 
-// count how often one string is included in other
 let inclusionCounter = 0;
 fullRangePairs.forEach((fullRangePair) => {
     if (
