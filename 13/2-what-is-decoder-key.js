@@ -66,7 +66,9 @@ allPacketsInOnePile.sort((left, right) => {
     return comparePackets(left, right);
 });
 
-console.log(
-    (allPacketsInOnePile.indexOf(firstDividerPacket) + 1) *
+const decoderKey=    (allPacketsInOnePile.indexOf(firstDividerPacket) + 1) *
         (allPacketsInOnePile.indexOf(secondDividerPacket) + 1)
+
+
+console.log(decoderKey
 );
