@@ -1,7 +1,5 @@
 const allRows = require("./1-how-many-trees-are-visible-from-outside-the-grid.js");
 
-// I have a feeling this solution is going to be hugely inefficient. Let's see how I go
-
 const allColumns = [];
 for (let i = 0; i < allRows[0].length; ++i) {
     const newColumn = [];
@@ -45,7 +43,5 @@ allRows.forEach((treeRow) => {
             scenicScore > highestScenicScore ? scenicScore : highestScenicScore;
     });
 });
-console.log(highestScenicScore);
 
-// console.log(allRows);
-// console.log(allColumns);
+console.log(highestScenicScore);
