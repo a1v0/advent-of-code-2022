@@ -10,12 +10,15 @@ const allSensorsBeacons = allSensorsBeaconsStrings.map(
         const nums = numsStrings.map((numsString) => {
             return Number(numsString);
         });
+        
+const        sensorCoordinates= [nums[0], nums[1]];
+     const       beaconCoordinates= [nums[2], nums[3]];
+          const  manhattanDistance=                Math.abs(nums[0] - nums[2]) + Math.abs(nums[1] - nums[3])
 
         return {
-            sensorCoordinates: [nums[0], nums[1]],
-            beaconCoordinates: [nums[2], nums[3]],
-            manhattanDistance:
-                Math.abs(nums[0] - nums[2]) + Math.abs(nums[1] - nums[3])
+            sensorCoordinates,
+            beaconCoordinates,
+            manhattanDistance
         };
     }
 );
@@ -26,7 +29,7 @@ const beacon = [];
 for (let y = 0; y <= sizeLimit; ++y) {
     const sensorsBeacons = allSensorsBeacons.filter(
         ({ sensorCoordinates, manhattanDistance }) => {
-            // if y is within sensor[1]+Manhattan AND sensor[1]-Manhattan
+            // if y is within sensor[1] + Manhattan AND sensor[1] - Manhattan
             const northernSensorLimit =
                 sensorCoordinates[1] - manhattanDistance;
             const southernSensorLimit =
