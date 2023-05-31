@@ -88,5 +88,5 @@ instructions.forEach(([direction, distance]) => {
     }
 });
 
-// return length of keys of locations object
-console.log(Object.keys(visitedByTail).length);
+const noOfLocationsVisited=Object.keys(visitedByTail).length
+console.log(noOfLocationsVisited);
