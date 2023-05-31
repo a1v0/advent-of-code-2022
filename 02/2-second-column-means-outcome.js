@@ -8,22 +8,26 @@ const rounds = roundsStrings.map((roundString) => {
 let wins = 0,
     losses = 0,
     draws = 0;
-const attackMethods = [];
 
-rounds.forEach((round) => {
+const attackMethods = rounds.map((round) => {
     const elfAttack = round[0];
     const outcome = round[1];
 
-    // count wins/losses/draws
-    if (outcome === "X") {
-        ++losses;
-    } else if (outcome === "Y") {
-        ++draws;
-    } else if (outcome === "Z") {
-        ++wins;
+    switch (outcome) {
+        case "X":
+            ++losses;
+            break;
+        case "Y":
+            ++draws;
+            break;
+        case "Z":
+            ++wins;
+            break;
+        default:
+            break;
     }
 
-    attackMethods.push(findMethod(elfAttack, outcome));
+    return findMethod(elfAttack, outcome);
 });
 
 function findMethod(attack, outcome) {
