@@ -40,6 +40,39 @@ blockers.forEach((blocker) => {
     }
 });
 
+let restingGrainsCounter = 0;
+
+let currentX = 500,
+    currentY = 0;
+
+while (currentX >= leftmost && currentX <= rightmost && currentY < lowest) {
+    if (!blockedCoords.includes(`${currentX},${currentY + 1}`)) {
+        ++currentY;
+        continue;
+    }
+    
+    if (!blockedCoords.includes(`${currentX - 1},${currentY + 1}`)) {
+        --currentX;
+        ++currentY;
+        continue;
+    } 
+    
+    if (!blockedCoords.includes(`${currentX + 1},${currentY + 1}`)) {
+        ++currentX;
+        ++currentY;
+        continue;
+    }
+
+    if (currentX >= leftmost && currentX <= rightmost && currentY < lowest) {
+        blockedCoords.push(`${currentX},${currentY}`);
+        ++restingGrainsCounter;
+        currentX = 500;
+        currentY = 0;
+    }
+}
+
+console.log(restingGrainsCounter);
+
 function addBlockers(start, end, xOrY) {
     // needs to take into account whether it goes up, down, left or right
     const higherNumber = start[xOrY] < end[xOrY] ? end : start;
@@ -55,32 +88,3 @@ function addBlockers(start, end, xOrY) {
         }
     }
 }
-
-let restingGrainsCounter = 0;
-
-let currentX = 500,
-    currentY = 0;
-
-while (currentX >= leftmost && currentX <= rightmost && currentY < lowest) {
-    if (!blockedCoords.includes(`${currentX},${currentY + 1}`)) {
-        ++currentY;
-        continue;
-    } else if (!blockedCoords.includes(`${currentX - 1},${currentY + 1}`)) {
-        --currentX;
-        ++currentY;
-        continue;
-    } else if (!blockedCoords.includes(`${currentX + 1},${currentY + 1}`)) {
-        ++currentX;
-        ++currentY;
-        continue;
-    }
-
-    if (currentX >= leftmost && currentX <= rightmost && currentY < lowest) {
-        blockedCoords.push(`${currentX},${currentY}`);
-        ++restingGrainsCounter;
-        currentX = 500;
-        currentY = 0;
-    }
-}
-
-console.log(restingGrainsCounter);
