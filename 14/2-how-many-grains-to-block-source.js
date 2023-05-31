@@ -62,14 +62,18 @@ while (!blockedCoords.includes("500,0")) {
     ) {
         ++currentY;
         continue;
-    } else if (
+    } 
+    
+    if (
         !blockedCoords.includes(`${currentX - 1},${currentY + 1}`) &&
         currentY + 1 < lowest
     ) {
         --currentX;
         ++currentY;
         continue;
-    } else if (
+    } 
+    
+    if (
         !blockedCoords.includes(`${currentX + 1},${currentY + 1}`) &&
         currentY + 1 < lowest
     ) {
