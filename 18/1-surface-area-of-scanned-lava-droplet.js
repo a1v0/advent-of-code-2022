@@ -76,9 +76,7 @@ cubes.forEach((cube) => {
     if (frontNeighbour) decreaseSidesShowing(cube);
     if (backNeighbour) decreaseSidesShowing(cube);
 
-    function decreaseSidesShowing(cube) {
-        --cube.sidesShowing;
-    }
+   
 });
 
 const sidesShowing = cubes.reduce((accumulator, currentCube) => {
@@ -86,3 +84,7 @@ const sidesShowing = cubes.reduce((accumulator, currentCube) => {
 }, 0);
 
 console.log(sidesShowing);
+
+ function decreaseSidesShowing(cube) {
+        --cube.sidesShowing;
+    }
