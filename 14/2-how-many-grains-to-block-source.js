@@ -1,9 +1,7 @@
 const { input } = require("./input");
 
-// split input into array of rows
 const blockersStrings = input.split("\n");
 
-// split each row into a selection of coordinates
 const blockers = blockersStrings.map((blockersString) => {
     const coordsStrings = blockersString.split(" -> ");
     const coords = coordsStrings.map((coordsString) => {
@@ -16,13 +14,11 @@ const blockers = blockersStrings.map((blockersString) => {
     return coords;
 });
 
-// create array to house all blocked coordinates
 const blockedCoords = [];
 
-// store extremities of map
+// extremities
 let lowest = 0;
 
-// loop through rows, calculating every blocked coordinate and adding it to array
 blockers.forEach((blocker) => {
     for (let i = 0; i < blocker.length - 1; ++i) {
         addBlockers(
@@ -54,10 +50,8 @@ function addBlockers(start, end, xOrY) {
     }
 }
 
-// create a counter to count resting grains of sand
 let restingGrainsCounter = 0;
 
-// make a while loop to drop sand until a grain of sand has reached the abyss
 let currentX = 500,
     currentY = -1;
 
@@ -90,5 +84,4 @@ while (!blockedCoords.includes("500,0")) {
     currentY = -1;
 }
 
-// return total amount of resting sand grains at the end
 console.log(restingGrainsCounter);
