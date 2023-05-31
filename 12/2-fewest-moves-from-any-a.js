@@ -1,12 +1,9 @@
 const { input } = require("./input");
 
-// split input into rows
 const rows = input.split("\n");
 
-// create string listing all letters
 const letters = "abcdefghijklmnopqrstuvwxyz";
 
-// identify coordinates of end
 const starts = [];
 const end = new Array(2); // holds x,y values of end
 
@@ -21,17 +18,13 @@ for (let y = 0; y < rows.length; ++y) {
             }
         }
     }
+    
     if (rows[y].includes("E")) {
+        end[0] = rows[y].indexOf("E");
         end[1] = y;
-        for (let x = 0; x < rows[y].length; ++x) {
-            if (rows[y][x] === "E") {
-                end[0] = x;
-            }
-        }
     }
 }
 
-// create new array to list every node's distance from end
 const distancesFromEnd = rows.map((row, y) => {
     const rowDistances = [];
     for (let x = 0; x < row.length; ++x) {
@@ -48,7 +41,6 @@ const distancesFromEnd = rows.map((row, y) => {
 const routeLengths = [];
 
 starts.forEach((start) => {
-    // create array of visited nodes
     const visitedCoordinates = [];
 
     // replace E and S with normal letters to prevent confusion
