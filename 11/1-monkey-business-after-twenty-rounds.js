@@ -27,7 +27,9 @@ const monkeys = monkeysStrings.map((monkeyString) => {
     return monkey;
 });
 
-for (let i = 0; i < 20; ++i) {
+const loopAmount=20
+
+for (let i = 0; i < loopAmount; ++i) {
     monkeys.forEach((monkey) => {
         monkey.startingItems.forEach((startingItem) => {
             const old = startingItem;
@@ -52,6 +54,5 @@ const highest = Math.max(...objectsInspected);
 objectsInspected.splice(objectsInspected.indexOf(highest), 1);
 const secondHighest = Math.max(...objectsInspected);
 
-// return product of those two values
-
-console.log(highest * secondHighest);
+const highestTimesSecondHighest=highest * secondHighest
+console.log(highestTimesSecondHighest);
