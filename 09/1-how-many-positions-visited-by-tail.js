@@ -28,20 +28,25 @@ instructions.forEach(([direction, distance]) => {
                 break;
         }
 
+        const headX=coordinates.head[0]
+        const tailX=coordinates.tail[0]
+        const headY=coordinates.head[1]
+        const tailY=coordinates.tail[1]
+        
         if (
-            coordinates.head[0] - coordinates.tail[0] < -1 ||
-            coordinates.head[0] - coordinates.tail[0] > 1 ||
-            coordinates.head[1] - coordinates.tail[1] < -1 ||
-            coordinates.head[1] - coordinates.tail[1] > 1
+            headX - tailX < -1 ||
+            headX - tailX > 1 ||
+            headY -tailY < -1 ||
+       headY - tailY> 1
         ) {
             // if they share same y
-            if (coordinates.head[1] === coordinates.tail[1]) {
+            if (headY === tailY) {
                 direction === "L"
                     ? --coordinates.tail[0]
                     : ++coordinates.tail[0];
             }
             // if they share the same x
-            else if (coordinates.head[0] === coordinates.tail[0]) {
+            else if (headX === tailX) {
                 direction === "D"
                     ? --coordinates.tail[1]
                     : ++coordinates.tail[1];
@@ -50,24 +55,24 @@ instructions.forEach(([direction, distance]) => {
             else {
                 // up right
                 if (
-                    coordinates.head[0] > coordinates.tail[0] &&
-                    coordinates.head[1] > coordinates.tail[1]
+                    headX > tailX &&
+                    headY > tailY
                 ) {
                     ++coordinates.tail[0];
                     ++coordinates.tail[1];
                 }
                 // up left
                 else if (
-                    coordinates.head[0] < coordinates.tail[0] &&
-                    coordinates.head[1] > coordinates.tail[1]
+                    headX < tailX &&
+                    headY > tailY
                 ) {
                     --coordinates.tail[0];
                     ++coordinates.tail[1];
                 }
                 // down right
                 else if (
-                    coordinates.head[0] > coordinates.tail[0] &&
-                    coordinates.head[1] < coordinates.tail[1]
+                    headX > tailX &&
+                    headY < tailY
                 ) {
                     ++coordinates.tail[0];
                     --coordinates.tail[1];
@@ -83,4 +88,6 @@ instructions.forEach(([direction, distance]) => {
     }
 });
 
-console.log(Object.keys(visitedByTail).length);
+const quantityVisitedByTail=Object.keys(visitedByTail).length
+
+console.log(quantityVisitedByTail);
