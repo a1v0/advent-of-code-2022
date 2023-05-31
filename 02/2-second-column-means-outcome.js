@@ -1,13 +1,11 @@
 const { input } = require("./input.js");
 
-// split input into individual rounds
 const roundsStrings = input.split("\n");
 const rounds = roundsStrings.map((roundString) => {
     return roundString.split(" ");
 });
 console.log(rounds);
 
-// create vars for wins, losses and draws, and array of methods
 let wins = 0,
     losses = 0,
     draws = 0;
@@ -26,7 +24,6 @@ rounds.forEach((round) => {
         ++wins;
     }
 
-    // count methods
     attackMethods.push(findMethod(elfAttack, outcome));
 });
 
@@ -44,7 +41,6 @@ function findMethod(attack, outcome) {
     }
 }
 
-// add methods, wins, losses and draws to total
 let totalScore = 0;
 
 totalScore += wins * 6;
