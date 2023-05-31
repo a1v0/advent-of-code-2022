@@ -1,15 +1,12 @@
 const { input } = require("./input");
 
-// split input into lines of instructions
 const instructionLines = input.split("\n");
 
-// map instructions into two-part arrays
 const instructions = instructionLines.map((instructionLine) => {
     return instructionLine.split(" ");
 });
 
-// create an object to hold all locations visited by tail (something like this: { [x,y]:true, [a,b]:true })
-const visitedByTail = {};
+const visitedByTail = {};// contents formatted like this: { "x,y": true, "a,b": true }
 
 // coordinates now an array going from head to tail in order
 const coordinates = [
