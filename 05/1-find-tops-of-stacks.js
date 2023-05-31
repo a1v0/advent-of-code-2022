@@ -12,9 +12,8 @@ moves.forEach((move) => {
     stacks[move.to - 1].splice(0, 0, ...removedElements.reverse());
 });
 
-let firstItems = "";
-stacks.forEach((stack) => {
-    firstItems += stack[0];
-});
+const firstItems = stacks.reduce((accumulator, stack) => {
+    return accumulator + stack[0];
+}, "");
 
 console.log(firstItems);
