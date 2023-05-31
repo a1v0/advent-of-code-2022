@@ -30,20 +30,6 @@ const attackMethods = rounds.map((round) => {
     return findMethod(elfAttack, outcome);
 });
 
-function findMethod(attack, outcome) {
-    if (outcome === "Y") return attack;
-    if (outcome === "X") {
-        if (attack === "A") return "C";
-        if (attack === "B") return "A";
-        if (attack === "C") return "B";
-    }
-    if (outcome === "Z") {
-        if (attack === "A") return "B";
-        if (attack === "B") return "C";
-        if (attack === "C") return "A";
-    }
-}
-
 let totalScore = 0;
 
 totalScore += wins * 6;
@@ -61,3 +47,17 @@ attackMethods.forEach((attackMethod) => {
 });
 
 console.log(totalScore);
+
+function findMethod(attack, outcome) {
+    if (outcome === "Y") return attack;
+    if (outcome === "X") {
+        if (attack === "A") return "C";
+        if (attack === "B") return "A";
+        if (attack === "C") return "B";
+    }
+    if (outcome === "Z") {
+        if (attack === "A") return "B";
+        if (attack === "B") return "C";
+        if (attack === "C") return "A";
+    }
+}
