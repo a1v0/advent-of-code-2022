@@ -4,3 +4,4 @@ To-do list:
 - 04.1: create separate callback function to map strings directly into full range, skipping the hyphenation mapping stage
 - 05.2: refactor based on 05.1
 - 06.1: continue to improve if statements, perhaps using better variable naming
+- 06.2: refactor based on 06.1
