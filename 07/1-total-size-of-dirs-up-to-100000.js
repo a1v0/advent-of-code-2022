@@ -6,10 +6,8 @@ const { input } = require("./input");
 const bashListCommandRegex = /\$\sls\n/g;
 const inputWithoutLs = input.replace(bashListCommandRegex, "");
 
-// split input by $
 const commandsStrings = inputWithoutLs.split("$ ");
 
-// create array of nested commands
 const commands = commandsStrings.map((commandsString) => {
     const command = commandsString.split("\n");
     command.pop(); // gets rid of "" that comes from split()
@@ -20,13 +18,10 @@ commands.shift(); // removes [""] that was left when we created commandsStrings
 // create root object, representing / directory. Each directory obj has a "size" property
 const root = { size: 0 };
 
-// create array containing elements of the current path (which can be spliced as necessary)
 const currentPath = [];
 
-// create array of all paths and input each path into it as you go along (input as string to make it easy to check if a path has already been entered)
 const allPaths = [];
 
-// loop through input, inputting dirs and files into tree
 commands.forEach((command) => {
     const cdCommand = command[0].split(" ")[1];
     switch (cdCommand) {
@@ -40,9 +35,11 @@ commands.forEach((command) => {
             currentPath.push(cdCommand);
             break;
     }
+    
     const currentPathString = currentPath.reduce((path, currentElement) => {
         return path + `["${currentElement}"]`;
     }, "root");
+    
     if (!allPaths.includes(currentPathString)) {
         allPaths.push(currentPathString);
     }
@@ -58,7 +55,6 @@ commands.forEach((command) => {
     }
 });
 
-// loop through tree, counting total folder sizes
 allPaths.sort((a, b) => {
     return b.split("[").length - a.split("[").length;
 });
@@ -70,9 +66,11 @@ allPaths.forEach((path) => {
         if (typeof currentDirectory[node] === "object") {
             currentDirectory.size += currentDirectory[node].size;
             allDirSizes.push(currentDirectory[node].size);
-        } else {
-            currentDirectory.size += currentDirectory[node];
-        }
+            continue;
+        } 
+        
+        currentDirectory.size += currentDirectory[node];
+        
     }
 });
 
@@ -84,4 +82,3 @@ const sumOfDirsUpTo100000 = allDirSizes.reduce((accumulator, currentSize) => {
 }, 0);
 
 console.log(sumOfDirsUpTo100000);
-// 1118405
