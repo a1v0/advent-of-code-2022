@@ -5,3 +5,4 @@ To-do list:
 - 05.2: refactor based on 05.1
 - 06.1: continue to improve if statements, perhaps using better variable naming
 - 06.2: refactor based on 06.1
+- 07.1: look at `commands.shift(); // removes [""] that was left when we created commandsStrings` and assess whether it can be moved elsewhere or handled differently
