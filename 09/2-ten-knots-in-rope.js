@@ -9,18 +9,10 @@ const instructions = instructionLines.map((instructionLine) => {
 const visitedByTail = {};// contents formatted like this: { "x,y": true, "a,b": true }
 
 // coordinates now an array going from head to tail in order
-const coordinates = [
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0]
-];
+const coordinates = [];
+
+for(let i=0;i<10;++i){
+coordinates.push([0,0]);}
 
 instructions.forEach(([direction, distance]) => {
     for (let i = 0; i < distance; ++i) {
