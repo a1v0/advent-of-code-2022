@@ -12,6 +12,19 @@ const packets = packetsStrings.map((packetString) => {
 
 const correctOrderIndices = [];
 
+packets.forEach((packet, index) => {
+    comparePackets(packet[0], packet[1], index);
+});
+
+const sumCorrectOrderIndices = correctOrderIndices.reduce(
+    (total, currentIndex) => {
+        return total + currentIndex + 1; // +1 because the indices are not zero-indexed
+    },
+    0
+);
+
+console.log(sumCorrectOrderIndices);
+
 function comparePackets(leftPacket, rightPacket, index) {
     const loopLength =
         leftPacket.length > rightPacket.length
@@ -58,16 +71,3 @@ function comparePackets(leftPacket, rightPacket, index) {
         }
     }
 }
-
-packets.forEach((packet, index) => {
-    comparePackets(packet[0], packet[1], index);
-});
-
-const sumCorrectOrderIndices = correctOrderIndices.reduce(
-    (total, currentIndex) => {
-        return total + currentIndex + 1; // +1 because the indices are not zero-indexed
-    },
-    0
-);
-
-console.log(sumCorrectOrderIndices);
