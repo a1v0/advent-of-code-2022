@@ -2,7 +2,6 @@ const { input, rowToCheck } = require("./input");
 
 const allSensorsBeaconsStrings = input.split("\n");
 
-// map rows into objects { beaconCoordinates:[], sensorCoords:[], manhattanDistance: Number }
 const allSensorsBeacons = allSensorsBeaconsStrings.map(
     (sensorsBeaconsString) => {
         const numsRegex = /(?<=[xy]=)-*\d+/g;
@@ -11,12 +10,15 @@ const allSensorsBeacons = allSensorsBeaconsStrings.map(
         const nums = numsStrings.map((numsString) => {
             return Number(numsString);
         });
+        
+        const sensorCoordinates= [nums[0], nums[1]]
+        const beaconCoordinates=[nums[2], nums[3]]
+        const manhattanDistance=                Math.abs(nums[0] - nums[2]) + Math.abs(nums[1] - nums[3])
 
         return {
-            sensorCoordinates: [nums[0], nums[1]],
-            beaconCoordinates: [nums[2], nums[3]],
-            manhattanDistance:
-                Math.abs(nums[0] - nums[2]) + Math.abs(nums[1] - nums[3])
+            sensorCoordinates,
+            beaconCoordinates,
+            manhattanDistance
         };
     }
 );
