@@ -1,6 +1,5 @@
 const { input } = require("./input");
 
-// split inputs into array of individual commands
 const commandsStrings = input.split("\n");
 
 // map commands into array that resembles clock cycles (i.e. each addx takes up two spaces)
@@ -12,7 +11,6 @@ commandsStrings.forEach((commandsString) => {
     }
 });
 
-// create x, create string to represent CRT monitor
 let x = 1;
 let screen = "";
 
@@ -32,12 +30,3 @@ for (let i = 1; i < commandsInClock.length; ++i) {
     }
 }
 console.log(screen);
-
-/*
-    ##.###...##..###..#....####.####.#..#..
-    ..#.#..#.#..#.#..#.#....#.......#.#..#..
-    .#..#..#.#..#.#..#.#....###....#..#..#..
-    #...###..####.###..#....#.....#...#..#..
-    ....#.#..#..#.#.#..#....#....#....#..#..
-    ###.#..#.#..#.#..#.####.#....####..##...
-*/
