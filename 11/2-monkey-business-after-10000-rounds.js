@@ -2,31 +2,7 @@ const { input } = require("./input");
 
 const monkeysStrings = input.split("\n\n");
 
-const monkeys = monkeysStrings.map((monkeyString) => {
-    const monkey = { objectsInspected: 0 };
-
-    const startingItemsRegex = /(?<=Starting items: )[\d+,*\s]+(?=\n)/;
-    const startingItemsString = monkeyString.match(startingItemsRegex)[0];
-    const startingItemsStrings = startingItemsString.split(", ");
-    monkey.startingItems = startingItemsStrings.map((startingItemsString) => {
-        return Number(startingItemsString);
-    });
-
-    const operationRegex = /(?<=new\s\=\s)[a-z0-9\s\+\*\-\/]+(?=\n)/;
-    const operation = monkeyString.match(operationRegex)[0];
-    monkey.operation = operation;
-
-    const divisorRegex = /(?<=divisible by )[0-9]+(?=\n)/;
-    monkey.divisor = monkeyString.match(divisorRegex)[0];
-
-    const trueRegex = /(?<=true: throw to monkey )[0-9]+(?=\n)/;
-    const falseRegex = /(?<=false: throw to monkey )[0-9]+/;
-
-    monkey.monkeyTrue = Number(monkeyString.match(trueRegex)[0]);
-    monkey.monkeyFalse = Number(monkeyString.match(falseRegex)[0]);
-
-    return monkey;
-});
+const monkeys = monkeysStrings.map(createMonkey);
 
 const specialDivisor = monkeys.reduce((acc, monkey) => {
     return acc * monkey.divisor;
@@ -56,3 +32,27 @@ objectsInspected.splice(objectsInspected.indexOf(highest), 1);
 const secondHighest = Math.max(...objectsInspected);
 
 console.log(highest * secondHighest);
+
+const createMonkey=(monkeyString)=>{const monkey = { objectsInspected: 0 };
+
+    const startingItemsRegex = /(?<=Starting items: )[\d+,*\s]+(?=\n)/;
+    const startingItemsString = monkeyString.match(startingItemsRegex)[0];
+    const startingItemsStrings = startingItemsString.split(", ");
+    monkey.startingItems = startingItemsStrings.map((startingItemsString) => {
+        return Number(startingItemsString);
+    });
+
+    const operationRegex = /(?<=new\s\=\s)[a-z0-9\s\+\*\-\/]+(?=\n)/;
+    const operation = monkeyString.match(operationRegex)[0];
+    monkey.operation = operation;
+
+    const divisorRegex = /(?<=divisible by )[0-9]+(?=\n)/;
+    monkey.divisor = monkeyString.match(divisorRegex)[0];
+
+    const trueRegex = /(?<=true: throw to monkey )[0-9]+(?=\n)/;
+    const falseRegex = /(?<=false: throw to monkey )[0-9]+/;
+
+    monkey.monkeyTrue = Number(monkeyString.match(trueRegex)[0]);
+    monkey.monkeyFalse = Number(monkeyString.match(falseRegex)[0]);
+
+    return monkey;}
