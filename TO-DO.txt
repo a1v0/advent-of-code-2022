@@ -14,3 +14,4 @@ To-do list:
 - 15.1: see if you can combine last forEach into the preceding one
 - 20.2: check re: test (see first comment), then refactor as normal
 - 21.1: "let monkeyCry": can't this be const?
+- 22.1: move move() outside of main method, and return the updated value of "direction"
