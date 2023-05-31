@@ -5,8 +5,10 @@ function day21Task1(input) {
 
     const monkeys = {};
     inputStrings.forEach((inputString) => {
-        const monkeyName = inputString.match(/^\w{4}/)[0];
-        let monkeyCry = inputString.match(/(?<=:\s).*$/)[0];
+        const monkeyNameRegex=/^\w{4}/
+        const monkeyName = inputString.match(monkeyNameRegex)[0];
+        const monkeyCryRegex=/(?<=:\s).*$/
+        let monkeyCry = inputString.match(monkeyCryRegex)[0];
         monkeys[monkeyName] = [monkeyCry, false];
     });
 
