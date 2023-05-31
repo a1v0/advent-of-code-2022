@@ -1,9 +1,12 @@
 const { input } = require("../22/input");
 
 function day22Task1(input) {
-    const instructionsString = input.match(/\w+/)[0];
+    
+    const instructionsStringRegex=/\w+/
+          const instructionsString = input.match(instructionsStringRegex)[0];
+const instructionsRegex=/\d+|\D/g
     const instructions = instructionsString
-        .match(/\d+|\D/g)
+        .match(instructionsRegex)
         .map((instruction) => {
             if (!isNaN(Number(instruction))) {
                 return Number(instruction);
@@ -11,7 +14,8 @@ function day22Task1(input) {
             return instruction;
         });
 
-    const boardString = input.match(/^[\s\#\.]+(?=\n\n)/)[0];
+    const boardStringRegex=/^[\s\#\.]+(?=\n\n)/
+    const boardString = input.match(boardStringRegex)[0];
 
     const board = [];
     const boardRows = boardString.split("\n");
