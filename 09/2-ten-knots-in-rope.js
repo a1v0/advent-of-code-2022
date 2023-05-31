@@ -81,13 +81,10 @@ instructions.forEach(([direction, distance]) => {
                 ) {
                     --coordinates[j + 1][0];
                     --coordinates[j + 1][1];
-                } else {
-                    console.log("hello!", coordinates[j], coordinates[j + 1]);
-                }
+                } 
             }
         }
         visitedByTail[`${coordinates[9][0]},${coordinates[9][1]}`] = true;
-        // console.log(coordinates);
     }
 });
 
