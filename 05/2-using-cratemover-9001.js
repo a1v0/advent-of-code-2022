@@ -4,7 +4,8 @@ const { stacks, moves: movesString } = require("./input.js");
 
 const moveStrings = movesString.split("\n");
 const moves = moveStrings.map((moveString) => {
-    const numbers = moveString.match(/\d+/g);
+    const numbersRegex = /\d+/g;
+    const numbers = moveString.match(numbersRegex);
     return { quantity: numbers[0], from: numbers[1], to: numbers[2] };
 });
 
