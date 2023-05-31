@@ -1,9 +1,7 @@
 const { input, sizeLimit } = require("./input");
 
-// split input into rows
 const allSensorsBeaconsStrings = input.split("\n");
 
-// map rows into objects { beaconCoordinates:[], sensorCoords:[], manhattanDistance: Number }
 const allSensorsBeacons = allSensorsBeaconsStrings.map(
     (sensorsBeaconsString) => {
         const numsRegex = /(?<=[xy]=)-*\d+/g;
@@ -22,13 +20,10 @@ const allSensorsBeacons = allSensorsBeaconsStrings.map(
     }
 );
 
-// create array to store beacon's location
 const beacon = [];
 
 // loop through every row (it's 4mil rows, so may be inefficient...)
 for (let y = 0; y <= sizeLimit; ++y) {
-    console.log(y);
-    // loop through to identify any sensors where rowToCheck falls within their Manhattan range
     const sensorsBeacons = allSensorsBeacons.filter(
         ({ sensorCoordinates, manhattanDistance }) => {
             // if y is within sensor[1]+Manhattan AND sensor[1]-Manhattan
@@ -40,7 +35,6 @@ for (let y = 0; y <= sizeLimit; ++y) {
         }
     );
 
-    // using logic similar to Task 1, identify ranges, as [startX, endX]
     const rowRanges = sensorsBeacons.map(
         ({ sensorCoordinates, manhattanDistance }) => {
             // find difference in y coordinates between sensorBeacon and rowToCheck
@@ -88,8 +82,5 @@ for (let y = 0; y <= sizeLimit; ++y) {
     if (beacon[0] !== undefined) break;
 }
 
-console.log(beacon);
-
-// multiply x by 4000000 and add y
 const tuningFrequency = beacon[0] * 4000000 + beacon[1];
 console.log(tuningFrequency);
