@@ -19,17 +19,15 @@ for (let i = 0; i < input.length; ++i) {
 
 let startOfPacketIndex;
 for (let i = 0; i < groupsOfFour.length; ++i) {
-    if (
-        groupsOfFour[i].indexOf(groupsOfFour[i][0]) ===
-            groupsOfFour[i].lastIndexOf(groupsOfFour[i][0]) &&
-        groupsOfFour[i].indexOf(groupsOfFour[i][1]) ===
-            groupsOfFour[i].lastIndexOf(groupsOfFour[i][1]) &&
-        groupsOfFour[i].indexOf(groupsOfFour[i][2]) ===
-            groupsOfFour[i].lastIndexOf(groupsOfFour[i][2])
-    ) {
+    if (groupsOfFour[i].indexOf(groupsOfFour[i][0]) !==
+            groupsOfFour[i].lastIndexOf(groupsOfFour[i][0])) continue;
+    if (groupsOfFour[i].indexOf(groupsOfFour[i][1]) !==
+            groupsOfFour[i].lastIndexOf(groupsOfFour[i][1])) continue;
+    if (groupsOfFour[i].indexOf(groupsOfFour[i][2]) !==
+            groupsOfFour[i].lastIndexOf(groupsOfFour[i][2])) continue;
+    
         startOfPacketIndex = i;
         break;
-    }
 }
 
 // log index of the first substring that passes the test, then return index + 4
