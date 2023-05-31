@@ -1,8 +1,5 @@
 To-do list:
 
-- 05.2: refactor based on 05.1
-- 06.1: continue to improve if statements, perhaps using better variable naming
-- 06.2: refactor based on 06.1
 - 07.1: look at `commands.shift(); // removes [""] that was left when we created commandsStrings` and assess whether it can be moved elsewhere or handled differently
 - 07.2: refactor based on 07.1
 - 09.1: rename "coordinates" to something more descriptive so that explanatory comment can be removed
@@ -13,4 +10,4 @@ To-do list:
 - 20.2: check re: test (see first comment), then refactor as normal
 - 21.1: "let monkeyCry": can't this be const?
 - 22.1: move move() outside of main method, and return the updated value of "direction"
-- format with Prettier
+- AFTER ALL: format with Prettier
