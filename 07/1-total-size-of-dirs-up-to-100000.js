@@ -3,7 +3,8 @@ const { input } = require("./input");
 // Find all of the directories with a total size of at most 100000. What is the sum of the total sizes of those directories?
 
 // remove all lines of "$ ls\n" from input, as these are a distraction
-const inputWithoutLs = input.replace(/\$\sls\n/g, "");
+const bashListCommandRegex = /\$\sls\n/g;
+const inputWithoutLs = input.replace(bashListCommandRegex, "");
 
 // split input by $
 const commandsStrings = inputWithoutLs.split("$ ");
