@@ -4,7 +4,6 @@ const roundsStrings = input.split("\n");
 const rounds = roundsStrings.map((roundString) => {
     return roundString.split(" ");
 });
-console.log(rounds);
 
 let wins = 0,
     losses = 0,
