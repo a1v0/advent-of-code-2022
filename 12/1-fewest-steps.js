@@ -9,20 +9,13 @@ const end = new Array(2); // holds x,y values of end
 
 for (let y = 0; y < rows.length; ++y) {
     if (rows[y].includes("S")) {
+        start[0] = rows[y].indexOf("S");
         start[1] = y;
-        for (let x = 0; x < rows[y].length; ++x) {
-            if (rows[y][x] === "S") {
-                start[0] = x;
-            }
-        }
     }
+ 
     if (rows[y].includes("E")) {
+        end[0] = rows[y].indexOf("E");
         end[1] = y;
-        for (let x = 0; x < rows[y].length; ++x) {
-            if (rows[y][x] === "E") {
-                end[0] = x;
-            }
-        }
     }
 }
 
