@@ -12,10 +12,6 @@ for (let i = 0; i < input.length; ++i) {
     groupsOfFourteen.push(groupOfFourteen);
 }
 
-function isUnique(string, value) {
-    return string.indexOf(value) === string.lastIndexOf(value);
-}
-
 let startOfMessageIndex;
 for (let i = 0; i < groupsOfFourteen.length; ++i) {
     let stateSetter = true;
@@ -32,3 +28,7 @@ for (let i = 0; i < groupsOfFourteen.length; ++i) {
 }
 
 console.log(startOfMessageIndex + 14);
+
+const isUnique = (string, value) => {
+    return string.indexOf(value) === string.lastIndexOf(value);
+};
