@@ -176,7 +176,12 @@ function day18Task2(input) {
         return accumulator + sidesCount;
     }, 0);
 
-    function generateCoordinateSet({
+    
+}
+
+// console.log(day18Task2(input), "Day 18");
+
+function generateCoordinateSet({
         lowestX,
         highestX,
         lowestY,
@@ -374,7 +379,5 @@ function day18Task2(input) {
             ...potentiallyOpenCoordinates
         ]);
     }
-}
 
-// console.log(day18Task2(input), "Day 18");
 module.exports = { day18Task2 };
