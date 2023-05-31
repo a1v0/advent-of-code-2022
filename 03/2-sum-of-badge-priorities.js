@@ -13,12 +13,11 @@ for (let i = 0; i < rucksackStrings.length; i += 3) {
 
 rucksackGroups.forEach((rucksackGroup) => {
     for (let letter of rucksackGroup.first) {
-        if (rucksackGroup.second.includes(letter)) {
-            if (rucksackGroup.third.includes(letter)) {
-                rucksackGroup.badge = letter;
-                break;
-            }
-        }
+        if (!rucksackGroup.second.includes(letter)) continue;
+        if (!rucksackGroup.third.includes(letter)) continue;
+        
+        rucksackGroup.badge = letter;
+        break;        
     }
 });
 
