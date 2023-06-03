@@ -116,7 +116,7 @@ while (shortestRouteLength === undefined) {
 
 console.log(shortestRouteLength - 1);
 
-const findStartAndEnd = (rows, start, end) => {
+function findStartAndEnd(rows, start, end) {
     for (let y = 0; y < rows.length; ++y) {
         if (rows[y].includes("S")) {
             start[0] = rows[y].indexOf("S");
@@ -128,4 +128,4 @@ const findStartAndEnd = (rows, start, end) => {
             end[1] = y;
         }
     }
-};
+}
