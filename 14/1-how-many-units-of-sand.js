@@ -1,9 +1,7 @@
 const { input } = require("./input");
 
-// split input into array of rows
 const blockersStrings = input.split("\n");
 
-// split each row into a selection of coordinates
 const blockers = blockersStrings.map((blockersString) => {
     const coordsStrings = blockersString.split(" -> ");
     const coords = coordsStrings.map((coordsString) => {
@@ -16,15 +14,13 @@ const blockers = blockersStrings.map((blockersString) => {
     return coords;
 });
 
-// create array to house all blocked coordinates
 const blockedCoords = [];
 
-// store extremities of map
+// extremities of map
 let leftmost = 500,
     rightmost = 500,
     lowest = 0;
 
-// loop through rows, calculating every blocked coordinate and adding it to array
 blockers.forEach((blocker) => {
     for (let i = 0; i < blocker.length - 1; ++i) {
         addBlockers(
@@ -33,16 +29,52 @@ blockers.forEach((blocker) => {
             blocker[i][0] !== blocker[i + 1][0] ? 0 : 1
         );
 
-        // identify extremities of grid
-        if (blocker[i][0] < leftmost) leftmost = blocker[i][0];
-        if (blocker[i + 1][0] < leftmost) leftmost = blocker[i + 1][0];
-        if (blocker[i][0] > rightmost) rightmost = blocker[i][0];
-        if (blocker[i + 1][0] > rightmost) rightmost = blocker[i + 1][0];
-
-        if (blocker[i][1] > lowest) lowest = blocker[i][1];
-        if (blocker[i + 1][1] > lowest) lowest = blocker[i + 1][1];
+        identifyExtremities(blocker, i);
     }
 });
+
+let restingGrainsCounter = 0;
+
+let currentX = 500,
+    currentY = 0;
+
+while (currentX >= leftmost && currentX <= rightmost && currentY < lowest) {
+    if (!blockedCoords.includes(`${currentX},${currentY + 1}`)) {
+        ++currentY;
+        continue;
+    }
+
+    if (!blockedCoords.includes(`${currentX - 1},${currentY + 1}`)) {
+        --currentX;
+        ++currentY;
+        continue;
+    }
+
+    if (!blockedCoords.includes(`${currentX + 1},${currentY + 1}`)) {
+        ++currentX;
+        ++currentY;
+        continue;
+    }
+
+    if (currentX >= leftmost && currentX <= rightmost && currentY < lowest) {
+        blockedCoords.push(`${currentX},${currentY}`);
+        ++restingGrainsCounter;
+        currentX = 500;
+        currentY = 0;
+    }
+}
+
+console.log(restingGrainsCounter);
+
+function identifyExtremities(blocker, i) {
+    if (blocker[i][0] < leftmost) leftmost = blocker[i][0];
+    if (blocker[i + 1][0] < leftmost) leftmost = blocker[i + 1][0];
+    if (blocker[i][0] > rightmost) rightmost = blocker[i][0];
+    if (blocker[i + 1][0] > rightmost) rightmost = blocker[i + 1][0];
+
+    if (blocker[i][1] > lowest) lowest = blocker[i][1];
+    if (blocker[i + 1][1] > lowest) lowest = blocker[i + 1][1];
+}
 
 function addBlockers(start, end, xOrY) {
     // needs to take into account whether it goes up, down, left or right
@@ -59,35 +91,3 @@ function addBlockers(start, end, xOrY) {
         }
     }
 }
-
-// create a counter to count resting grains of sand
-let restingGrainsCounter = 0;
-
-// make a while loop to drop sand until a grain of sand has reached the abyss
-let currentX = 500,
-    currentY = 0;
-
-while (currentX >= leftmost && currentX <= rightmost && currentY < lowest) {
-    if (!blockedCoords.includes(`${currentX},${currentY + 1}`)) {
-        ++currentY;
-        continue;
-    } else if (!blockedCoords.includes(`${currentX - 1},${currentY + 1}`)) {
-        --currentX;
-        ++currentY;
-        continue;
-    } else if (!blockedCoords.includes(`${currentX + 1},${currentY + 1}`)) {
-        ++currentX;
-        ++currentY;
-        continue;
-    }
-
-    if (currentX >= leftmost && currentX <= rightmost && currentY < lowest) {
-        blockedCoords.push(`${currentX},${currentY}`);
-        ++restingGrainsCounter;
-        currentX = 500;
-        currentY = 0;
-    }
-}
-
-// return total amount of resting sand grains at the end
-console.log(restingGrainsCounter);

@@ -1,50 +1,35 @@
 const { input } = require("./input.js");
 
-// split input into individual rounds
 const roundsStrings = input.split("\n");
 const rounds = roundsStrings.map((roundString) => {
     return roundString.split(" ");
 });
-console.log(rounds);
 
-// create vars for wins, losses and draws, and array of methods
 let wins = 0,
     losses = 0,
     draws = 0;
-const attackMethods = [];
 
-rounds.forEach((round) => {
+const attackMethods = rounds.map((round) => {
     const elfAttack = round[0];
     const outcome = round[1];
 
-    // count wins/losses/draws
-    if (outcome === "X") {
-        ++losses;
-    } else if (outcome === "Y") {
-        ++draws;
-    } else if (outcome === "Z") {
-        ++wins;
+    switch (outcome) {
+        case "X":
+            ++losses;
+            break;
+        case "Y":
+            ++draws;
+            break;
+        case "Z":
+            ++wins;
+            break;
+        default:
+            break;
     }
 
-    // count methods
-    attackMethods.push(findMethod(elfAttack, outcome));
+    return findMethod(elfAttack, outcome);
 });
 
-function findMethod(attack, outcome) {
-    if (outcome === "Y") return attack;
-    if (outcome === "X") {
-        if (attack === "A") return "C";
-        if (attack === "B") return "A";
-        if (attack === "C") return "B";
-    }
-    if (outcome === "Z") {
-        if (attack === "A") return "B";
-        if (attack === "B") return "C";
-        if (attack === "C") return "A";
-    }
-}
-
-// add methods, wins, losses and draws to total
 let totalScore = 0;
 
 totalScore += wins * 6;
@@ -62,3 +47,17 @@ attackMethods.forEach((attackMethod) => {
 });
 
 console.log(totalScore);
+
+function findMethod(attack, outcome) {
+    if (outcome === "Y") return attack;
+    if (outcome === "X") {
+        if (attack === "A") return "C";
+        if (attack === "B") return "A";
+        if (attack === "C") return "B";
+    }
+    if (outcome === "Z") {
+        if (attack === "A") return "B";
+        if (attack === "B") return "C";
+        if (attack === "C") return "A";
+    }
+}
