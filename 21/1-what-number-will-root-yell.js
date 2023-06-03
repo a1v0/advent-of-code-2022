@@ -12,7 +12,6 @@ function day21Task1(input) {
         monkeys[monkeyName] = [monkeyCry, false];
     });
 
-    const quartetRegex = /\w{4}/;
     while (!monkeys.root[1]) {
         for (let quartet in monkeys) {
             try {
