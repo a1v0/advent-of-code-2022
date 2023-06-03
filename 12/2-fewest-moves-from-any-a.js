@@ -34,7 +34,7 @@ starts.forEach((start) => {
     let shortestRouteLength = undefined;
     const routes = [{ nodes: [[start[0], start[1]]], distance: 0 }];
 
-    // loop through all nodes according to A* heuristic
+    // loop uses A* heuristic
     while (shortestRouteLength === undefined) {
         const currentRoute = routes[0];
 
@@ -54,8 +54,6 @@ starts.forEach((start) => {
             downY = currentY + 1,
             leftX = currentX - 1,
             rightX = currentX + 1;
-
-        // there must be a way of being less repetitive in what follows, but I can't think of it
 
         // go up
         if (
