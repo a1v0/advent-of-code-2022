@@ -1,7 +1,5 @@
 const { input } = require("./input");
 
-
-
 const blockedCoordinates = new Set();
 
 let rocksCounter = 0;
@@ -65,10 +63,7 @@ while (rocksCounter < 2022) {
     ++rocksCounter;
 }
 
-console.log(
-    "highestYCoordinate =",
-    highestYCoordinate + 1
-); // +1 because we're counting "units", not coordinates
+console.log("highestYCoordinate =", highestYCoordinate + 1); // +1 because we're counting "units", not coordinates
 
 function willCollide(rock, [changeInX, changeInY]) {
     for (let coordinates of rock) {
@@ -112,8 +107,6 @@ function addBlockedCoordinates(rock) {
         return `${rock[0]},${rock[1]}`;
     });
 }
-
-
 
 const horizontalRock = (lowestYCoordinate) => {
     return [

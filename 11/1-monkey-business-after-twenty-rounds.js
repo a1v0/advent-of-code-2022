@@ -4,7 +4,7 @@ const monkeysStrings = input.split("\n\n");
 
 const monkeys = monkeysStrings.map(createMonkey);
 
-const loopAmount=20
+const loopAmount = 20;
 
 for (let i = 0; i < loopAmount; ++i) {
     monkeys.forEach((monkey) => {
@@ -31,11 +31,11 @@ const highest = Math.max(...objectsInspected);
 objectsInspected.splice(objectsInspected.indexOf(highest), 1);
 const secondHighest = Math.max(...objectsInspected);
 
-const highestTimesSecondHighest=highest * secondHighest
+const highestTimesSecondHighest = highest * secondHighest;
 console.log(highestTimesSecondHighest);
 
-const createMonkey=(monkeyString)=>{
-const monkey = { objectsInspected: 0 };
+const createMonkey = (monkeyString) => {
+    const monkey = { objectsInspected: 0 };
 
     const startingItemsRegex = /(?<=Starting items: )[\d+,*\s]+(?=\n)/;
     const startingItemsString = monkeyString.match(startingItemsRegex)[0];
@@ -56,4 +56,5 @@ const monkey = { objectsInspected: 0 };
     monkey.monkeyTrue = Number(monkeyString.match(trueRegex)[0]);
     monkey.monkeyFalse = Number(monkeyString.match(falseRegex)[0]);
 
-    return monkey;}
+    return monkey;
+};

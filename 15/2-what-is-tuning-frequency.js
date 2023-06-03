@@ -10,10 +10,11 @@ const allSensorsBeacons = allSensorsBeaconsStrings.map(
         const nums = numsStrings.map((numsString) => {
             return Number(numsString);
         });
-        
-const        sensorCoordinates= [nums[0], nums[1]];
-     const       beaconCoordinates= [nums[2], nums[3]];
-          const  manhattanDistance=                Math.abs(nums[0] - nums[2]) + Math.abs(nums[1] - nums[3])
+
+        const sensorCoordinates = [nums[0], nums[1]];
+        const beaconCoordinates = [nums[2], nums[3]];
+        const manhattanDistance =
+            Math.abs(nums[0] - nums[2]) + Math.abs(nums[1] - nums[3]);
 
         return {
             sensorCoordinates,

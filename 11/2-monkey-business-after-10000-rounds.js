@@ -8,7 +8,7 @@ const specialDivisor = monkeys.reduce((acc, monkey) => {
     return acc * monkey.divisor;
 }, 1);
 
-const loopAmount=20
+const loopAmount = 20;
 
 for (let i = 0; i < loopAmount; ++i) {
     monkeys.forEach((monkey) => {
@@ -33,11 +33,11 @@ const highest = Math.max(...objectsInspected);
 objectsInspected.splice(objectsInspected.indexOf(highest), 1);
 const secondHighest = Math.max(...objectsInspected);
 
-const highestTimesSecondHighest=highest * secondHighest
+const highestTimesSecondHighest = highest * secondHighest;
 
 console.log(highestTimesSecondHighest);
 
-const createMonkey=(monkeyString)=>{
+const createMonkey = (monkeyString) => {
     const monkey = { objectsInspected: 0 };
 
     const startingItemsRegex = /(?<=Starting items: )[\d+,*\s]+(?=\n)/;
@@ -61,4 +61,4 @@ const createMonkey=(monkeyString)=>{
     monkey.monkeyFalse = Number(monkeyString.match(falseRegex)[0]);
 
     return monkey;
-}
+};

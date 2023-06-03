@@ -31,7 +31,7 @@ for (let i = 0; i < allTrees[0].length; ++i) {
             allTrees[j][i].visible = true;
         }
     }
-    
+
     tallestTree = -1;
     for (let j = allTrees.length - 1; j >= 0; --j) {
         if (allTrees[j][i].height > tallestTree) {
@@ -46,10 +46,10 @@ const totalVisible = allTrees.reduce((totalVisibleInForest, currentRow) => {
         if (currentTree.visible) {
             return totalVisibleInRow + 1;
         }
-        
+
         return totalVisibleInRow;
     }, 0);
-    
+
     return totalVisibleInForest + totalInRow;
 }, 0);
 

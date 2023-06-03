@@ -40,29 +40,29 @@ cubes.forEach((cube) => {
             potentialNeighbourCube.coordinatesAsString === cube.rightNeighbour
         );
     });
-    
+
     const leftNeighbour = cubes.find((potentialNeighbourCube) => {
         return (
             potentialNeighbourCube.coordinatesAsString === cube.leftNeighbour
         );
     });
-    
+
     const topNeighbour = cubes.find((potentialNeighbourCube) => {
         return potentialNeighbourCube.coordinatesAsString === cube.topNeighbour;
     });
-    
+
     const bottomNeighbour = cubes.find((potentialNeighbourCube) => {
         return (
             potentialNeighbourCube.coordinatesAsString === cube.bottomNeighbour
         );
     });
-    
+
     const frontNeighbour = cubes.find((potentialNeighbourCube) => {
         return (
             potentialNeighbourCube.coordinatesAsString === cube.frontNeighbour
         );
     });
-    
+
     const backNeighbour = cubes.find((potentialNeighbourCube) => {
         return (
             potentialNeighbourCube.coordinatesAsString === cube.backNeighbour
@@ -75,8 +75,6 @@ cubes.forEach((cube) => {
     if (bottomNeighbour) decreaseSidesShowing(cube);
     if (frontNeighbour) decreaseSidesShowing(cube);
     if (backNeighbour) decreaseSidesShowing(cube);
-
-   
 });
 
 const sidesShowing = cubes.reduce((accumulator, currentCube) => {
@@ -85,6 +83,6 @@ const sidesShowing = cubes.reduce((accumulator, currentCube) => {
 
 console.log(sidesShowing);
 
- function decreaseSidesShowing(cube) {
-        --cube.sidesShowing;
-    }
+function decreaseSidesShowing(cube) {
+    --cube.sidesShowing;
+}

@@ -29,7 +29,7 @@ blockers.forEach((blocker) => {
             blocker[i][0] !== blocker[i + 1][0] ? 0 : 1
         );
 
-        identifyExtremities(blocker,i)
+        identifyExtremities(blocker, i);
     }
 });
 
@@ -43,13 +43,13 @@ while (currentX >= leftmost && currentX <= rightmost && currentY < lowest) {
         ++currentY;
         continue;
     }
-    
+
     if (!blockedCoords.includes(`${currentX - 1},${currentY + 1}`)) {
         --currentX;
         ++currentY;
         continue;
-    } 
-    
+    }
+
     if (!blockedCoords.includes(`${currentX + 1},${currentY + 1}`)) {
         ++currentX;
         ++currentY;
@@ -66,14 +66,14 @@ while (currentX >= leftmost && currentX <= rightmost && currentY < lowest) {
 
 console.log(restingGrainsCounter);
 
-function identifyExtremities(blocker,i){
-        if (blocker[i][0] < leftmost) leftmost = blocker[i][0];
-        if (blocker[i + 1][0] < leftmost) leftmost = blocker[i + 1][0];
-        if (blocker[i][0] > rightmost) rightmost = blocker[i][0];
-        if (blocker[i + 1][0] > rightmost) rightmost = blocker[i + 1][0];
+function identifyExtremities(blocker, i) {
+    if (blocker[i][0] < leftmost) leftmost = blocker[i][0];
+    if (blocker[i + 1][0] < leftmost) leftmost = blocker[i + 1][0];
+    if (blocker[i][0] > rightmost) rightmost = blocker[i][0];
+    if (blocker[i + 1][0] > rightmost) rightmost = blocker[i + 1][0];
 
-        if (blocker[i][1] > lowest) lowest = blocker[i][1];
-        if (blocker[i + 1][1] > lowest) lowest = blocker[i + 1][1];
+    if (blocker[i][1] > lowest) lowest = blocker[i][1];
+    if (blocker[i + 1][1] > lowest) lowest = blocker[i + 1][1];
 }
 
 function addBlockers(start, end, xOrY) {

@@ -16,19 +16,15 @@ function day21Task2(input) {
     // store both four-letter groups marked in root
     const [firstQuartet, secondQuartet] = monkeys.root.match(/\w{4}/g);
 
-    let evaluationComplete = false;// this isn't an amazing while loop condition, but it's the best I could come up with
-    while (
-        !evaluationComplete
-    ) {
+    let evaluationComplete = false; // this isn't an amazing while loop condition, but it's the best I could come up with
+    while (!evaluationComplete) {
         for (let quartet in monkeys) {
             for (let quartetSearch in monkeys) {
-                
                 if (!RegExp(quartet).test(monkeys[quartetSearch])) continue;
                 monkeys[quartetSearch] = monkeys[quartetSearch].replace(
-                        quartet,
-                        `(${monkeys[quartet]})`
-                    );
-
+                    quartet,
+                    `(${monkeys[quartet]})`
+                );
             }
         }
         if (
@@ -96,13 +92,12 @@ function day21Task2(input) {
     for (let order = 3; order >= 0; --order) {
         while (true) {
             const alvo = humn + Math.pow(sumOfPatternIntervals, order);
-            
+
             if (!eval(comparisonOvershoot)) {
                 humn = alvo;
                 continue;
-            } 
-                break;
-            
+            }
+            break;
         }
     }
 

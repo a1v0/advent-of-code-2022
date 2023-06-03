@@ -15,9 +15,9 @@ rucksackGroups.forEach((rucksackGroup) => {
     for (let letter of rucksackGroup.first) {
         if (!rucksackGroup.second.includes(letter)) continue;
         if (!rucksackGroup.third.includes(letter)) continue;
-        
+
         rucksackGroup.badge = letter;
-        break;        
+        break;
     }
 });
 

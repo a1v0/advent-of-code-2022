@@ -31,13 +31,11 @@ function comparePackets(leftPacket, rightPacket, index) {
             ? leftPacket.length
             : rightPacket.length;
     for (let i = 0; i < loopLength; ++i) {
-        
         // if one side has run out of numbers
         if (leftPacket[i] === undefined) {
             correctOrderIndices.push(index);
             return true;
         } else if (rightPacket[i] === undefined) return false;
-        
         // if both are numbers, compare
         else if (
             typeof leftPacket[i] === "number" &&
@@ -51,7 +49,7 @@ function comparePackets(leftPacket, rightPacket, index) {
                 return true;
             }
         }
-        
+
         // if one is array
         else if (
             Array.isArray(leftPacket[i]) ||
@@ -64,7 +62,7 @@ function comparePackets(leftPacket, rightPacket, index) {
             rightPacket[i] = Array.isArray(rightPacket[i])
                 ? rightPacket[i]
                 : [rightPacket[i]];
-            
+
             // run function recursively
             const result = comparePackets(leftPacket[i], rightPacket[i], index);
             if (result !== undefined) return result;

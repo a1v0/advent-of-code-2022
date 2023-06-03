@@ -19,15 +19,15 @@ for (let i = 1; i < commandsInClock.length; ++i) {
     const row = Math.floor(i / 40);
     const amountToSubtract = 40 * row;
     const j = i - amountToSubtract;
-    
+
     if (j === x || j === x - 1 || j === x + 1) {
         screen += "#";
     } else {
         screen += ".";
     }
-    
+
     x += commandsInClock[i + 1];
-    
+
     if (i >= 39 && (i + 1) % 40 === 0) {
         screen += "\n";
     }

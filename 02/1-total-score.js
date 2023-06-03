@@ -18,7 +18,7 @@ let wins = 0,
 const attackMethods = rounds.map((round) => {
     const elfAttack = round[0];
     const myAttack = round[1];
-    
+
     switch (true) {
         case elfAttack === "A" && myAttack === "B":
         case elfAttack === "B" && myAttack === "C":
@@ -32,7 +32,7 @@ const attackMethods = rounds.map((round) => {
             ++losses;
             break;
     }
-    
+
     return myAttack;
 });
 

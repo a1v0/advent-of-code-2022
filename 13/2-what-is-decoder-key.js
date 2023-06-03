@@ -24,12 +24,11 @@ function comparePackets(leftPacket, rightPacket) {
         leftPacket.length > rightPacket.length
             ? leftPacket.length
             : rightPacket.length;
-    
+
     for (let i = 0; i < loopLength; ++i) {
         // if one side has run out of numbers
         if (leftPacket[i] === undefined) return -1;
         else if (rightPacket[i] === undefined) return 1;
-        
         // if both are numbers
         else if (
             typeof leftPacket[i] === "number" &&
@@ -38,7 +37,7 @@ function comparePackets(leftPacket, rightPacket) {
             if (leftPacket[i] > rightPacket[i]) return 1;
             else if (leftPacket[i] < rightPacket[i]) return -1;
         }
-        
+
         // if one is array
         else if (
             Array.isArray(leftPacket[i]) ||
@@ -47,11 +46,11 @@ function comparePackets(leftPacket, rightPacket) {
             leftPacket[i] = Array.isArray(leftPacket[i])
                 ? leftPacket[i]
                 : [leftPacket[i]];
-           
+
             rightPacket[i] = Array.isArray(rightPacket[i])
                 ? rightPacket[i]
                 : [rightPacket[i]];
-            
+
             // run function recursively
             const result = comparePackets(leftPacket[i], rightPacket[i]);
             if (result !== undefined) return result;
@@ -63,9 +62,8 @@ allPacketsInOnePile.sort((left, right) => {
     return comparePackets(left, right);
 });
 
-const decoderKey=    (allPacketsInOnePile.indexOf(firstDividerPacket) + 1) *
-        (allPacketsInOnePile.indexOf(secondDividerPacket) + 1)
+const decoderKey =
+    (allPacketsInOnePile.indexOf(firstDividerPacket) + 1) *
+    (allPacketsInOnePile.indexOf(secondDividerPacket) + 1);
 
-
-console.log(decoderKey
-);
+console.log(decoderKey);
