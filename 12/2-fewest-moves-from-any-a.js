@@ -18,7 +18,7 @@ for (let y = 0; y < rows.length; ++y) {
             }
         }
     }
-    
+
     if (rows[y].includes("E")) {
         end[0] = rows[y].indexOf("E");
         end[1] = y;
@@ -31,7 +31,7 @@ const distancesFromEnd = rows.map((row, y) => {
         const xFromEnd = Math.abs(end[0] - x),
             yFromEnd = Math.abs(end[1] - y);
         const distanceFromEnd = Math.sqrt(
-            xFromEnd * xFromEnd + (yFromEnd + yFromEnd)
+            xFromEnd * xFromEnd + yFromEnd * yFromEnd
         );
         rowDistances.push(distanceFromEnd);
     }
