@@ -7,23 +7,7 @@ const letters = "abcdefghijklmnopqrstuvwxyz";
 const starts = [];
 const end = new Array(2); // holds x,y values of end
 
-for (let y = 0; y < rows.length; ++y) {
-    if (rows[y].includes("a") || rows[y].includes("S")) {
-        for (let x = 0; x < rows[y].length; ++x) {
-            if (rows[y][x] === "a" || rows[y][x] === "S") {
-                const newStart = new Array(2);
-                newStart[1] = y;
-                newStart[0] = x;
-                starts.push(newStart);
-            }
-        }
-    }
-
-    if (rows[y].includes("E")) {
-        end[0] = rows[y].indexOf("E");
-        end[1] = y;
-    }
-}
+findStartAndEnd(rows, starts, end);
 
 const distancesFromEnd = rows.map((row, y) => {
     const rowDistances = [];
@@ -142,3 +126,23 @@ starts.forEach((start) => {
 
 const shortestRouteLength = Math.min(...routeLengths);
 console.log(shortestRouteLength - 1);
+
+function findStartAndEnd(rows, starts, end) {
+    for (let y = 0; y < rows.length; ++y) {
+        if (rows[y].includes("a") || rows[y].includes("S")) {
+            for (let x = 0; x < rows[y].length; ++x) {
+                if (rows[y][x] === "a" || rows[y][x] === "S") {
+                    const newStart = new Array(2);
+                    newStart[1] = y;
+                    newStart[0] = x;
+                    starts.push(newStart);
+                }
+            }
+        }
+
+        if (rows[y].includes("E")) {
+            end[0] = rows[y].indexOf("E");
+            end[1] = y;
+        }
+    }
+}
