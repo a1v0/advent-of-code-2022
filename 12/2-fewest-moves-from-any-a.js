@@ -7,7 +7,7 @@ const letters = "abcdefghijklmnopqrstuvwxyz";
 const starts = [];
 const end = new Array(2); // holds x,y values of end
 
-findStartAndEnd(rows, starts, end);
+findStartsAndEnd(rows, starts, end);
 
 const distancesFromEnd = rows.map((row, y) => {
     const rowDistances = [];
@@ -127,7 +127,7 @@ starts.forEach((start) => {
 const shortestRouteLength = Math.min(...routeLengths);
 console.log(shortestRouteLength - 1);
 
-function findStartAndEnd(rows, starts, end) {
+function findStartsAndEnd(rows, starts, end) {
     for (let y = 0; y < rows.length; ++y) {
         if (rows[y].includes("a") || rows[y].includes("S")) {
             for (let x = 0; x < rows[y].length; ++x) {
