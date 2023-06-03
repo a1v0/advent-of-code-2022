@@ -1,7 +1,5 @@
 To-do list:
 
-- 07.1: look at `commands.shift(); // removes [""] that was left when we created commandsStrings` and assess whether it can be moved elsewhere or handled differently
-- 07.2: refactor based on 07.1
 - 09.1: rename "coordinates" to something more descriptive so that explanatory comment can be removed
 - 12.1: rename variables to be a bit more descriptive
 - 12.1: see if you can reduce repetition below multi-line comment
