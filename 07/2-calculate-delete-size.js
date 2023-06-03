@@ -3,10 +3,12 @@ const { input } = require("./input");
 // Find all of the directories with a total size of at most 100000. What is the sum of the total sizes of those directories?
 
 // remove all lines of "$ ls\n" from input, as these are a distraction
-const inputWithoutLs = input.replace(/\$\sls\n/g, "");
+const bashListCommandRegex = /\$\sls\n/g;
+const inputWithoutLs = input.replace(bashListCommandRegex, "");
 
 // split input by $
 const commandsStrings = inputWithoutLs.split("$ ");
+commandsStrings.shift(); // removes [""] that's left at the start from the .split() method
 
 // create array of nested commands
 const commands = commandsStrings.map((commandsString) => {
@@ -14,7 +16,6 @@ const commands = commandsStrings.map((commandsString) => {
     command.pop(); // gets rid of "" that comes from split()
     return command;
 });
-commands.shift(); // removes [""] that was left when we created commandsStrings
 
 // create root object, representing / directory. Each directory obj has a "size" property
 const root = { size: 0 };
@@ -39,9 +40,11 @@ commands.forEach((command) => {
             currentPath.push(cdCommand);
             break;
     }
+
     const currentPathString = currentPath.reduce((path, currentElement) => {
         return path + `["${currentElement}"]`;
     }, "root");
+
     if (!allPaths.includes(currentPathString)) {
         allPaths.push(currentPathString);
     }
@@ -69,9 +72,10 @@ allPaths.forEach((path) => {
         if (typeof currentDirectory[node] === "object") {
             currentDirectory.size += currentDirectory[node].size;
             allDirSizes.push(currentDirectory[node].size);
-        } else {
-            currentDirectory.size += currentDirectory[node];
+            continue;
         }
+
+        currentDirectory.size += currentDirectory[node];
     }
 });
 
@@ -82,4 +86,5 @@ const minDelete = 30000000 - unusedDiscSpace;
 const deleteSize = allDirSizes.find((size) => {
     return size >= minDelete;
 });
+
 console.log(deleteSize);
