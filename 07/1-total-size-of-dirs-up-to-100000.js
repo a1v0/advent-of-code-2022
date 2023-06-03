@@ -7,13 +7,13 @@ const bashListCommandRegex = /\$\sls\n/g;
 const inputWithoutLs = input.replace(bashListCommandRegex, "");
 
 const commandsStrings = inputWithoutLs.split("$ ");
+commandsStrings.shift(); // removes [""] that's left at the start from the .split() method
 
 const commands = commandsStrings.map((commandsString) => {
     const command = commandsString.split("\n");
     command.pop(); // gets rid of "" that comes from split()
     return command;
 });
-commands.shift(); // removes [""] that was left when we created commandsStrings
 
 // create root object, representing / directory. Each directory obj has a "size" property
 const root = { size: 0 };
@@ -35,11 +35,11 @@ commands.forEach((command) => {
             currentPath.push(cdCommand);
             break;
     }
-    
+
     const currentPathString = currentPath.reduce((path, currentElement) => {
         return path + `["${currentElement}"]`;
     }, "root");
-    
+
     if (!allPaths.includes(currentPathString)) {
         allPaths.push(currentPathString);
     }
@@ -67,10 +67,9 @@ allPaths.forEach((path) => {
             currentDirectory.size += currentDirectory[node].size;
             allDirSizes.push(currentDirectory[node].size);
             continue;
-        } 
-        
+        }
+
         currentDirectory.size += currentDirectory[node];
-        
     }
 });
 
