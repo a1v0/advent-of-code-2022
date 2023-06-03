@@ -5,10 +5,10 @@ function day21Task1(input) {
 
     const monkeys = {};
     inputStrings.forEach((inputString) => {
-        const monkeyNameRegex=/^\w{4}/
+        const monkeyNameRegex = /^\w{4}/;
         const monkeyName = inputString.match(monkeyNameRegex)[0];
-        const monkeyCryRegex=/(?<=:\s).*$/
-        let monkeyCry = inputString.match(monkeyCryRegex)[0];
+        const monkeyCryRegex = /(?<=:\s).*$/;
+        const monkeyCry = inputString.match(monkeyCryRegex)[0];
         monkeys[monkeyName] = [monkeyCry, false];
     });
 
@@ -20,19 +20,20 @@ function day21Task1(input) {
                 monkeys[quartet][1] = true;
 
                 for (let quartetSearch in monkeys) {
-                    if(!RegExp(quartet).test(monkeys[quartetSearch][0])) continue;
-                    
-                    
-                        monkeys[quartetSearch][0] = monkeys[
-                            quartetSearch
-                        ][0].replace(quartet, monkeys[quartet][0]);
-                        break;
-                                    }
+                    if (!RegExp(quartet).test(monkeys[quartetSearch][0]))
+                        continue;
+
+                    monkeys[quartetSearch][0] = monkeys[
+                        quartetSearch
+                    ][0].replace(quartet, monkeys[quartet][0]);
+                    break;
+                }
             } catch {}
         }
     }
     return Number(monkeys.root[0]);
 }
 
-// console.log(day21Task1(input));
+console.log(day21Task1(input));
+
 module.exports = { day21Task1 };
