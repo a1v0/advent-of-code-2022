@@ -12,7 +12,7 @@ for (let y = 0; y < rows.length; ++y) {
         start[0] = rows[y].indexOf("S");
         start[1] = y;
     }
- 
+
     if (rows[y].includes("E")) {
         end[0] = rows[y].indexOf("E");
         end[1] = y;
@@ -57,13 +57,6 @@ while (shortestRouteLength === undefined) {
         downY = currentY + 1,
         leftX = currentX - 1,
         rightX = currentX + 1;
-
-    /*
-     *
-     * there must be a way of being less repetitive in what follows, but I can't think of it
-     *
-     *
-     */
 
     // go up
     if (
