@@ -1,3 +1,6 @@
+const { day16Task1 } = require("../16/1-what-is-the-most-pressure");
+const { testInput: day16Input } = require("../16/input");
+
 const { day18Task2 } = require("../18/2-exterior-surface-area");
 const {
     testInput: day18Input,
@@ -21,6 +24,12 @@ const { testInput: day23Input } = require("../23/input");
 
 const { day24Task1 } = require("../24/1-fewest-minutes-to-avoid-blizzards");
 const { testInput: day24Input } = require("../24/input");
+
+describe.only("Day 16", () => {
+    test("Task 1", () => {
+        expect(day16Task1(day16Input)).toBe(1651);
+    });
+});
 
 describe("Day 18", () => {
     describe("Task 2", () => {
@@ -144,7 +153,7 @@ describe("Day 23", () => {
     });
 });
 
-describe.only("Day 24", () => {
+describe("Day 24", () => {
     describe("Task 1", () => {
         test("returns correct value with test data", () => {
             expect(day24Task1(day24Input)).toBe(18);
