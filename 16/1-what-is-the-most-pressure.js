@@ -46,6 +46,7 @@ const { testInput: input } = require("./input");
 function day16Task1(input) {
     const inputByLine = input.split("\n");
     const valves = inputByLine.map(parseInput);
+    const valveNames = valves.map(getValveNames);
 }
 
 function parseInput(valveString) {
@@ -62,8 +63,11 @@ function parseInput(valveString) {
     valve.name = name;
     valve.flowRate = flowRate;
     valve.leadsTo = leadsTo;
-    console.log(valve);
     return valve;
+}
+
+function getValveNames(valve) {
+    return valve.name;
 }
 
 // console.log(day16Task1(input))
