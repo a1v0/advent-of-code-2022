@@ -47,7 +47,39 @@ function day16Task1(input) {
     const inputByLine = input.split("\n");
     const valves = inputByLine.map(parseInput);
     const valveNames = valves.map(getValveName);
+    const routes = [new Route(valveNames)];
+
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    // should it be <= 30?
+    while (routes[0].minute < 30) {
+        const newRoutes = [];
+        for (let i = 0; i < routes.length; ++i) {
+            evaluateRoute(route, newRoutes);
+        }
+    }
 }
+
+function evaluateRoute(route, newRoutes) {}
 
 function parseInput(valveString) {
     const valve = {};
@@ -75,6 +107,23 @@ class Route {
         this.openValves = [...valveNames];
         this.flowRate = 0;
         this.totalFlow = 0;
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        // should this be 0 or 1?
         this.minute = 0;
         this.currentLocation = "AA";
     }
