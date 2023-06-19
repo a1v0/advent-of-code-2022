@@ -24,6 +24,7 @@
 // - - - Should return an amount of minutes
 // - - Add flow rate * minutes to get there to total flow
 // - - Update current flow rate
+// - - Update openValves
 // - - Update current location
 // - - Update current minute
 // - - Add to temporary array
@@ -33,13 +34,14 @@
 
 const { testInput: input } = require("./input");
 
+const MAX_MINUTES = 30;
+
 function day16Task1(input) {
     const inputByLine = input.split("\n");
-    // const valves = inputByLine.map(parseInput);
     const valves = inputByLine.reduce(parseInput, {});
     const valveNames = Object.keys(valves);
-    const routes = [new Route(valveNames)];
-
+    const starterRoute = new Route(valveNames);
+    const routes = [starterRoute];
     //
     //
     //
@@ -61,11 +63,11 @@ function day16Task1(input) {
     //
     //
     //
-    // should it be <= 30?
-    while (routes[0].minute < 30) {
+    // should it be <= MAX_MINUTES?
+    while (routes[0].minute < MAX_MINUTES) {
         const newRoutes = [];
         for (let i = 0; i < routes.length; ++i) {
-            evaluateRoute(routes[i], newRoutes);
+            evaluateRoute(routes[i], newRoutes, valves);
         }
 
         routes.length = 0;
@@ -76,10 +78,21 @@ function day16Task1(input) {
     }
 }
 
-function evaluateRoute(route, newRoutes) {
+function evaluateRoute(route, newRoutes, valves) {
+    const destinations = route.openValves.filter((openValve) => {
+        return valves[openValve].flowRate !== 0;
+    });
+
+    if (!destinations.length) {
+        const remainingMinutes = MAX_MINUTES - route.minute;
+        const remainingFlow = route.flowRate * remainingMinutes;
+        route.totalFlow += remainingFlow;
+        newRoutes.push(route);
+        return;
+    }
+
     // Generate a new route for every possible destination in temporary array
     // - Every possible destination = a valve that’s not yet open, where the flow rate > 0
-    // - - If none exists, just increment all values to fill up the remaining minutes without moving
     // - Find how many minutes it’d take to get there
     // - - This will require a Dijkstra solution
     // - - Revise how Dijkstra works to see how exactly this should be implemented
@@ -87,6 +100,7 @@ function evaluateRoute(route, newRoutes) {
     // - - Should return an amount of minutes
     // - Add flow rate * minutes to get there to total flow
     // - Update current flow rate
+    // - Update openValves
     // - Update current location
     // - Update current minute
     // - Add to temporary array
@@ -108,13 +122,9 @@ function parseInput(valves, valveString) {
     return valves;
 }
 
-function getValveName(valve) {
-    return valve.name;
-}
-
 class Route {
     constructor(valveNames) {
-        this.openValves = [...valveNames];
+        this.openValves = new Set(valveNames);
         this.flowRate = 0;
         this.totalFlow = 0;
         //
