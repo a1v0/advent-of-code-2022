@@ -79,9 +79,7 @@ function day16Task1(input) {
 }
 
 function evaluateRoute(route, newRoutes, valves) {
-    const destinations = route.openValves.filter((openValve) => {
-        return valves[openValve].flowRate !== 0;
-    });
+    const destinations = getPossibleDestinations(route, valves);
 
     if (!destinations.length) {
         const remainingMinutes = MAX_MINUTES - route.minute;
@@ -105,6 +103,16 @@ function evaluateRoute(route, newRoutes, valves) {
     // - Update current minute
     // - Add to temporary array
     // - - If minute > 30, do not add
+}
+
+function getPossibleDestinations({ openValves }, valves) {
+    const destinations = [];
+    openValves.forEach((openValve) => {
+        if (valves[openValve].flowRate > 0) {
+            destinations.push(openValve);
+        }
+    });
+    return destinations;
 }
 
 function parseInput(valves, valveString) {
