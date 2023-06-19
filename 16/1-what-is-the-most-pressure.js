@@ -42,3 +42,29 @@
 // Sort routes by total flow
 
 const { testInput: input } = require("./input");
+
+function day16Task1(input) {
+    const inputByLine = input.split("\n");
+    const valves = inputByLine.map(parseInput);
+}
+
+function parseInput(valveString) {
+    const valve = {};
+    const valveNameRegex = /[A-Z]{2}/,
+        flowRateRegex = /\d+/,
+        leadsToRegex = /[A-Z]{2}/g;
+    const [firstHalf, secondHalf] = valveString.split("; ");
+
+    const name = firstHalf.match(valveNameRegex)[0],
+        flowRate = Number(firstHalf.match(flowRateRegex)[0]),
+        leadsTo = secondHalf.match(leadsToRegex);
+
+    valve.name = name;
+    valve.flowRate = flowRate;
+    valve.leadsTo = leadsTo;
+    console.log(valve);
+    return valve;
+}
+
+// console.log(day16Task1(input))
+module.exports = { day16Task1 };
