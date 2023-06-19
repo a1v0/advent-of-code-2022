@@ -35,8 +35,9 @@ const { testInput: input } = require("./input");
 
 function day16Task1(input) {
     const inputByLine = input.split("\n");
-    const valves = inputByLine.map(parseInput);
-    const valveNames = valves.map(getValveName);
+    // const valves = inputByLine.map(parseInput);
+    const valves = inputByLine.reduce(parseInput, {});
+    const valveNames = Object.keys(valves);
     const routes = [new Route(valveNames)];
 
     //
@@ -64,7 +65,7 @@ function day16Task1(input) {
     while (routes[0].minute < 30) {
         const newRoutes = [];
         for (let i = 0; i < routes.length; ++i) {
-            evaluateRoute(route, newRoutes);
+            evaluateRoute(routes[i], newRoutes);
         }
 
         routes.length = 0;
@@ -76,37 +77,35 @@ function day16Task1(input) {
 }
 
 function evaluateRoute(route, newRoutes) {
-    // - Generate a new route for every possible destination in temporary array
-    // - - Every possible destination = a valve that’s not yet open, where the flow rate > 0
-    // - - - If none exists, just increment all values to fill up the remaining minutes without moving
-    // - - Find how many minutes it’d take to get there
-    // - - - This will require a Dijkstra solution
-    // - - - Revise how Dijkstra works to see how exactly this should be implemented
-    // - - - Dijkstra function should take start node and desired end node
-    // - - - Should return an amount of minutes
-    // - - Add flow rate * minutes to get there to total flow
-    // - - Update current flow rate
-    // - - Update current location
-    // - - Update current minute
-    // - - Add to temporary array
-    // - - - If minute > 30, do not add
+    // Generate a new route for every possible destination in temporary array
+    // - Every possible destination = a valve that’s not yet open, where the flow rate > 0
+    // - - If none exists, just increment all values to fill up the remaining minutes without moving
+    // - Find how many minutes it’d take to get there
+    // - - This will require a Dijkstra solution
+    // - - Revise how Dijkstra works to see how exactly this should be implemented
+    // - - Dijkstra function should take start node and desired end node
+    // - - Should return an amount of minutes
+    // - Add flow rate * minutes to get there to total flow
+    // - Update current flow rate
+    // - Update current location
+    // - Update current minute
+    // - Add to temporary array
+    // - - If minute > 30, do not add
 }
 
-function parseInput(valveString) {
+function parseInput(valves, valveString) {
     const valve = {};
     const valveNameRegex = /[A-Z]{2}/,
         flowRateRegex = /\d+/,
         leadsToRegex = /[A-Z]{2}/g;
     const [firstHalf, secondHalf] = valveString.split("; ");
-
     const name = firstHalf.match(valveNameRegex)[0],
         flowRate = Number(firstHalf.match(flowRateRegex)[0]),
         leadsTo = secondHalf.match(leadsToRegex);
-
-    valve.name = name;
     valve.flowRate = flowRate;
     valve.leadsTo = leadsTo;
-    return valve;
+    valves[name] = valve;
+    return valves;
 }
 
 function getValveName(valve) {
