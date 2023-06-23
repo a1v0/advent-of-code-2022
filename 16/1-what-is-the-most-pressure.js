@@ -114,6 +114,7 @@ function evaluateRoute(route, newRoutes, valves) {
         const remainingMinutes = MAX_MINUTES - route.minute;
         const remainingFlow = route.flowRate * remainingMinutes;
         route.totalFlow += remainingFlow;
+        route.minute += remainingMinutes;
         newRoutes.push(route);
         return;
     }
@@ -257,5 +258,5 @@ class Route {
     }
 }
 
-// console.log(day16Task1(input))
+// console.log(day16Task1(input));
 module.exports = { day16Task1 };
