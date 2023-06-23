@@ -21,7 +21,7 @@
 //
 //
 
-const { testInput: input } = require("./input");
+const { input } = require("./input");
 
 const MAX_MINUTES = 30;
 
@@ -47,6 +47,7 @@ function day16Task1(input) {
     }
 
     console.dir(routes[0]);
+    console.dir(routes[1]);
 
     return routes[0].totalFlow;
 }
@@ -82,14 +83,6 @@ function moveToDestination(route, destination, valves) {
         newRoute.currentLocation,
         destination,
         valves
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
         // if it gets too computationally heavy, we can add a max route length equal to 30 - elapsed time
     );
 
@@ -171,27 +164,10 @@ class Route {
         this.openValves = new Set(valveNames);
         this.flowRate = 0;
         this.totalFlow = 0;
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        // should this be 0 or 1?
         this.minute = 0;
         this.currentLocation = "AA";
     }
 }
 
-console.log(day16Task1(input));
+// console.log(day16Task1(input));
 module.exports = { day16Task1 };
