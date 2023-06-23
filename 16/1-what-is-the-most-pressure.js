@@ -64,7 +64,7 @@ function day16Task1(input) {
     //
     //
     // should it be <= MAX_MINUTES?
-    while (routes[0].minute < MAX_MINUTES) {
+    while (routes[0].currentMinute < MAX_MINUTES) {
         const newRoutes = [];
         for (let i = 0; i < routes.length; ++i) {
             evaluateRoute(routes[i], newRoutes, valves);
@@ -171,14 +171,17 @@ function updateRoute(route, newLocation, additionalMinutes, valves) {
 
 function calculateShortestDistanceToValve(start, destination, valves) {
     const minutes = [];
-    findShortestRouteRecursively(start, 0, []);
+    findShortestRouteRecursively(start, 0, [], destination, valves, minutes);
     return Math.min(...minutes);
 }
 
 function findShortestRouteRecursively(
     currentLocation,
     minutesElapsed,
-    visitedValves
+    visitedValves,
+    destination,
+    valves,
+    minutes
 ) {
     if (minutesElapsed > MAX_MINUTES) return;
     if (currentLocation === destination) {
@@ -187,12 +190,16 @@ function findShortestRouteRecursively(
     }
 
     for (let valve of valves[currentLocation].leadsTo) {
-        if (visitedValves.contains(valve)) continue;
+        if (visitedValves.includes(valve)) continue;
 
-        findShortestRouteRecursively(valve, minutesElapsed + 1, [
-            ...visitedValves,
-            valve
-        ]);
+        findShortestRouteRecursively(
+            valve,
+            minutesElapsed + 1,
+            [...visitedValves, valve],
+            destination,
+            valves,
+            minutes
+        );
     }
 }
 
