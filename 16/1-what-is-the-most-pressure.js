@@ -101,6 +101,8 @@ function day16Task1(input) {
             return b.flowRate - a.flowRate;
         });
     }
+
+    return routes[0].totalFlow;
 }
 
 function evaluateRoute(route, newRoutes, valves) {
@@ -129,21 +131,6 @@ function evaluateRoute(route, newRoutes, valves) {
             newRoutes.push();
         }
     });
-
-    // Generate a new route for every possible destination in temporary array
-    // - Every possible destination = a valve that’s not yet open, where the flow rate > 0
-    // - Find how many minutes it’d take to get there
-    // - - This will require a Dijkstra solution
-    // - - Revise how Dijkstra works to see how exactly this should be implemented
-    // - - Dijkstra function should take start node and desired end node
-    // - - Should return an amount of minutes
-    // - Add flow rate * minutes to get there to total flow
-    // - Update current flow rate
-    // - Update openValves
-    // - Update current location
-    // - Update current minute
-    // - Add to temporary array
-    // - - If minute > 30, do not add
 }
 
 function moveToDestination(route, destination, valves) {
