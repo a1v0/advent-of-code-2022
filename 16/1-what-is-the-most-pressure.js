@@ -42,12 +42,30 @@ function day16Task1(input) {
         routes.length = 0;
         routes.push(...newRoutes);
         routes.sort((a, b) => {
-            return b.totalFlow - a.totalFlow;
+            // heuristic needed here, e.g. flowRate * minutes left?
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+
+            const aTimeLeft = MAX_MINUTES - a.minute,
+                bTimeLeft = MAX_MINUTES - b.minute;
+
+            const aHeuristic = aTimeLeft * a.flowRate,
+                bHeuristic = bTimeLeft * b.flowRate;
+            return bHeuristic - aHeuristic; // this does not pass the tests
+
+            // return b.totalFlow - a.totalFlow; // this one works for the test but not the real data
         });
     }
 
-    console.dir(routes[0]);
-    console.dir(routes[1]);
+    console.log(routes[0].totalFlow);
+    console.log(routes[1].totalFlow);
 
     return routes[0].totalFlow;
 }
