@@ -65,10 +65,12 @@ function day16Task1(input) {
     //
     // should it be <= MAX_MINUTES?
     while (routes[0].minute < MAX_MINUTES) {
+        // console.log(routes[0].openValves.size, routes[0].minute);
         const newRoutes = [];
-        for (let i = 0; i < routes.length; ++i) {
-            evaluateRoute(routes[i], newRoutes, valves);
-        }
+
+        routes.forEach((route) => {
+            evaluateRoute(route, newRoutes, valves);
+        });
 
         routes.length = 0;
         routes.push(...newRoutes);
@@ -128,7 +130,7 @@ function evaluateRoute(route, newRoutes, valves) {
         //
         // should this be <=?
         if (newRoute.minute < MAX_MINUTES) {
-            newRoutes.push();
+            newRoutes.push(newRoute);
         }
     });
 }
