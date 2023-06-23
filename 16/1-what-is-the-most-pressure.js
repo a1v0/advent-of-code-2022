@@ -64,7 +64,7 @@ function day16Task1(input) {
     //
     //
     // should it be <= MAX_MINUTES?
-    while (routes[0].currentMinute < MAX_MINUTES) {
+    while (routes[0].minute < MAX_MINUTES) {
         const newRoutes = [];
         for (let i = 0; i < routes.length; ++i) {
             evaluateRoute(routes[i], newRoutes, valves);
@@ -127,7 +127,7 @@ function evaluateRoute(route, newRoutes, valves) {
         //
         //
         // should this be <=?
-        if (newRoute.currentMinute < MAX_MINUTES) {
+        if (newRoute.minute < MAX_MINUTES) {
             newRoutes.push();
         }
     });
@@ -166,7 +166,7 @@ function updateRoute(route, newLocation, additionalMinutes, valves) {
     route.flowRate += valves[newLocation].flowRate;
     route.openValves.delete(newLocation);
     route.currentLocation = newLocation;
-    route.currentMinute += additionalMinutes;
+    route.minute += additionalMinutes;
 }
 
 function calculateShortestDistanceToValve(start, destination, valves) {
