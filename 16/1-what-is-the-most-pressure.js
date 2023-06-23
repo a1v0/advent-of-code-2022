@@ -73,6 +73,31 @@ function day16Task1(input) {
         routes.length = 0;
         routes.push(...newRoutes);
         routes.sort((a, b) => {
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            // this may need a better heuristic, e.g. some combination of flow rate with amount of minutes left
             return b.flowRate - a.flowRate;
         });
     }
