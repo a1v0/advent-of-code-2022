@@ -3,13 +3,13 @@
 
 //
 //
-//
+// we're passing the test, but the real data isn't giving us anything good
 //
 // TO DO:
 // - RENAME openValves to something better, like closedValves
 // - PERHAPS CREATE A NEW SET TO CONTAIN VALVES THAT ARE INDEED OPEN
 // - run some tests by setting the max minutes property to something lower
-//
+// - see if you can add a heuristic to the sorting function to see if it fixes anything
 //
 //
 //
@@ -42,7 +42,6 @@ function day16Task1(input) {
         routes.length = 0;
         routes.push(...newRoutes);
         routes.sort((a, b) => {
-            // return b.flowRate - a.flowRate;
             return b.totalFlow - a.totalFlow;
         });
     }
@@ -194,5 +193,5 @@ class Route {
     }
 }
 
-// console.log(day16Task1(input));
+console.log(day16Task1(input));
 module.exports = { day16Task1 };
