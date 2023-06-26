@@ -8,7 +8,7 @@
 // We're reaching the max stack limit
 // - perhaps, prevent the array from reaching a certain size
 // - sometimes routes array is empty.
-// - - get to the bottom of why this is so that the program can continue to run until the end
+//   - get to the bottom of why this is so that the program can continue to run until the end
 
 const { input } = require("./input");
 
@@ -19,8 +19,22 @@ function day16Task1(input) {
     const valves = inputByLine.reduce(parseInput, {});
     const valveNames = Object.keys(valves);
     const starterRoute = new Route(valveNames);
-    const distancesBetweenAllValves =
-        findShortestDistancesBetweenAllValves(valves);
+    // const distancesBetweenAllValves =
+    // findShortestDistancesBetweenAllValves(valves);
+    // I wrote the output of this to a file to save time
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    // import distancesBetweenAll...etc.
     const routes = [starterRoute];
 
     while (routes[0].minute < MAX_MINUTES) {
@@ -44,8 +58,8 @@ function day16Task1(input) {
             // return b.totalFlow - a.totalFlow; // this one works for the test but not the real data
         });
 
-        if (routes.length > 70000) {
-            routes.length = 70000;
+        if (routes.length > 10000) {
+            routes.length = 10000;
         }
     }
 
@@ -73,7 +87,18 @@ function evaluateRoute(route, newRoutes, valves, distancesBetweenAllValves) {
         );
         if (newRoute.minute <= MAX_MINUTES) {
             newRoutes.push(newRoute);
+            return;
         }
+        //
+        //
+        //
+        // experimental
+        //
+        const remainingMinutes = MAX_MINUTES - route.minute;
+        const remainingFlow = route.flowRate * remainingMinutes;
+        route.totalFlow += remainingFlow;
+        route.minute += remainingMinutes;
+        newRoutes.push(route);
     });
 }
 
@@ -109,6 +134,7 @@ function updateRoute(route, newLocation, additionalMinutes, valves) {
 function findShortestDistancesBetweenAllValves(valves) {
     const routeLengths = {};
     for (let startValve in valves) {
+        console.log("Evaluating new valve.");
         for (let destinationValve in valves) {
             if (destinationValve === startValve) continue;
             routeLengths[startValve + destinationValve] =
