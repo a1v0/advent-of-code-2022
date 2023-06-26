@@ -1,24 +1,13 @@
-// There must be a way to calculate the relative desirability of a valve, based on current position:
-// - Heuristic is perhaps flow rate / steps before you arrive there
-
 //
 //
 // we're passing the test, but the real data isn't giving us anything good
 //
-// TO DO:
-// - PERHAPS CREATE A NEW SET TO CONTAIN VALVES THAT ARE INDEED OPEN
-// - run some tests by setting the max minutes property to something lower
-// - see if you can add a heuristic to the sorting function to see if it fixes anything
 //
 //
 //
-// - this is very slow when given the major data.
-// - i wonder if we can do a preliminary calculation to find the shortest routes from each location to each other location. this should save much time
-//
-//
-//
-//
-//
+// We're reaching the max stack limit
+// - perhaps, once the array reaches a certain size, cull 25% of the ones at the back?
+// - any other ways to fix this?
 
 const { input } = require("./input");
 
@@ -44,17 +33,6 @@ function day16Task1(input) {
         routes.length = 0;
         routes.push(...newRoutes);
         routes.sort((a, b) => {
-            // heuristic needed here, e.g. flowRate * minutes left?
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-
             const aTimeLeft = MAX_MINUTES - a.minute,
                 bTimeLeft = MAX_MINUTES - b.minute;
 
@@ -108,12 +86,6 @@ function moveToDestination(
 
     const lowestTimeToArrival =
         distancesBetweenAllValves[newRoute.currentLocation + destination];
-    // calculateShortestDistanceToValve(
-    //     newRoute.currentLocation,
-    //     destination,
-    //     valves
-    //     // if it gets too computationally heavy, we can add a max route length equal to 30 - elapsed time
-    // );
 
     const additionalMinutes = lowestTimeToArrival + 1; // +1 because it takes one minute to turn on the valve
     updateRoute(newRoute, destination, additionalMinutes, valves);
