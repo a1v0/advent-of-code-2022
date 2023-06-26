@@ -6,8 +6,9 @@
 //
 //
 // We're reaching the max stack limit
-// - perhaps, once the array reaches a certain size, cull 25% of the ones at the back?
-// - any other ways to fix this?
+// - perhaps, prevent the array from reaching a certain size
+// - sometimes routes array is empty.
+// - - get to the bottom of why this is so that the program can continue to run until the end
 
 const { input } = require("./input");
 
@@ -38,10 +39,14 @@ function day16Task1(input) {
 
             const aHeuristic = aTimeLeft * a.flowRate + a.totalFlow,
                 bHeuristic = bTimeLeft * b.flowRate + b.totalFlow;
-            return bHeuristic - aHeuristic; // this does not pass the tests
+            return bHeuristic - aHeuristic;
 
             // return b.totalFlow - a.totalFlow; // this one works for the test but not the real data
         });
+
+        if (routes.length > 70000) {
+            routes.length = 70000;
+        }
     }
 
     return routes[0].totalFlow;
