@@ -115,6 +115,26 @@ function updateRoute(route, newLocation, additionalMinutes, valves) {
     route.minute += additionalMinutes;
 }
 
+function generateAllShortestRoutes(valves) {
+    // this method finds the shortest route between all valves worth going to, i.e. whose flowRate > 0
+    const routeLengths = {};
+    for (let startValve in valves) {
+        if (valves[startValve].flowRate < 1) continue;
+
+        for (let destinationValve in valves) {
+            if (valves[destinationValve].flowRate < 1) continue;
+            if (destinationValve === startValve) continue;
+            routeLengths[startValve + destinationValve] =
+                findShortestRouteRecursively(
+                    startValve,
+                    destinationValve,
+                    valves
+                );
+        }
+    }
+    return routeLengths;
+}
+
 function calculateShortestDistanceToValve(start, destination, valves) {
     const minutes = [];
     findShortestRouteRecursively(start, 0, [], destination, valves, minutes);
