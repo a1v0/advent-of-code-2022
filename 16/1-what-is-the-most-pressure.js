@@ -29,6 +29,8 @@ function day16Task1(input) {
     const valves = inputByLine.reduce(parseInput, {});
     const valveNames = Object.keys(valves);
     const starterRoute = new Route(valveNames);
+    const distancesBetweenAllValves =
+        findShortestDistancesBetweenAllValves(valves);
     const routes = [starterRoute];
 
     while (routes[0].minute < MAX_MINUTES) {
@@ -36,7 +38,7 @@ function day16Task1(input) {
         const newRoutes = [];
 
         routes.forEach((route) => {
-            evaluateRoute(route, newRoutes, valves);
+            evaluateRoute(route, newRoutes, valves, distancesBetweenAllValves);
         });
 
         routes.length = 0;
@@ -67,7 +69,7 @@ function day16Task1(input) {
     return routes[0].totalFlow;
 }
 
-function evaluateRoute(route, newRoutes, valves) {
+function evaluateRoute(route, newRoutes, valves, distancesBetweenAllValves) {
     const destinations = getPossibleDestinations(route, valves);
 
     if (!destinations.length) {
@@ -80,26 +82,38 @@ function evaluateRoute(route, newRoutes, valves) {
     }
 
     destinations.forEach((destination) => {
-        const newRoute = moveToDestination(route, destination, valves);
+        const newRoute = moveToDestination(
+            route,
+            destination,
+            valves,
+            distancesBetweenAllValves
+        );
         if (newRoute.minute <= MAX_MINUTES) {
             newRoutes.push(newRoute);
         }
     });
 }
 
-function moveToDestination(route, destination, valves) {
+function moveToDestination(
+    route,
+    destination,
+    valves,
+    distancesBetweenAllValves
+) {
     const newRoute = new Route(route.availableValves);
     newRoute.flowRate = route.flowRate;
     newRoute.totalFlow = route.totalFlow;
     newRoute.minute = route.minute;
     newRoute.currentLocation = route.currentLocation;
 
-    const lowestTimeToArrival = calculateShortestDistanceToValve(
-        newRoute.currentLocation,
-        destination,
-        valves
-        // if it gets too computationally heavy, we can add a max route length equal to 30 - elapsed time
-    );
+    const lowestTimeToArrival =
+        distancesBetweenAllValves[newRoute.currentLocation + destination];
+    // calculateShortestDistanceToValve(
+    //     newRoute.currentLocation,
+    //     destination,
+    //     valves
+    //     // if it gets too computationally heavy, we can add a max route length equal to 30 - elapsed time
+    // );
 
     const additionalMinutes = lowestTimeToArrival + 1; // +1 because it takes one minute to turn on the valve
     updateRoute(newRoute, destination, additionalMinutes, valves);
@@ -115,17 +129,13 @@ function updateRoute(route, newLocation, additionalMinutes, valves) {
     route.minute += additionalMinutes;
 }
 
-function generateAllShortestRoutes(valves) {
-    // this method finds the shortest route between all valves worth going to, i.e. whose flowRate > 0
+function findShortestDistancesBetweenAllValves(valves) {
     const routeLengths = {};
     for (let startValve in valves) {
-        if (valves[startValve].flowRate < 1) continue;
-
         for (let destinationValve in valves) {
-            if (valves[destinationValve].flowRate < 1) continue;
             if (destinationValve === startValve) continue;
             routeLengths[startValve + destinationValve] =
-                findShortestRouteRecursively(
+                calculateShortestDistanceToValve(
                     startValve,
                     destinationValve,
                     valves
