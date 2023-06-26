@@ -12,8 +12,8 @@
 //
 //
 //
-//
-//
+// - this is very slow when given the major data.
+// - i wonder if we can do a preliminary calculation to find the shortest routes from each location to each other location. this should save much time
 //
 //
 //
@@ -32,6 +32,7 @@ function day16Task1(input) {
     const routes = [starterRoute];
 
     while (routes[0].minute < MAX_MINUTES) {
+        console.log("here", routes[0].minute, routes.length);
         const newRoutes = [];
 
         routes.forEach((route) => {
@@ -55,16 +56,13 @@ function day16Task1(input) {
             const aTimeLeft = MAX_MINUTES - a.minute,
                 bTimeLeft = MAX_MINUTES - b.minute;
 
-            const aHeuristic = aTimeLeft * a.flowRate,
-                bHeuristic = bTimeLeft * b.flowRate;
+            const aHeuristic = aTimeLeft * a.flowRate + a.totalFlow,
+                bHeuristic = bTimeLeft * b.flowRate + b.totalFlow;
             return bHeuristic - aHeuristic; // this does not pass the tests
 
             // return b.totalFlow - a.totalFlow; // this one works for the test but not the real data
         });
     }
-
-    console.log(routes[0].totalFlow);
-    console.log(routes[1].totalFlow);
 
     return routes[0].totalFlow;
 }
