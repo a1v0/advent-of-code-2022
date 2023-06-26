@@ -6,7 +6,6 @@
 // we're passing the test, but the real data isn't giving us anything good
 //
 // TO DO:
-// - RENAME openValves to something better, like closedValves
 // - PERHAPS CREATE A NEW SET TO CONTAIN VALVES THAT ARE INDEED OPEN
 // - run some tests by setting the max minutes property to something lower
 // - see if you can add a heuristic to the sorting function to see if it fixes anything
@@ -91,7 +90,7 @@ function evaluateRoute(route, newRoutes, valves) {
 }
 
 function moveToDestination(route, destination, valves) {
-    const newRoute = new Route(route.openValves);
+    const newRoute = new Route(route.availableValves);
     newRoute.flowRate = route.flowRate;
     newRoute.totalFlow = route.totalFlow;
     newRoute.minute = route.minute;
@@ -113,7 +112,7 @@ function moveToDestination(route, destination, valves) {
 function updateRoute(route, newLocation, additionalMinutes, valves) {
     route.totalFlow += route.flowRate * additionalMinutes;
     route.flowRate += valves[newLocation].flowRate;
-    route.openValves.delete(newLocation);
+    route.availableValves.delete(newLocation);
     route.currentLocation = newLocation;
     route.minute += additionalMinutes;
 }
@@ -152,9 +151,9 @@ function findShortestRouteRecursively(
     }
 }
 
-function getPossibleDestinations({ openValves }, valves) {
+function getPossibleDestinations({ availableValves }, valves) {
     const destinations = [];
-    openValves.forEach((openValve) => {
+    availableValves.forEach((openValve) => {
         if (valves[openValve].flowRate > 0) {
             destinations.push(openValve);
         }
@@ -179,7 +178,7 @@ function parseInput(valves, valveString) {
 
 class Route {
     constructor(valveNames) {
-        this.openValves = new Set(valveNames);
+        this.availableValves = new Set(valveNames);
         this.flowRate = 0;
         this.totalFlow = 0;
         this.minute = 0;
