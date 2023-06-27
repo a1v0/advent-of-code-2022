@@ -1,4 +1,5 @@
 const { day16Task1 } = require("../16/1-what-is-the-most-pressure");
+const { testDistancesBetweenAllValves } = require("../16/shortest-distances");
 const { testInput: day16Input } = require("../16/input");
 
 const { day18Task2 } = require("../18/2-exterior-surface-area");
@@ -27,7 +28,9 @@ const { testInput: day24Input } = require("../24/input");
 
 describe.only("Day 16", () => {
     test("Task 1", () => {
-        expect(day16Task1(day16Input)).toBe(1651);
+        expect(day16Task1(day16Input, testDistancesBetweenAllValves)).toBe(
+            1651
+        );
     });
 });
 
