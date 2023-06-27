@@ -61,11 +61,7 @@ function evaluateRoute(route, newRoutes, valves, distancesBetweenAllValves) {
     const destinations = getPossibleDestinations(route, valves);
 
     if (!destinations.length) {
-        const remainingMinutes = MAX_MINUTES - route.minute;
-        const remainingFlow = route.flowRate * remainingMinutes;
-        route.totalFlow += remainingFlow;
-        route.minute += remainingMinutes;
-        newRoutes.push(route);
+        padRouteUntilLastMinute(route, newRoutes);
         return;
     }
 
@@ -80,16 +76,8 @@ function evaluateRoute(route, newRoutes, valves, distancesBetweenAllValves) {
             newRoutes.push(newRoute);
             return;
         }
-        //
-        //
-        //
-        // experimental
-        //
-        const remainingMinutes = MAX_MINUTES - route.minute;
-        const remainingFlow = route.flowRate * remainingMinutes;
-        route.totalFlow += remainingFlow;
-        route.minute += remainingMinutes;
-        newRoutes.push(route);
+
+        padRouteUntilLastMinute(route, newRoutes);
     });
 }
 
@@ -206,6 +194,14 @@ class Route {
         this.minute = 0;
         this.currentLocation = "AA";
     }
+}
+
+function padRouteUntilLastMinute(route, newRoutes) {
+    const remainingMinutes = MAX_MINUTES - route.minute;
+    const remainingFlow = route.flowRate * remainingMinutes;
+    route.totalFlow += remainingFlow;
+    route.minute += remainingMinutes;
+    newRoutes.push(route);
 }
 
 console.log(day16Task1(input, distancesBetweenAllValves));
