@@ -24,6 +24,10 @@ function day16Task1(input, distancesBetweenAllValves) {
             evaluateRoute(route, newRoutes, valves, distancesBetweenAllValves);
         });
 
+        if (newRoutes.length > 120000) {
+            newRoutes.length = 120000;
+        }
+
         routes.length = 0;
         routes.push(...newRoutes);
         routes.sort((a, b) => {
@@ -34,10 +38,6 @@ function day16Task1(input, distancesBetweenAllValves) {
                 bHeuristic = bTimeLeft * b.flowRate + b.totalFlow;
             return bHeuristic - aHeuristic;
         });
-
-        if (routes.length > 10000) {
-            routes.length = 10000;
-        }
     }
 
     return routes[0].totalFlow;
