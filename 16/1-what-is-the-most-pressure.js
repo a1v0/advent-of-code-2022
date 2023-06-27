@@ -1,15 +1,3 @@
-//
-//
-// we're passing the test, but the real data isn't giving us anything good
-//
-//
-//
-//
-// We're reaching the max stack limit
-// - perhaps, prevent the array from reaching a certain size
-// - sometimes routes array is empty.
-//   - get to the bottom of why this is so that the program can continue to run until the end
-
 const { input } = require("./input");
 const { distancesBetweenAllValves } = require("../16/shortest-distances");
 
@@ -45,8 +33,6 @@ function day16Task1(input, distancesBetweenAllValves) {
             const aHeuristic = aTimeLeft * a.flowRate + a.totalFlow,
                 bHeuristic = bTimeLeft * b.flowRate + b.totalFlow;
             return bHeuristic - aHeuristic;
-
-            // return b.totalFlow - a.totalFlow; // this one works for the test but not the real data
         });
 
         if (routes.length > 10000) {
