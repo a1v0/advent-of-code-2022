@@ -11,30 +11,21 @@
 //   - get to the bottom of why this is so that the program can continue to run until the end
 
 const { input } = require("./input");
+const { distancesBetweenAllValves } = require("../16/shortest-distances");
 
 const MAX_MINUTES = 30;
 
-function day16Task1(input) {
+function day16Task1(input, distancesBetweenAllValves) {
+    /**
+     *
+     * const distancesBetweenAllValves = findShortestDistancesBetweenAllValves(valves);
+     * I wrote the output of this to a file to save time, because it takes ages to calculate
+     */
+
     const inputByLine = input.split("\n");
     const valves = inputByLine.reduce(parseInput, {});
     const valveNames = Object.keys(valves);
     const starterRoute = new Route(valveNames);
-    // const distancesBetweenAllValves =
-    // findShortestDistancesBetweenAllValves(valves);
-    // I wrote the output of this to a file to save time
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    // import distancesBetweenAll...etc.
     const routes = [starterRoute];
 
     while (routes[0].minute < MAX_MINUTES) {
@@ -217,5 +208,5 @@ class Route {
     }
 }
 
-// console.log(day16Task1(input));
+console.log(day16Task1(input, distancesBetweenAllValves));
 module.exports = { day16Task1 };
