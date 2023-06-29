@@ -130,18 +130,26 @@ function findShortestDistancesBetweenAllValves(valves) {
 }
 function calculateShortestDistanceToValve(start, destination, valves) {
     const minutes = [];
-    findShortestRouteRecursively(start, 0, [], destination, valves, minutes);
+    const newRoute = {
+        currentLocation: start,
+        minutesElapsed: 0,
+        visitedValves: [],
+        destination,
+        valves,
+        minutes
+    };
+    findShortestRouteRecursively(newRoute);
     return Math.min(...minutes);
 }
 
-function findShortestRouteRecursively(
+function findShortestRouteRecursively({
     currentLocation,
     minutesElapsed,
     visitedValves,
     destination,
     valves,
     minutes
-) {
+}) {
     if (minutesElapsed > MAX_MINUTES) return;
     if (currentLocation === destination) {
         minutes.push(minutesElapsed);
@@ -151,14 +159,16 @@ function findShortestRouteRecursively(
     for (let valve of valves[currentLocation].leadsTo) {
         if (visitedValves.includes(valve)) continue;
 
-        findShortestRouteRecursively(
-            valve,
-            minutesElapsed + 1,
-            [...visitedValves, valve],
+        const newRoute = {
+            currentLocation: valve,
+            minutesElapsed: minutesElapsed + 1,
+            visitedValves: [...visitedValves, valve],
             destination,
             valves,
             minutes
-        );
+        };
+
+        findShortestRouteRecursively(newRoute);
     }
 }
 
