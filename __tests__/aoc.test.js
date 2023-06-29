@@ -25,12 +25,16 @@ const { testInput: day23Input } = require("../23/input");
 
 const { day24Task1 } = require("../24/1-fewest-minutes-to-avoid-blizzards");
 const { testInput: day24Input } = require("../24/input");
+const { day16Task2 } = require("../16/2-most-pressure-with-elephant");
 
 describe.only("Day 16", () => {
     test("Task 1", () => {
         expect(day16Task1(day16Input, testDistancesBetweenAllValves)).toBe(
             1651
         );
+    });
+    test("Task 2", () => {
+        expect(day16Task2(day16Input)).toBe(1707);
     });
 });
 
