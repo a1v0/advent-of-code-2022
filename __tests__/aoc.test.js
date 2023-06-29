@@ -124,15 +124,11 @@ describe("Day 20", () => {
 });
 
 describe("Day 21", () => {
-    describe("Task 1", () => {
-        test("returns correct value", () => {
-            expect(day21Task1(day21Input)).toBe(152);
-        });
+    test("Task 1", () => {
+        expect(day21Task1(day21Input)).toBe(152);
     });
-    describe("Task 2", () => {
-        test("returns correct value", () => {
-            expect(day21Task2(day21Input)).toBe(301);
-        });
+    test("Task 2", () => {
+        expect(day21Task2(day21Input)).toBe(301);
     });
 });
 
@@ -153,17 +149,13 @@ describe("Day 22", () => {
 });
 
 describe("Day 23", () => {
-    describe("Task 1", () => {
-        test("returns correct value with test data", () => {
-            expect(day23Task1(day23Input)).toBe(110);
-        });
+    test("Task 1", () => {
+        expect(day23Task1(day23Input)).toBe(110);
     });
 });
 
 describe("Day 24", () => {
-    describe("Task 1", () => {
-        test("returns correct value with test data", () => {
-            expect(day24Task1(day24Input)).toBe(18);
-        });
+    test("Task 1", () => {
+        expect(day24Task1(day24Input)).toBe(18);
     });
 });
