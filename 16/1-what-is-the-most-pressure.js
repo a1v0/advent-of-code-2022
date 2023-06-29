@@ -99,15 +99,20 @@ function parseInput(valves, valveString) {
     const valveNameRegex = /[A-Z]{2}/,
         flowRateRegex = /\d+/,
         leadsToRegex = /[A-Z]{2}/g;
+
     const [firstHalf, secondHalf] = valveString.split("; ");
     const name = firstHalf.match(valveNameRegex)[0],
         flowRate = Number(firstHalf.match(flowRateRegex)[0]),
         leadsTo = secondHalf.match(leadsToRegex);
+
     valve.flowRate = flowRate;
     valve.leadsTo = leadsTo;
     valves[name] = valve;
+
     return valves;
 }
+
+// ------------------------------------------------------
 
 /**
  * Utils for finding shortest distances between valves
@@ -128,6 +133,7 @@ function findShortestDistancesBetweenAllValves(valves) {
     }
     return routeLengths;
 }
+
 function calculateShortestDistanceToValve(start, destination, valves) {
     const minutes = [];
     const newRoute = {
