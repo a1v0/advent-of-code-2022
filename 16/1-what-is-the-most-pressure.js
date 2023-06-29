@@ -2,6 +2,7 @@ const { input } = require("./input");
 const { distancesBetweenAllValves } = require("../16/shortest-distances");
 
 const MAX_MINUTES = 30;
+let maxFlowRate = 0; // I know it'd be better to use an array for this, but this might make memory management easier
 
 function day16Task1(input, distancesBetweenAllValves) {
     /**
@@ -12,90 +13,105 @@ function day16Task1(input, distancesBetweenAllValves) {
 
     const inputByLine = input.split("\n");
     const valves = inputByLine.reduce(parseInput, {});
-    const valveNames = Object.keys(valves);
-    const starterRoute = new Route(valveNames);
-    const routes = [starterRoute];
-
-    while (routes[0].minute < MAX_MINUTES) {
-        console.log("here", routes[0].minute, routes.length);
-        const newRoutes = [];
-
-        routes.forEach((route) => {
-            evaluateRoute(route, newRoutes, valves, distancesBetweenAllValves);
-        });
-
-        if (newRoutes.length > 120000) {
-            newRoutes.length = 120000;
+    const worthwhileValves = new Set();
+    for (let valve in valves) {
+        if (valves[valve].flowRate > 0) {
+            worthwhileValves.add(valve);
         }
-
-        routes.length = 0;
-        routes.push(...newRoutes);
-        routes.sort((a, b) => {
-            const aTimeLeft = MAX_MINUTES - a.minute,
-                bTimeLeft = MAX_MINUTES - b.minute;
-
-            const aHeuristic = aTimeLeft * a.flowRate + a.totalFlow,
-                bHeuristic = bTimeLeft * b.flowRate + b.totalFlow;
-            return bHeuristic - aHeuristic;
-        });
     }
 
-    return routes[0].totalFlow;
+    evaluateRoutesWithBacktracking(
+        "AA",
+        0,
+        0,
+        0,
+        worthwhileValves,
+        valves,
+        distancesBetweenAllValves
+    );
+
+    return maxFlowRate;
 }
 
-function evaluateRoute(route, newRoutes, valves, distancesBetweenAllValves) {
-    const destinations = getPossibleDestinations(route, valves);
-
-    if (!destinations.length) {
-        padRouteUntilLastMinute(route, newRoutes);
+function evaluateRoutesWithBacktracking(
+    currentLocation,
+    currentMinute,
+    flowRate,
+    totalFlow,
+    availableValves,
+    allValves,
+    distancesBetweenAllValves
+) {
+    if (currentMinute > MAX_MINUTES) {
+        updateHighestFlowRate(totalFlow);
         return;
     }
 
-    destinations.forEach((destination) => {
-        const newRoute = moveToDestination(
-            route,
-            destination,
-            valves,
-            distancesBetweenAllValves
-        );
-        if (newRoute.minute <= MAX_MINUTES) {
-            newRoutes.push(newRoute);
+    if (!availableValves.size) {
+        padRouteUntilLastMinute(currentMinute, totalFlow, flowRate);
+        return;
+    }
+
+    availableValves.forEach((valve) => {
+        const minutesAdded =
+            distancesBetweenAllValves[currentLocation + valve] + 1; // +1 because it takes a minute to open the valve
+
+        if (currentMinute + minutesAdded > MAX_MINUTES) {
+            padRouteUntilLastMinute(currentMinute, totalFlow, flowRate);
             return;
         }
 
-        padRouteUntilLastMinute(route, newRoutes);
+        const newMinute = currentMinute + minutesAdded,
+            newTotalFlow = totalFlow + flowRate * minutesAdded,
+            newFlowRate = flowRate + allValves[valve].flowRate;
+
+        const newAvailableValves = new Set(availableValves);
+        newAvailableValves.delete(valve);
+
+        evaluateRoutesWithBacktracking(
+            valve,
+            newMinute,
+            newFlowRate,
+            newTotalFlow,
+            newAvailableValves,
+            allValves,
+            distancesBetweenAllValves
+        );
     });
 }
 
-function moveToDestination(
-    route,
-    destination,
-    valves,
-    distancesBetweenAllValves
-) {
-    const newRoute = new Route(route.availableValves);
-    newRoute.flowRate = route.flowRate;
-    newRoute.totalFlow = route.totalFlow;
-    newRoute.minute = route.minute;
-    newRoute.currentLocation = route.currentLocation;
-
-    const lowestTimeToArrival =
-        distancesBetweenAllValves[newRoute.currentLocation + destination];
-
-    const additionalMinutes = lowestTimeToArrival + 1; // +1 because it takes one minute to turn on the valve
-    updateRoute(newRoute, destination, additionalMinutes, valves);
-
-    return newRoute;
+function updateHighestFlowRate(flow) {
+    if (flow > maxFlowRate) {
+        maxFlowRate = flow;
+        console.log(maxFlowRate);
+    }
 }
 
-function updateRoute(route, newLocation, additionalMinutes, valves) {
-    route.totalFlow += route.flowRate * additionalMinutes;
-    route.flowRate += valves[newLocation].flowRate;
-    route.availableValves.delete(newLocation);
-    route.currentLocation = newLocation;
-    route.minute += additionalMinutes;
+function padRouteUntilLastMinute(currentMinute, totalFlow, flowRate) {
+    const remainingMinutes = MAX_MINUTES - currentMinute;
+    const remainingFlow = flowRate * remainingMinutes;
+    const finalTotalFlow = totalFlow + remainingFlow;
+    updateHighestFlowRate(finalTotalFlow);
 }
 
+function parseInput(valves, valveString) {
+    const valve = {};
+    const valveNameRegex = /[A-Z]{2}/,
+        flowRateRegex = /\d+/,
+        leadsToRegex = /[A-Z]{2}/g;
+    const [firstHalf, secondHalf] = valveString.split("; ");
+    const name = firstHalf.match(valveNameRegex)[0],
+        flowRate = Number(firstHalf.match(flowRateRegex)[0]),
+        leadsTo = secondHalf.match(leadsToRegex);
+    valve.flowRate = flowRate;
+    valve.leadsTo = leadsTo;
+    valves[name] = valve;
+    return valves;
+}
+
+/**
+ * Utils for finding shortest distances between valves
+ */
 function findShortestDistancesBetweenAllValves(valves) {
     const routeLengths = {};
     for (let startValve in valves) {
@@ -112,7 +128,6 @@ function findShortestDistancesBetweenAllValves(valves) {
     }
     return routeLengths;
 }
-
 function calculateShortestDistanceToValve(start, destination, valves) {
     const minutes = [];
     findShortestRouteRecursively(start, 0, [], destination, valves, minutes);
@@ -147,48 +162,5 @@ function findShortestRouteRecursively(
     }
 }
 
-function getPossibleDestinations({ availableValves }, valves) {
-    const destinations = [];
-    availableValves.forEach((openValve) => {
-        if (valves[openValve].flowRate > 0) {
-            destinations.push(openValve);
-        }
-    });
-    return destinations;
-}
-
-function parseInput(valves, valveString) {
-    const valve = {};
-    const valveNameRegex = /[A-Z]{2}/,
-        flowRateRegex = /\d+/,
-        leadsToRegex = /[A-Z]{2}/g;
-    const [firstHalf, secondHalf] = valveString.split("; ");
-    const name = firstHalf.match(valveNameRegex)[0],
-        flowRate = Number(firstHalf.match(flowRateRegex)[0]),
-        leadsTo = secondHalf.match(leadsToRegex);
-    valve.flowRate = flowRate;
-    valve.leadsTo = leadsTo;
-    valves[name] = valve;
-    return valves;
-}
-
-class Route {
-    constructor(valveNames) {
-        this.availableValves = new Set(valveNames);
-        this.flowRate = 0;
-        this.totalFlow = 0;
-        this.minute = 0;
-        this.currentLocation = "AA";
-    }
-}
-
-function padRouteUntilLastMinute(route, newRoutes) {
-    const remainingMinutes = MAX_MINUTES - route.minute;
-    const remainingFlow = route.flowRate * remainingMinutes;
-    route.totalFlow += remainingFlow;
-    route.minute += remainingMinutes;
-    newRoutes.push(route);
-}
-
-console.log(day16Task1(input, distancesBetweenAllValves));
+// console.log(day16Task1(input, distancesBetweenAllValves));
 module.exports = { day16Task1 };
