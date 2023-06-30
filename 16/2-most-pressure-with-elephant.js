@@ -1,6 +1,48 @@
 const { input } = require("./input");
 const { distancesBetweenAllValves } = require("./shortest-distances");
 
+/**
+ *
+ * This is an incredibly messy solution in desperate need of a major refactor
+ *
+ */
+
+//
+//
+//
+//
+//
+//
+//
+//
+// the problem is that, once there is nowhere left to go,
+// any locations that have yet to be reached aren't being reached
+// and the flow rate isn't being updated.
+//
+// I have made it incredibly convoluted and it's probably safer
+// to refactor the solution from the ground up
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 const MAX_MINUTES = 26;
 let maxFlowRate = 0; // I know it'd be better to use an array for this, but this might make memory management easier
 
@@ -13,15 +55,17 @@ function day16Task2(input, distancesBetweenAllValves) {
             worthwhileValves.add(valve);
         }
     }
-    // this will be trickier, methinks, because i need to keep track of two sets of minutes
-    // could call my recursive method once every minute
-    // add a parameter to the method about time left until Person A and B can go somewhere else
-    // // if Person B needs to take five minutes to get to a location, keep track of that
-    // // if PErson B's 'timer' is 0, then you can turn on the valve and move on
-    // it might make a difference whether Person A is evaluated before PErson B, so we may need to add in another check
 
-    const person = { currentLocation: "AA", timeBeforeNextMove: 0 },
-        elephant = { currentLocation: "AA", timeBeforeNextMove: 0 };
+    const person = {
+            currentLocation: "AA",
+            timeBeforeNextMove: 0,
+            isFinished: false
+        },
+        elephant = {
+            currentLocation: "AA",
+            timeBeforeNextMove: 0,
+            isFinished: false
+        };
 
     evaluateRoutesRecursively(
         person,
@@ -52,29 +96,181 @@ function evaluateRoutesRecursively(
         return;
     }
 
-    if (!availableValves.size) {
-        padRouteUntilLastMinute(currentMinute, totalFlow, flowRate);
-        return;
-    }
-
     if (!person.timeBeforeNextMove && !elephant.timeBeforeNextMove) {
-        //     availableValves.forEach((personValve)=>{
-        // availableValves.forEach((elephantValve)=>{
-        //     if(personValve===elephantValve) return;
-        // })
-        // })
-    } else if (!person.timeBeforeNextMove) {
-        // send elephant to new route
-    } else if (!elephant.timeBeforeNextMove) {
-        // send person down a route
-    } else {
-        // continue but with a reduced no of minutes
-    }
+        if (!availableValves.size) {
+            const newPerson = { ...person },
+                newElephant = { ...elephant };
 
-    // for each available route
-    // nested for each
-    // send elephant everywhere in the nest (except the current external valve)
-    // this should cover every single combo
+            evaluateRoutesRecursively(
+                newPerson,
+                newElephant,
+                currentMinute + 1,
+                flowRate,
+                totalFlow + flowRate,
+                new Set(),
+                allValves,
+                distancesBetweenAllValves
+            );
+            return;
+        }
+
+        availableValves.forEach((personValve) => {
+            availableValves.forEach((elephantValve) => {
+                if (personValve === elephantValve) return;
+
+                const newFlowRate =
+                    flowRate +
+                    allValves[elephant.currentLocation].flowRate +
+                    allValves[person.currentLocation].flowRate;
+
+                const newAvailableValves = new Set(availableValves);
+                newAvailableValves.delete(personValve);
+                newAvailableValves.delete(elephantValve);
+
+                const newPerson = { ...person },
+                    newElephant = { ...elephant };
+
+                newPerson.timeBeforeNextMove =
+                    distancesBetweenAllValves[
+                        person.currentLocation + personValve
+                    ] + 1; // +1 because it takes a minute to turn on the valve
+                newPerson.currentLocation = personValve;
+
+                newElephant.timeBeforeNextMove =
+                    distancesBetweenAllValves[
+                        elephant.currentLocation + elephantValve
+                    ] + 1; // +1 because it takes a minute to turn on the valve
+                newElephant.currentLocation = elephantValve;
+
+                evaluateRoutesRecursively(
+                    newPerson,
+                    newElephant,
+                    currentMinute + 1,
+                    newFlowRate,
+                    totalFlow + flowRate,
+                    newAvailableValves,
+                    allValves,
+                    distancesBetweenAllValves
+                );
+            });
+        });
+    } else if (!person.timeBeforeNextMove) {
+        // send person down all available routes
+        if (!availableValves.size) {
+            const newPerson = { ...person },
+                newElephant = { ...elephant };
+
+            --newElephant.timeBeforeNextMove;
+            evaluateRoutesRecursively(
+                newPerson,
+                newElephant,
+                currentMinute + 1,
+                flowRate,
+                totalFlow + flowRate,
+                new Set(),
+                allValves,
+                distancesBetweenAllValves
+            );
+            return;
+        }
+
+        availableValves.forEach((valve) => {
+            const newFlowRate =
+                flowRate + allValves[person.currentLocation].flowRate;
+
+            const newAvailableValves = new Set(availableValves);
+            newAvailableValves.delete(valve);
+
+            const newPerson = { ...person },
+                newElephant = { ...elephant };
+
+            --newElephant.timeBeforeNextMove;
+
+            newPerson.timeBeforeNextMove =
+                distancesBetweenAllValves[person.currentLocation + valve] + 1; // +1 because it takes a minute to turn on the valve
+            newPerson.currentLocation = valve;
+
+            evaluateRoutesRecursively(
+                newPerson,
+                newElephant,
+                currentMinute + 1,
+                newFlowRate,
+                totalFlow + flowRate,
+                newAvailableValves,
+                allValves,
+                distancesBetweenAllValves
+            );
+        });
+    } else if (!elephant.timeBeforeNextMove) {
+        // send elephant down all available routes
+        if (!availableValves.size) {
+            const newPerson = { ...person },
+                newElephant = { ...elephant };
+
+            --newPerson.timeBeforeNextMove;
+            evaluateRoutesRecursively(
+                newPerson,
+                newElephant,
+                currentMinute + 1,
+                flowRate,
+                totalFlow + flowRate,
+                new Set(),
+                allValves,
+                distancesBetweenAllValves
+            );
+            return;
+        }
+
+        availableValves.forEach((valve) => {
+            const newFlowRate =
+                flowRate + allValves[elephant.currentLocation].flowRate;
+
+            const newAvailableValves = new Set(availableValves);
+            newAvailableValves.delete(valve);
+
+            const newPerson = { ...person },
+                newElephant = { ...elephant };
+
+            newElephant.timeBeforeNextMove =
+                distancesBetweenAllValves[elephant.currentLocation + valve] + 1; // +1 because it takes a minute to turn on the valve
+            newElephant.currentLocation = valve;
+
+            --newPerson.timeBeforeNextMove;
+
+            evaluateRoutesRecursively(
+                newPerson,
+                newElephant,
+                currentMinute + 1,
+                newFlowRate,
+                totalFlow + flowRate,
+                newAvailableValves,
+                allValves,
+                distancesBetweenAllValves
+            );
+        });
+    } else {
+        const newAvailableValves = new Set(availableValves);
+        const newPerson = { ...person },
+            newElephant = { ...elephant };
+
+        newPerson.timeBeforeNextMove = !person.timeBeforeNextMove
+            ? 0
+            : person.timeBeforeNextMove - 1;
+        newElephant.timeBeforeNextMove = !elephant.timeBeforeNextMove
+            ? 0
+            : elephant.timeBeforeNextMove - 1;
+
+        evaluateRoutesRecursively(
+            newPerson,
+            newElephant,
+            currentMinute + 1,
+            flowRate,
+            totalFlow + flowRate,
+            newAvailableValves,
+            allValves,
+            distancesBetweenAllValves
+        );
+    }
 }
 
 function updateHighestFlowRate(flow) {
