@@ -20,7 +20,7 @@ function day16Task1(input, distancesBetweenAllValves) {
         }
     }
 
-    evaluateRoutesWithBacktracking(
+    evaluateRoutesRecursively(
         "AA",
         0,
         0,
@@ -33,7 +33,7 @@ function day16Task1(input, distancesBetweenAllValves) {
     return maxFlowRate;
 }
 
-function evaluateRoutesWithBacktracking(
+function evaluateRoutesRecursively(
     currentLocation,
     currentMinute,
     flowRate,
@@ -68,7 +68,7 @@ function evaluateRoutesWithBacktracking(
         const newAvailableValves = new Set(availableValves);
         newAvailableValves.delete(valve);
 
-        evaluateRoutesWithBacktracking(
+        evaluateRoutesRecursively(
             valve,
             newMinute,
             newFlowRate,
