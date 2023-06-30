@@ -34,7 +34,9 @@ describe.only("Day 16", () => {
         );
     });
     test("Task 2", () => {
-        expect(day16Task2(day16Input)).toBe(1707);
+        expect(day16Task2(day16Input, testDistancesBetweenAllValves)).toBe(
+            1707
+        );
     });
 });
 
