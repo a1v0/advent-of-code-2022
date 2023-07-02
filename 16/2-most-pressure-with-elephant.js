@@ -36,6 +36,7 @@ function day16Task2(input, distancesBetweenAllValves) {
         0,
         0,
         worthwhileValves,
+        new Set(),
         valves,
         distancesBetweenAllValves
     );
@@ -50,6 +51,7 @@ function evaluateRoutesRecursively(
     flowRate,
     totalFlow,
     availableValves,
+    openValves,
     allValves,
     distancesBetweenAllValves
 ) {
@@ -60,10 +62,51 @@ function evaluateRoutesRecursively(
 
     if (!person.timeBeforeNextMove && !elephant.timeBeforeNextMove) {
         if (!availableValves.size) {
-            padRouteUntilLastMinute(currentMinute, totalFlow, flowRate);
+            let newFlowRate = flowRate;
+            if (!openValves.has(elephant.currentLocation)) {
+                newFlowRate += allValves[elephant.currentLocation].flowRate;
+            }
+            if (!openValves.has(person.currentLocation)) {
+                newFlowRate += allValves[person.currentLocation].flowRate;
+            }
+
+            padRouteUntilLastMinute(currentMinute, totalFlow, newFlowRate);
             return;
         }
 
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        // investigate what happens here when there's just one available place to go
+        //
+        //
+        //
+        //
         availableValves.forEach((personValve) => {
             availableValves.forEach((elephantValve) => {
                 if (personValve === elephantValve) return;
@@ -72,6 +115,10 @@ function evaluateRoutesRecursively(
                     flowRate +
                     allValves[elephant.currentLocation].flowRate +
                     allValves[person.currentLocation].flowRate;
+
+                const newOpenValves = new Set(openValves);
+                newOpenValves.add(person.currentLocation);
+                newOpenValves.add(elephant.currentLocation);
 
                 const newAvailableValves = new Set(availableValves);
                 newAvailableValves.delete(personValve);
@@ -99,6 +146,7 @@ function evaluateRoutesRecursively(
                     newFlowRate,
                     totalFlow + flowRate,
                     newAvailableValves,
+                    newOpenValves,
                     allValves,
                     distancesBetweenAllValves
                 );
@@ -110,8 +158,13 @@ function evaluateRoutesRecursively(
     if (!person.timeBeforeNextMove) {
         // send person down all available routes
         if (!availableValves.size) {
-            const newFlowRate =
-                flowRate + allValves[person.currentLocation].flowRate;
+            const newOpenValves = new Set(openValves);
+
+            let newFlowRate = flowRate;
+            if (!openValves.has(person.currentLocation)) {
+                newFlowRate += allValves[person.currentLocation].flowRate;
+                newOpenValves.add(person.currentLocation);
+            }
 
             const newAvailableValves = new Set();
 
@@ -127,6 +180,7 @@ function evaluateRoutesRecursively(
                 newFlowRate,
                 totalFlow + flowRate,
                 newAvailableValves,
+                newOpenValves,
                 allValves,
                 distancesBetweenAllValves
             );
@@ -134,8 +188,12 @@ function evaluateRoutesRecursively(
         }
 
         availableValves.forEach((valve) => {
-            const newFlowRate =
-                flowRate + allValves[person.currentLocation].flowRate;
+            const newOpenValves = new Set(openValves);
+            let newFlowRate = flowRate;
+            if (!openValves.has(person.currentLocation)) {
+                newFlowRate += allValves[person.currentLocation].flowRate;
+                newOpenValves.add(person.currentLocation);
+            }
 
             const newAvailableValves = new Set(availableValves);
             newAvailableValves.delete(valve);
@@ -156,6 +214,7 @@ function evaluateRoutesRecursively(
                 newFlowRate,
                 totalFlow + flowRate,
                 newAvailableValves,
+                newOpenValves,
                 allValves,
                 distancesBetweenAllValves
             );
@@ -165,9 +224,14 @@ function evaluateRoutesRecursively(
 
     if (!elephant.timeBeforeNextMove) {
         // send elephant down all available routes
+        const newOpenValves = new Set(openValves);
+
         if (!availableValves.size) {
-            const newFlowRate =
-                flowRate + allValves[elephant.currentLocation].flowRate;
+            let newFlowRate = flowRate;
+            if (!openValves.has(elephant.currentLocation)) {
+                newFlowRate += allValves[elephant.currentLocation].flowRate;
+                newOpenValves.add(elephant.currentLocation);
+            }
 
             const newAvailableValves = new Set();
 
@@ -183,6 +247,7 @@ function evaluateRoutesRecursively(
                 newFlowRate,
                 totalFlow + flowRate,
                 newAvailableValves,
+                newOpenValves,
                 allValves,
                 distancesBetweenAllValves
             );
@@ -190,8 +255,13 @@ function evaluateRoutesRecursively(
         }
 
         availableValves.forEach((valve) => {
-            const newFlowRate =
-                flowRate + allValves[elephant.currentLocation].flowRate;
+            const newOpenValves = new Set(openValves);
+
+            let newFlowRate = flowRate;
+            if (!openValves.has(elephant.currentLocation)) {
+                newFlowRate += allValves[elephant.currentLocation].flowRate;
+                newOpenValves.add(elephant.currentLocation);
+            }
 
             const newAvailableValves = new Set(availableValves);
             newAvailableValves.delete(valve);
@@ -212,6 +282,7 @@ function evaluateRoutesRecursively(
                 newFlowRate,
                 totalFlow + flowRate,
                 newAvailableValves,
+                newOpenValves,
                 allValves,
                 distancesBetweenAllValves
             );
@@ -219,6 +290,7 @@ function evaluateRoutesRecursively(
         return;
     }
 
+    const newOpenValves = new Set(openValves);
     const newAvailableValves = new Set(availableValves);
     const newPerson = { ...person },
         newElephant = { ...elephant };
@@ -233,6 +305,7 @@ function evaluateRoutesRecursively(
         flowRate,
         totalFlow + flowRate,
         newAvailableValves,
+        newOpenValves,
         allValves,
         distancesBetweenAllValves
     );
