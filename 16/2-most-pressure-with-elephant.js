@@ -7,42 +7,6 @@ const { distancesBetweenAllValves } = require("./shortest-distances");
  *
  */
 
-//
-//
-//
-//
-//
-//
-//
-//
-// the problem is that, once there is nowhere left to go,
-// any locations that have yet to be reached aren't being reached
-// and the flow rate isn't being updated.
-//
-// I have made it incredibly convoluted and it's probably safer
-// to refactor the solution from the ground up
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 const MAX_MINUTES = 26;
 let maxFlowRate = 0; // I know it'd be better to use an array for this, but this might make memory management easier
 
@@ -58,13 +22,11 @@ function day16Task2(input, distancesBetweenAllValves) {
 
     const person = {
             currentLocation: "AA",
-            timeBeforeNextMove: 0,
-            isFinished: false
+            timeBeforeNextMove: 0
         },
         elephant = {
             currentLocation: "AA",
-            timeBeforeNextMove: 0,
-            isFinished: false
+            timeBeforeNextMove: 0
         };
 
     evaluateRoutesRecursively(
@@ -98,19 +60,7 @@ function evaluateRoutesRecursively(
 
     if (!person.timeBeforeNextMove && !elephant.timeBeforeNextMove) {
         if (!availableValves.size) {
-            const newPerson = { ...person },
-                newElephant = { ...elephant };
-
-            evaluateRoutesRecursively(
-                newPerson,
-                newElephant,
-                currentMinute + 1,
-                flowRate,
-                totalFlow + flowRate,
-                new Set(),
-                allValves,
-                distancesBetweenAllValves
-            );
+            padRouteUntilLastMinute(currentMinute, totalFlow, flowRate);
             return;
         }
 
@@ -154,20 +104,29 @@ function evaluateRoutesRecursively(
                 );
             });
         });
-    } else if (!person.timeBeforeNextMove) {
+        return;
+    }
+
+    if (!person.timeBeforeNextMove) {
         // send person down all available routes
         if (!availableValves.size) {
+            const newFlowRate =
+                flowRate + allValves[person.currentLocation].flowRate;
+
+            const newAvailableValves = new Set();
+
             const newPerson = { ...person },
                 newElephant = { ...elephant };
 
             --newElephant.timeBeforeNextMove;
+
             evaluateRoutesRecursively(
                 newPerson,
                 newElephant,
                 currentMinute + 1,
-                flowRate,
+                newFlowRate,
                 totalFlow + flowRate,
-                new Set(),
+                newAvailableValves,
                 allValves,
                 distancesBetweenAllValves
             );
@@ -201,20 +160,29 @@ function evaluateRoutesRecursively(
                 distancesBetweenAllValves
             );
         });
-    } else if (!elephant.timeBeforeNextMove) {
+        return;
+    }
+
+    if (!elephant.timeBeforeNextMove) {
         // send elephant down all available routes
         if (!availableValves.size) {
+            const newFlowRate =
+                flowRate + allValves[elephant.currentLocation].flowRate;
+
+            const newAvailableValves = new Set();
+
             const newPerson = { ...person },
                 newElephant = { ...elephant };
 
             --newPerson.timeBeforeNextMove;
+
             evaluateRoutesRecursively(
                 newPerson,
                 newElephant,
                 currentMinute + 1,
-                flowRate,
+                newFlowRate,
                 totalFlow + flowRate,
-                new Set(),
+                newAvailableValves,
                 allValves,
                 distancesBetweenAllValves
             );
@@ -248,29 +216,27 @@ function evaluateRoutesRecursively(
                 distancesBetweenAllValves
             );
         });
-    } else {
-        const newAvailableValves = new Set(availableValves);
-        const newPerson = { ...person },
-            newElephant = { ...elephant };
-
-        newPerson.timeBeforeNextMove = !person.timeBeforeNextMove
-            ? 0
-            : person.timeBeforeNextMove - 1;
-        newElephant.timeBeforeNextMove = !elephant.timeBeforeNextMove
-            ? 0
-            : elephant.timeBeforeNextMove - 1;
-
-        evaluateRoutesRecursively(
-            newPerson,
-            newElephant,
-            currentMinute + 1,
-            flowRate,
-            totalFlow + flowRate,
-            newAvailableValves,
-            allValves,
-            distancesBetweenAllValves
-        );
+        return;
     }
+
+    const newAvailableValves = new Set(availableValves);
+    const newPerson = { ...person },
+        newElephant = { ...elephant };
+
+    --newPerson.timeBeforeNextMove;
+    --newElephant.timeBeforeNextMove;
+
+    evaluateRoutesRecursively(
+        newPerson,
+        newElephant,
+        currentMinute + 1,
+        flowRate,
+        totalFlow + flowRate,
+        newAvailableValves,
+        allValves,
+        distancesBetweenAllValves
+    );
+    return;
 }
 
 function updateHighestFlowRate(flow) {
