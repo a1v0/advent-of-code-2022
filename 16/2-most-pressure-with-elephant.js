@@ -5,6 +5,10 @@ const { distancesBetweenAllValves } = require("./shortest-distances");
  *
  * This is an incredibly messy solution in desperate need of a major refactor
  *
+ * Refactoring plan:
+ * - make list of all cases which the code is trying to cover
+ * - look for similarities and see if any logic can be extracted to separate methods
+ *
  */
 
 const MAX_MINUTES = 26;
@@ -74,39 +78,60 @@ function evaluateRoutesRecursively(
             return;
         }
 
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        // investigate what happens here when there's just one available place to go
-        //
-        //
-        //
-        //
+        if (availableValves.size === 1) {
+            availableValves.forEach((valve) => {
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                // shouldn't we check whether either of these is open?
+                const newFlowRate =
+                    flowRate +
+                    allValves[elephant.currentLocation].flowRate +
+                    allValves[person.currentLocation].flowRate;
+
+                const newOpenValves = new Set(openValves);
+                newOpenValves.add(person.currentLocation);
+                newOpenValves.add(elephant.currentLocation);
+
+                const newAvailableValves = new Set(availableValves);
+                newAvailableValves.delete(valve);
+
+                const newPerson = { ...person },
+                    newElephant = { ...elephant };
+
+                // identify the shortest route, then go down it
+                const personOrElephant =
+                    distancesBetweenAllValves[person.currentLocation + valve] >
+                    distancesBetweenAllValves[elephant.currentLocation + valve]
+                        ? newPerson
+                        : newElephant;
+
+                personOrElephant.timeBeforeNextMove =
+                    distancesBetweenAllValves[
+                        personOrElephant.currentLocation + valve
+                    ] + 1; // +1 because it takes a minute to turn on the valve
+                personOrElephant.currentLocation = valve;
+
+                evaluateRoutesRecursively(
+                    newPerson,
+                    newElephant,
+                    currentMinute + 1,
+                    newFlowRate,
+                    totalFlow + flowRate,
+                    newAvailableValves,
+                    newOpenValves,
+                    allValves,
+                    distancesBetweenAllValves
+                );
+            });
+            return;
+        }
+
         availableValves.forEach((personValve) => {
             availableValves.forEach((elephantValve) => {
                 if (personValve === elephantValve) return;
