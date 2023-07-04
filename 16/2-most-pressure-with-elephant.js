@@ -1,11 +1,11 @@
 const { input } = require("./input");
-const { distancesBetweenAllValves } = require("./shortest-distances");
+const { importedDistancesBetweenAllValves } = require("./shortest-distances");
 
 //
 // availableValves is object, not set
-// - if valve is true, then it's available
-// - delete it once you update the flowRate
-// - if you delete it, then the no. of keys can serve as a proxy for number of available routes
+// - valve can be set to "available" if it's not being headed towards and it's not open
+// - "reserved" if it's closed but being headed towards
+// - "open" if open
 // add a parameter to store person's and elephant's routes. this may help debugging
 //- { person: [], elephant: [] }
 //
@@ -21,6 +21,7 @@ const { distancesBetweenAllValves } = require("./shortest-distances");
 // - if no available routes:
 //   - pad route until end
 //   - return
+// ============ MADE IT HERE =================
 // - if just one route:
 //   - if person can go, send person down it
 //     - DON'T return
@@ -72,8 +73,158 @@ const { distancesBetweenAllValves } = require("./shortest-distances");
 
 const MAX_MINUTES = 26;
 let maxFlowRate = 0; // I know it'd be better to use an array for this, but this might make memory management easier
+let distancesBetweenAllValves, allValves; // Not a very elegant solution, but making these global reduces the number of parameters
 
-function day16Task2(input, distancesBetweenAllValves) {}
+function day16Task2(input, scopedDistancesBetweenAllValves) {
+    const inputByLine = input.split("\n");
+    const scopedAllValves = inputByLine.reduce(parseInput, {});
+    const worthwhileValves = {};
+    for (let valve in scopedAllValves) {
+        if (scopedAllValves[valve].flowRate > 0) {
+            worthwhileValves[valve] = true;
+        }
+    }
 
-// console.log(day16Task2(input, distancesBetweenAllValves));
+    distancesBetweenAllValves = scopedDistancesBetweenAllValves;
+    allValves = scopedAllValves;
+
+    const person = { currentLocation: "AA", timeBeforeNextMove: 0 },
+        elephant = { currentLocation: "AA", timeBeforeNextMove: 0 };
+
+    const routes = { person: [], elephant: [] };
+
+    evaluateRoutesRecursively(
+        person,
+        elephant,
+        routes,
+        0,
+        0,
+        0,
+        worthwhileValves
+    );
+
+    return maxFlowRate;
+}
+
+function evaluateRoutesRecursively(
+    person,
+    elephant,
+    routes,
+    currentMinute,
+    flowRate,
+    totalFlow,
+    worthwhileValves
+) {
+    if (currentMinute > MAX_MINUTES) {
+        updateHighestFlowRate(totalFlow, routes);
+        return;
+    }
+
+    const amountOfWorthwhileValves = worthwhileValves.reduce(
+        countAvailableValves,
+        0
+    );
+    if (!amountOfWorthwhileValves) {
+        // update flowrate(s) if one or both participants are able
+        let newFlowRate = flowRate;
+        if (
+            !person.timeBeforeNextMove &&
+            worthwhileValves[person.currentLocation] === "reserved"
+        ) {
+            newFlowRate += allValves[person.currentLocation].flowRate;
+            delete worthwhileValves[person.currentLocation];
+            routes.person.push(person.currentLocation);
+        }
+        if (
+            !elephant.timeBeforeNextMove &&
+            worthwhileValves[elephant.currentLocation] === "reserved"
+        ) {
+            newFlowRate += allValves[elephant.currentLocation].flowRate;
+            delete worthwhileValves[elephant.currentLocation];
+            routes.elephant.push(elephant.currentLocation);
+        }
+
+        if (elephant.timeBeforeNextMove > 0 || person.timeBeforeNextMove > 0) {
+            const newPerson = { ...person },
+                newElephant = { ...elephant };
+            if (newPerson.timeBeforeNextMove > 0) {
+                --newPerson.timeBeforeNextMove;
+            }
+            if (newElephant.timeBeforeNextMove > 0) {
+                --newElephant.timeBeforeNextMove;
+            }
+            evaluateRoutesRecursively(
+                newPerson,
+                newElephant,
+                routes,
+                currentMinute + 1,
+                newFlowRate,
+                totalFlow + flowRate,
+                worthwhileValves
+            );
+            return;
+        }
+
+        const newTotalFlow = padRouteUntilEnd(
+            currentMinute,
+            newFlowRate,
+            totalFlow
+        );
+
+        evaluateRoutesRecursively(
+            person,
+            elephant,
+            routes,
+            27,
+            newFlowRate,
+            newTotalFlow,
+            {}
+        );
+        return;
+    }
+}
+
+function countAvailableValves(accumulator, valve) {
+    if (valve === "available") {
+        return accumulator + 1;
+    }
+}
+
+function padRouteUntilEnd(currentMinute, flowRate, totalFlow) {
+    let newTotalFlow = totalFlow;
+
+    while (currentMinute <= MAX_MINUTES) {
+        newTotalFlow += flowRate;
+        ++currentMinute;
+    }
+
+    return newTotalFlow;
+}
+
+function updateHighestFlowRate(flow, routes) {
+    if (flow > maxFlowRate) {
+        maxFlowRate = flow;
+        console.log(maxFlowRate, "\n", routes);
+    }
+}
+
+function parseInput(valves, valveString) {
+    const valve = {};
+    const valveNameRegex = /[A-Z]{2}/,
+        flowRateRegex = /\d+/,
+        leadsToRegex = /[A-Z]{2}/g;
+
+    const [firstHalf, secondHalf] = valveString.split("; ");
+    const name = firstHalf.match(valveNameRegex)[0],
+        flowRate = Number(firstHalf.match(flowRateRegex)[0]),
+        leadsTo = secondHalf.match(leadsToRegex);
+
+    valve.flowRate = flowRate;
+    valve.leadsTo = leadsTo;
+    valves[name] = valve;
+
+    return valves;
+}
+
+// console.log(day16Task2(input, importedDistancesBetweenAllValves));
 module.exports = { day16Task2 };
