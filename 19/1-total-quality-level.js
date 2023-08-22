@@ -1,5 +1,12 @@
 const { input } = require("./input");
 
+/**
+ * This solution is a brute-force solution.
+ * I'm not overly happy about it, but I can't
+ * find any shortcut or heuristic on which to
+ * base any alternative solution.
+ */
+
 // Trial and error algo
 // Loop over all blueprints
 //     Add a console log every time a new blueprint starts
