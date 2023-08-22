@@ -210,5 +210,5 @@ function calculateHeuristic(coordinates, end) {
     return Math.sqrt(aSquared + bSquared);
 }
 
-console.log(day24Task1(input));
+// console.log(day24Task1(input));
 module.exports = { day24Task1 };

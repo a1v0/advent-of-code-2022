@@ -1,3 +1,7 @@
+const { day16Task1 } = require("../16/1-what-is-the-most-pressure");
+const { testDistancesBetweenAllValves } = require("../16/shortest-distances");
+const { testInput: day16Input } = require("../16/input");
+
 const { day18Task2 } = require("../18/2-exterior-surface-area");
 const {
     testInput: day18Input,
@@ -21,6 +25,20 @@ const { testInput: day23Input } = require("../23/input");
 
 const { day24Task1 } = require("../24/1-fewest-minutes-to-avoid-blizzards");
 const { testInput: day24Input } = require("../24/input");
+const { day16Task2 } = require("../16/2-most-pressure-with-elephant");
+
+describe.only("Day 16", () => {
+    test("Task 1", () => {
+        expect(day16Task1(day16Input, testDistancesBetweenAllValves)).toBe(
+            1651
+        );
+    });
+    test("Task 2", () => {
+        expect(day16Task2(day16Input, testDistancesBetweenAllValves)).toBe(
+            1707
+        );
+    });
+});
 
 const { day25Task1 } = require("../25/1-what-snafu-number");
 const { testInput: day25Input } = require("../25/input");
@@ -111,15 +129,11 @@ describe("Day 20", () => {
 });
 
 describe("Day 21", () => {
-    describe("Task 1", () => {
-        test("returns correct value", () => {
-            expect(day21Task1(day21Input)).toBe(152);
-        });
+    test("Task 1", () => {
+        expect(day21Task1(day21Input)).toBe(152);
     });
-    describe("Task 2", () => {
-        test("returns correct value", () => {
-            expect(day21Task2(day21Input)).toBe(301);
-        });
+    test("Task 2", () => {
+        expect(day21Task2(day21Input)).toBe(301);
     });
 });
 
@@ -140,10 +154,8 @@ describe("Day 22", () => {
 });
 
 describe("Day 23", () => {
-    describe("Task 1", () => {
-        test("returns correct value with test data", () => {
-            expect(day23Task1(day23Input)).toBe(110);
-        });
+    test("Task 1", () => {
+        expect(day23Task1(day23Input)).toBe(110);
     });
 });
 

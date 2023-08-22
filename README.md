@@ -21,7 +21,7 @@ The tasks can be found **[here](https://adventofcode.com/2022)**, and each day's
 |13|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
 |14|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
 |15|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
-|16|Task 1:&nbsp;❌&mdash;trying to implement a Dijkstra solution but it's a huge mess. To be revisited.|
+|16|Task 1:&nbsp;⭐&mdash;admittedly solved by taking a peek at the AoC subreddit.|
 |17|Task 1:&nbsp;⭐<br>Task 2:&nbsp;❌&mdash;very close to the right answer. I believe I have identified the flaw in my code but am unsure how to repair it. To be revisited.|
 |18|Task 1:&nbsp;⭐<br>Task 2:&nbsp;⭐|
 |19|Task 1:&nbsp;❌&mdash;completely stuck on this one, alas.|
