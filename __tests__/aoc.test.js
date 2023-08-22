@@ -58,7 +58,7 @@ describe("Day 18", () => {
 });
 
 describe.only("Day 19", () => {
-    describe("Task 1", () => {
+    test("Task 1", () => {
         expect(day19Task1(day19Input)).toBe(33);
     });
 });
