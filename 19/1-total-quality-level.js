@@ -43,7 +43,7 @@ const day19Task1 = (input) => {
 
 const buildBlueprints = (input) => {
     const blueprintRows = input.split("\n");
-    const blueprints = blueprintRows.map();
+    const blueprints = blueprintRows.map(parseBlueprintRow);
 
     return blueprints;
 };
@@ -51,6 +51,14 @@ const buildBlueprints = (input) => {
 const parseBlueprintRow = (blueprintRow) => {
     // Blueprint 1: Each ore robot costs 4 ore. Each clay robot costs 2 ore. Each obsidian robot costs 3 ore and 14 clay. Each geode robot costs 2 ore and 7 obsidian.
     // Blueprint 2: Each ore robot costs 2 ore. Each clay robot costs 3 ore. Each obsidian robot costs 3 ore and 8 clay. Each geode robot costs 3 ore and 12 obsidian.
+    const titleRegex = /^Blueprint \d: /;
+    const blueprintWithoutTitle = blueprintRow.replace(titleRegex, "");
+    const blueprintElements = blueprintWithoutTitle.split(". ");
+    const blueprint = blueprintElements.reduce(parseBlueprintElement, {});
+    return blueprint;
+};
+
+const parseBlueprintElement = (blueprint, blueprintElement) => {
     // map rows into array of blueprint objects detailing the costs
     //    e.g. { obsidian: { ore: 2, clay: 3 } }
 };
