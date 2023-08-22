@@ -1,6 +1,5 @@
 const fullRangePairs = require("./how-many-halves-fully-contain-other.js");
 
-// map fullRangePairs, splitting each string by " "
 const splitFullRangePairs = fullRangePairs.map((fullRangePair) => {
     return [
         fullRangePair[0].trim().split(" "),
@@ -8,7 +7,6 @@ const splitFullRangePairs = fullRangePairs.map((fullRangePair) => {
     ];
 });
 
-// check loop through [0] and see if [1] contains any of the elements
 let overlapCounter = 0;
 
 splitFullRangePairs.forEach((splitFullRangePair) => {

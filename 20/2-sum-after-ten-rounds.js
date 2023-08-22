@@ -2,16 +2,13 @@
 
 const { input } = require("./input");
 
-// wrapping the whole file in a function is not an elegant way to test, I admit
 function day20Task2(input) {
     const decryptionKey = 811589153;
 
-    // convert input to array of strings
     const inputStrings = input.split("\n");
 
     const inputLength = inputStrings.length;
 
-    // map strings into objects { move: Number(string), originalIndex: index }
     const numbers = inputStrings.map((inputString, index) => {
         return {
             move: Number(inputString) * decryptionKey,
@@ -26,7 +23,7 @@ function day20Task2(input) {
 
     // mix array contents ten times
     for (let j = 0; j < 10; ++j) {
-        // loop through mapped array, but in order of originalIndex
+        // loop in order of originalIndex
         for (let i = 0; i < inputLength; ++i) {
             const currentIndex = numbers.findIndex((number) => {
                 return number.originalIndex === i;
@@ -43,7 +40,7 @@ function day20Task2(input) {
                 newIndex = 0;
             }
 
-            // splice object and reinsert at new location
+            // reinsert object at new location
             numbers.splice(currentIndex, 1);
             numbers.splice(newIndex, 0, currentNumber);
         }
@@ -54,7 +51,6 @@ function day20Task2(input) {
         numbersStrings.push(currentStateOfNumbers.join(", "));
     }
 
-    // once loop is complete, loop through array again to identify 1000th, 2000th and 3000th 'index' (using a while loop again), summing the values
     const indexOfZero = numbers.findIndex((number) => {
         return number.move === 0;
     });
@@ -71,5 +67,7 @@ function day20Task2(input) {
         sumOfThree: oneThou + twoThou + threeThou
     };
 }
+
 // console.log("Sum of three: ", day20Task2(input).sumOfThree);
+
 module.exports = { day20Task2 };

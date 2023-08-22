@@ -1,7 +1,5 @@
 const allRows = require("./1-how-many-trees-are-visible-from-outside-the-grid.js");
 
-// I have a feeling this solution is going to be hugely inefficient. Let's see how I go
-
 const allColumns = [];
 for (let i = 0; i < allRows[0].length; ++i) {
     const newColumn = [];
@@ -11,6 +9,21 @@ for (let i = 0; i < allRows[0].length; ++i) {
     }
     allColumns.push(newColumn);
 }
+
+calculateLineOfSight(allRows, "h"); // horizontal
+calculateLineOfSight(allColumns, "v"); // vertical
+
+// loop through each tree, calculate scenic score, and find highest
+let highestScenicScore = 0;
+allRows.forEach((treeRow) => {
+    treeRow.forEach((tree) => {
+        const scenicScore = tree.h0 * tree.h1 * tree.v0 * tree.v1;
+        highestScenicScore =
+            scenicScore > highestScenicScore ? scenicScore : highestScenicScore;
+    });
+});
+
+console.log(highestScenicScore);
 
 // go in all four directions and count line of sight, appending it as a property
 function calculateLineOfSight(treeGroups, property) {
@@ -32,20 +45,3 @@ function calculateLineOfSight(treeGroups, property) {
         }
     });
 }
-
-calculateLineOfSight(allRows, "h"); // horizontal
-calculateLineOfSight(allColumns, "v"); // vertical
-
-// loop through each tree, calculate scenic score, and find highest
-let highestScenicScore = 0;
-allRows.forEach((treeRow) => {
-    treeRow.forEach((tree) => {
-        const scenicScore = tree.h0 * tree.h1 * tree.v0 * tree.v1;
-        highestScenicScore =
-            scenicScore > highestScenicScore ? scenicScore : highestScenicScore;
-    });
-});
-console.log(highestScenicScore);
-
-// console.log(allRows);
-// console.log(allColumns);

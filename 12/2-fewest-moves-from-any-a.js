@@ -1,44 +1,21 @@
 const { input } = require("./input");
 
-// split input into rows
 const rows = input.split("\n");
 
-// create string listing all letters
 const letters = "abcdefghijklmnopqrstuvwxyz";
 
-// identify coordinates of end
 const starts = [];
 const end = new Array(2); // holds x,y values of end
 
-for (let y = 0; y < rows.length; ++y) {
-    if (rows[y].includes("a") || rows[y].includes("S")) {
-        for (let x = 0; x < rows[y].length; ++x) {
-            if (rows[y][x] === "a" || rows[y][x] === "S") {
-                const newStart = new Array(2);
-                newStart[1] = y;
-                newStart[0] = x;
-                starts.push(newStart);
-            }
-        }
-    }
-    if (rows[y].includes("E")) {
-        end[1] = y;
-        for (let x = 0; x < rows[y].length; ++x) {
-            if (rows[y][x] === "E") {
-                end[0] = x;
-            }
-        }
-    }
-}
+findStartsAndEnd(rows, starts, end);
 
-// create new array to list every node's distance from end
 const distancesFromEnd = rows.map((row, y) => {
     const rowDistances = [];
     for (let x = 0; x < row.length; ++x) {
         const xFromEnd = Math.abs(end[0] - x),
             yFromEnd = Math.abs(end[1] - y);
         const distanceFromEnd = Math.sqrt(
-            xFromEnd * xFromEnd + (yFromEnd + yFromEnd)
+            xFromEnd * xFromEnd + yFromEnd * yFromEnd
         );
         rowDistances.push(distanceFromEnd);
     }
@@ -48,7 +25,6 @@ const distancesFromEnd = rows.map((row, y) => {
 const routeLengths = [];
 
 starts.forEach((start) => {
-    // create array of visited nodes
     const visitedCoordinates = [];
 
     // replace E and S with normal letters to prevent confusion
@@ -58,7 +34,7 @@ starts.forEach((start) => {
     let shortestRouteLength = undefined;
     const routes = [{ nodes: [[start[0], start[1]]], distance: 0 }];
 
-    // loop through all nodes according to A* heuristic
+    // loop uses A* heuristic
     while (shortestRouteLength === undefined) {
         const currentRoute = routes[0];
 
@@ -78,8 +54,6 @@ starts.forEach((start) => {
             downY = currentY + 1,
             leftX = currentX - 1,
             rightX = currentX + 1;
-
-        // there must be a way of being less repetitive in what follows, but I can't think of it
 
         // go up
         if (
@@ -150,3 +124,23 @@ starts.forEach((start) => {
 
 const shortestRouteLength = Math.min(...routeLengths);
 console.log(shortestRouteLength - 1);
+
+function findStartsAndEnd(rows, starts, end) {
+    for (let y = 0; y < rows.length; ++y) {
+        if (rows[y].includes("a") || rows[y].includes("S")) {
+            for (let x = 0; x < rows[y].length; ++x) {
+                if (rows[y][x] === "a" || rows[y][x] === "S") {
+                    const newStart = new Array(2);
+                    newStart[1] = y;
+                    newStart[0] = x;
+                    starts.push(newStart);
+                }
+            }
+        }
+
+        if (rows[y].includes("E")) {
+            end[0] = rows[y].indexOf("E");
+            end[1] = y;
+        }
+    }
+}

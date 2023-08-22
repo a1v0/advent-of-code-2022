@@ -1,10 +1,8 @@
 const { input } = require("./input");
 
 function day21Task2(input) {
-    // split input into array of strings
     const inputStrings = input.split("\n");
 
-    // map strings into object
     const monkeys = {};
     inputStrings.forEach((inputString) => {
         const monkeyName = inputString.match(/^\w{4}/)[0];
@@ -18,21 +16,15 @@ function day21Task2(input) {
     // store both four-letter groups marked in root
     const [firstQuartet, secondQuartet] = monkeys.root.match(/\w{4}/g);
 
-    // evaluate everything except the value of humn
-    let evaluationComplete = false;
-    while (
-        // I know this is not an ideal solution, but, after endless experimenting, I couldn't find another solution that would work
-        !evaluationComplete
-    ) {
+    let evaluationComplete = false; // this isn't an amazing while loop condition, but it's the best I could come up with
+    while (!evaluationComplete) {
         for (let quartet in monkeys) {
-            // find quartet that uses that value and update
             for (let quartetSearch in monkeys) {
-                if (RegExp(quartet).test(monkeys[quartetSearch])) {
-                    monkeys[quartetSearch] = monkeys[quartetSearch].replace(
-                        quartet,
-                        `(${monkeys[quartet]})`
-                    );
-                }
+                if (!RegExp(quartet).test(monkeys[quartetSearch])) continue;
+                monkeys[quartetSearch] = monkeys[quartetSearch].replace(
+                    quartet,
+                    `(${monkeys[quartet]})`
+                );
             }
         }
         if (
@@ -43,10 +35,6 @@ function day21Task2(input) {
             evaluationComplete = true;
         }
     }
-
-    // given the size of the real input, brute-forcing the value of humn by incrementing by 1 each time is too inefficient
-    // however, there is a repeating: after x increments, the result is an int. Then, after further y increments, it is also an int, etc.
-    // I need to programmatically identify the pattern (according to Excel, it's something like 150, 150, 3000, 150, 150, 3500), then increment humn by the value dictated by the pattern
 
     // loop through code until we have 50 integers (should be enough to spot any pattern in test and real data)
     const humnValuePerInteger = [];
@@ -63,12 +51,9 @@ function day21Task2(input) {
         return humnValuePerInteger[index + 1] - humnValue;
     });
 
-    // nested for loop: i = length of pattern (this loop isn't the cleanest of things I've ever written...)
     let lengthOfPattern;
     for (let i = 1; i < allDifferences.length; ++i) {
         for (let j = 0; j < allDifferences.length; ++j) {
-            // check array[0] === array[i]
-            // check array[1] === array[i+1]...
             if (isNaN(allDifferences[j + i])) {
                 // if you make it to the end of the array without any test returning false, you know the size of the pattern
                 lengthOfPattern = i;
@@ -79,7 +64,6 @@ function day21Task2(input) {
         if (lengthOfPattern) break;
     }
 
-    // splice to create an array containing the intervals
     const pattern = allDifferences.splice(0, lengthOfPattern);
     const sumOfPatternIntervals = pattern.reduce(
         (accumulator, currentValue) => {
@@ -104,16 +88,16 @@ function day21Task2(input) {
             ? "eval(alvoQuartetEquation) < secondValueInRoot"
             : "eval(alvoQuartetEquation) > secondValueInRoot";
 
-    // this should reduce the numbers nice and quickly
+    // reduce the numbers quickly
     for (let order = 3; order >= 0; --order) {
-        // while(true) is not my ideal solution...
         while (true) {
             const alvo = humn + Math.pow(sumOfPatternIntervals, order);
+
             if (!eval(comparisonOvershoot)) {
                 humn = alvo;
-            } else {
-                break;
+                continue;
             }
+            break;
         }
     }
 
