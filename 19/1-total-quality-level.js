@@ -40,6 +40,13 @@ const day19Task1 = (input) => {
     //
     // determine quality level
 };
+// console.log(day19Task1(input));
+
+/*
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Utility methods for input parsing
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ */
 
 const buildBlueprints = (input) => {
     const blueprintRows = input.split("\n");
@@ -79,7 +86,5 @@ const parseCosts = (costs, costElement) => {
     costs[type] = price;
     return costs;
 };
-
-// console.log(day19Task1(input));
 
 module.exports = { day19Task1 };
