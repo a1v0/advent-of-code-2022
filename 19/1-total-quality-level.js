@@ -26,14 +26,15 @@ const day19Task1 = (input) => {
     const blueprints = buildBlueprints(input);
     const geodeTotals = []; // stores the maximum number of geodes per blueprint
 
-    blueprints.forEach((blueprint) => {
-        const geodeTotal = evaluateBlueprint(blueprint);
+    blueprints.forEach((blueprint, index) => {
+        const geodeTotal = evaluateBlueprint(blueprint, index);
         geodeTotals.push(geodeTotal);
     });
 
     // loop through all blueprints
     //    add a console log every time a new blueprint is opened
     //    create variable to store max number of geodes opened per blueprint
+    //        possibly requires closure
     //    create an inventory object to store no of robots and resources
     //
     // make recursive/backtracking method to recursively do each possible thing:
@@ -47,7 +48,19 @@ const day19Task1 = (input) => {
 };
 // console.log(day19Task1(input));
 
-const evaluateBlueprint = (blueprint) => {};
+const evaluateBlueprint = (blueprint, index) => {
+    console.log(`Evaluating Blueprint ${index + 1}`);
+};
+
+const maximumGeodes = () => {
+    let currentMaximum = 0;
+    return (newMaximum) => {
+        if (newMaximum > currentMaximum) {
+            currentMaximum = newMaximum;
+        }
+        return currentMaximum;
+    };
+};
 
 /*
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
