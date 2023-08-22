@@ -50,17 +50,20 @@ const day19Task1 = (input) => {
 
 const evaluateBlueprint = (blueprint, index) => {
     console.log(`Evaluating Blueprint ${index + 1}`);
+    const maxGeodes = new GeodeCounter();
 };
 
-const maximumGeodes = () => {
-    let currentMaximum = 0;
-    return (newMaximum) => {
-        if (newMaximum > currentMaximum) {
-            currentMaximum = newMaximum;
+class GeodeCounter {
+    constructor() {
+        this.maximum = 0;
+    }
+
+    updateMaximum(newMaximum) {
+        if (newMaximum > this.maximum) {
+            this.maximum = newMaximum;
         }
-        return currentMaximum;
-    };
-};
+    }
+}
 
 /*
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
