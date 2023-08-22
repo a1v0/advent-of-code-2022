@@ -49,8 +49,6 @@ const buildBlueprints = (input) => {
 };
 
 const parseBlueprintRow = (blueprintRow) => {
-    // Blueprint 1: Each ore robot costs 4 ore. Each clay robot costs 2 ore. Each obsidian robot costs 3 ore and 14 clay. Each geode robot costs 2 ore and 7 obsidian.
-    // Blueprint 2: Each ore robot costs 2 ore. Each clay robot costs 3 ore. Each obsidian robot costs 3 ore and 8 clay. Each geode robot costs 3 ore and 12 obsidian.
     const titleRegex = /^Blueprint \d: /;
     const blueprintWithoutTitle = blueprintRow.replace(titleRegex, "");
     const blueprintElements = blueprintWithoutTitle.split(". ");
@@ -59,10 +57,27 @@ const parseBlueprintRow = (blueprintRow) => {
 };
 
 const parseBlueprintElement = (blueprint, blueprintElement) => {
+    // Blueprint 1: Each ore robot costs 4 ore. Each clay robot costs 2 ore. Each obsidian robot costs 3 ore and 14 clay. Each geode robot costs 2 ore and 7 obsidian.
+    // Blueprint 2: Each ore robot costs 2 ore. Each clay robot costs 3 ore. Each obsidian robot costs 3 ore and 8 clay. Each geode robot costs 3 ore and 12 obsidian.
+
     // map rows into array of blueprint objects detailing the costs
     //    e.g. { obsidian: { ore: 2, clay: 3 } }
+
+    const robotNameRegex = /(?<=Each )\w+(?= robot)/;
+    const robotName = blueprintElement.match(robotNameRegex)[0];
+
+    const costsRegex = /(?<=costs )[\w\s]+/; // returns all costs, including an "and", if applicable
+    const unparsedCosts = blueprintElement.match(costsRegex)[0];
+    const costElements = unparsedCosts.split(" and ");
+
+    const cost = costElements.reduce(parseCosts, {});
+
+    blueprint[robotName] = cost;
+    return blueprint;
 };
 
-console.log(day19Task1(input));
+const parseCosts = (costs, costElements) => {};
+
+// console.log(day19Task1(input));
 
 module.exports = { day19Task1 };
