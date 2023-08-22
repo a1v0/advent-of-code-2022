@@ -89,6 +89,6 @@ const extractPlaceValueTotals = (snafu, placeValueTotals) => {
     });
 };
 
-console.log(day25Task1(input));
+// console.log(day25Task1(input));
 
 module.exports = { day25Task1 };
