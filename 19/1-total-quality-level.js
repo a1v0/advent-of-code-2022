@@ -24,8 +24,13 @@ const { input } = require("./input");
 
 const day19Task1 = (input) => {
     const blueprints = buildBlueprints(input);
+    const geodeTotals = []; // stores the maximum number of geodes per blueprint
 
-    // create array to house max number of geodes per blueprint
+    blueprints.forEach((blueprint) => {
+        const geodeTotal = evaluateBlueprint(blueprint);
+        geodeTotals.push(geodeTotal);
+    });
+
     // loop through all blueprints
     //    add a console log every time a new blueprint is opened
     //    create variable to store max number of geodes opened per blueprint
@@ -41,6 +46,8 @@ const day19Task1 = (input) => {
     // determine quality level
 };
 // console.log(day19Task1(input));
+
+const evaluateBlueprint = (blueprint) => {};
 
 /*
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
