@@ -21,8 +21,8 @@ const { importedDistancesBetweenAllValves } = require("./shortest-distances");
 // - if no available routes:
 //   - pad route until end
 //   - return
-// ============ MADE IT HERE =================
 // - if just one route:
+// ============ MADE IT HERE =================
 //   - if person can go, send person down it
 //     - DON'T return
 //   - if elephant can go, send person down it
@@ -182,6 +182,47 @@ function evaluateRoutesRecursively(
         );
         return;
     }
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    // this section needs completing
+    //
+    //
+    if (amountOfWorthwhileValves === 1) {
+        for (let availableValve in worthwhileValves) {
+            if (!person.timeBeforeNextMove) {
+            }
+            if (!elephant.timeBeforeNextMove) {
+            }
+        }
+        return;
+    }
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
 }
 
 function countAvailableValves(accumulator, valve) {
