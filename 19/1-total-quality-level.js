@@ -14,9 +14,25 @@ const { input } = require("./input");
 //     Possibly add a log every time we reach this point, just so we know how fast/slow the script is running
 //     If it’s cluttered, then perhaps every time the max number is updated
 // Do the addition etc.
+
 const day19Task1 = (input) => {
     // split input into rows
-    // map rows into array of blueprint objects
+    // map rows into array of blueprint objects detailing the costs
+    //    e.g. { obsidian: { ore: 2, clay: 3 } }
+    // create array to house max number of geodes per blueprint
+    // loop through all blueprints
+    //    add a console log every time a new blueprint is opened
+    //    create variable to store max number of geodes opened per blueprint
+    //    create an inventory object to store no of robots and resources
+    //
+    // make recursive/backtracking method to recursively do each possible thing:
+    //    build any robot that you can afford
+    //       and
+    //    don't build anything
+    // when we reach 24 minutes, update no. of geodes and return
+    //    possibly add a console log here (unless it's cluttered, in which case perhaps just do it every time we update the max. geodes value)
+    //
+    // determine quality level
 };
 
 console.log(day19Task1(input));
