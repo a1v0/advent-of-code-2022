@@ -1,12 +1,16 @@
 const { day16Task1 } = require("../16/1-what-is-the-most-pressure");
-const { testDistancesBetweenAllValves } = require("../16/shortest-distances");
+const { day16Task2 } = require("../16/2-most-pressure-with-elephant");
 const { testInput: day16Input } = require("../16/input");
+const { testDistancesBetweenAllValves } = require("../16/shortest-distances");
 
 const { day18Task2 } = require("../18/2-exterior-surface-area");
 const {
     testInput: day18Input,
     simpleInput: day18SimpleInput
 } = require("../18/input");
+
+const { day19Task1 } = require("../19/1-total-quality-level");
+const { testInput: day19Input } = require("../19/input");
 
 const { day20Task1 } = require("../20/1-sum-three-numbers-grove-coordinates");
 const { day20Task2 } = require("../20/2-sum-after-ten-rounds");
@@ -25,9 +29,11 @@ const { testInput: day23Input } = require("../23/input");
 
 const { day24Task1 } = require("../24/1-fewest-minutes-to-avoid-blizzards");
 const { testInput: day24Input } = require("../24/input");
-const { day16Task2 } = require("../16/2-most-pressure-with-elephant");
 
-describe.only("Day 16", () => {
+const { day25Task1 } = require("../25/1-what-snafu-number");
+const { testInput: day25Input } = require("../25/input");
+
+describe("Day 16", () => {
     test("Task 1", () => {
         expect(day16Task1(day16Input, testDistancesBetweenAllValves)).toBe(
             1651
@@ -40,9 +46,6 @@ describe.only("Day 16", () => {
     });
 });
 
-const { day25Task1 } = require("../25/1-what-snafu-number");
-const { testInput: day25Input } = require("../25/input");
-
 describe("Day 18", () => {
     describe("Task 2", () => {
         test("should return correct value with my own data", () => {
@@ -51,6 +54,12 @@ describe("Day 18", () => {
         test("should return correct value with test data", () => {
             expect(day18Task2(day18Input)).toBe(58);
         });
+    });
+});
+
+describe.only("Day 19", () => {
+    describe("Task 1", () => {
+        expect(day19Task1(day19Input)).toBe(33);
     });
 });
 
@@ -167,7 +176,7 @@ describe("Day 24", () => {
     });
 });
 
-describe.only("Day 25", () => {
+describe("Day 25", () => {
     describe("Task 1", () => {
         test("returns correct value with test data", () => {
             expect(day25Task1(day25Input)).toBe("2=-1=0");
