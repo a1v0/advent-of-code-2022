@@ -52,7 +52,12 @@ const evaluateBlueprint = (blueprint, index) => {
     return maxGeodes.maximum;
 };
 
-const buildBotsRecursively = (blueprint, inventory, minute, maxGeodes) => {};
+const buildBotsRecursively = (blueprint, inventory, minute, maxGeodes) => {
+    if (minute === 24) {
+        // update max number of geodes
+        return;
+    }
+};
 
 class GeodeCounter {
     constructor() {
