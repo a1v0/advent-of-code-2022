@@ -33,14 +33,8 @@ const day19Task1 = (input) => {
         geodeTotals.push(geodeTotal);
     });
 
-    // make recursive/backtracking method to recursively do each possible thing:
-    //    build any robot that you can afford
-    //       and
-    //    don't build anything
-    // when we reach 24 minutes, update no. of geodes and return
-    //    possibly add a console log here (unless it's cluttered, in which case perhaps just do it every time we update the max. geodes value)
-    //
-    // determine quality level
+    const qualityLevel = determineOverallQualityLevel(geodeTotals);
+    return qualityLevel;
 };
 // console.log(day19Task1(input));
 
@@ -136,6 +130,13 @@ class GeodeCounter {
         }
     }
 }
+
+const determineOverallQualityLevel = (geodeTotals) => {
+    // loop through totals
+    // multiply totals by index + 1
+    // add to sum
+    // return sum
+};
 
 /*
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
