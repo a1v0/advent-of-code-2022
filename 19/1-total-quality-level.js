@@ -51,7 +51,14 @@ const day19Task1 = (input) => {
 const evaluateBlueprint = (blueprint, index) => {
     console.log(`Evaluating Blueprint ${index + 1}`);
     const maxGeodes = new GeodeCounter();
+    const inventory = { robots: {}, items: {} };
+
+    buildBotsRecursively(blueprint, inventory, 1, maxGeodes);
+
+    return maxGeodes.maximum;
 };
+
+const buildBotsRecursively = (blueprint, inventory, minute, maxGeodes) => {};
 
 class GeodeCounter {
     constructor() {
