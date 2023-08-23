@@ -71,9 +71,10 @@ const buildBotsRecursively = (blueprint, inventory, minute, maxGeodes) => {
         );
 
         if (!isRobotAffordable) break;
-        // check robot's cost against inventory to see if we can afford
-        // if yes:
-        // clone inventory
+
+        const clonedInventory = cloneInventory(inventory);
+        purchaseRobot(robot, clonedInventory, blueprint);
+
         // run recursive method for each robot
     }
 
@@ -84,6 +85,12 @@ const buildBotsRecursively = (blueprint, inventory, minute, maxGeodes) => {
         minute + 1,
         maxGeodes
     );
+};
+
+const purchaseRobot = (robotName, inventory, blueprint) => {
+    // retrieve cost
+    // loop through cost and update inventory accordingly
+    // add new robot to inventory
 };
 
 const checkAffordability = (robotName, inventory, blueprint) => {
