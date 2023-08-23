@@ -88,9 +88,18 @@ const buildBotsRecursively = (blueprint, inventory, minute, maxGeodes) => {
 };
 
 const purchaseRobot = (robotName, inventory, blueprint) => {
-    // retrieve cost
-    // loop through cost and update inventory accordingly
-    // add new robot to inventory
+    const robotCost = blueprint[robotName];
+
+    for (let priceElement in robotCost) {
+        const price = robotCost[priceElement];
+        inventory.items[priceElement] -= price;
+    }
+
+    if (inventory.robots[robotName]) {
+        inventory.robots[robotName] += 1;
+    } else {
+        inventory.robots[robotName] = 1;
+    }
 };
 
 const checkAffordability = (robotName, inventory, blueprint) => {
