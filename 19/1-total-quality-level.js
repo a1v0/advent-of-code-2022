@@ -74,8 +74,7 @@ const buildBotsRecursively = (blueprint, inventory, minute, maxGeodes) => {
 
         const clonedInventory = cloneInventory(inventory);
         purchaseRobot(robot, clonedInventory, blueprint);
-
-        // run recursive method for each robot
+        buildBotsRecursively(blueprint, clonedInventory, minute + 1, maxGeodes);
     }
 
     const inventoryWithNoNewRobots = cloneInventory(inventory);
