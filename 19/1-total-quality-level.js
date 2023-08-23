@@ -112,12 +112,18 @@ const checkAffordability = (robotName, inventory, blueprint) => {
 
 const addNewlyBuiltStock = ({ robots, items }) => {
     for (let robot in robots) {
-        items[robot] += robots[robot];
+        if (items[robot]) {
+            items[robot] += robots[robot];
+        } else {
+            items[robot] = robots[robot];
+        }
     }
 };
 
 const cloneInventory = ({ robots, items }) => {
-    return { ...robots, ...items };
+    const clonedRobots = { ...robots },
+        clonedItems = { ...items };
+    return { robots: clonedRobots, items: clonedItems };
 };
 
 class GeodeCounter {
