@@ -43,7 +43,7 @@ const day19Task1 = (input) => {
 // console.log(day19Task1(input));
 
 const evaluateBlueprint = (blueprint, index) => {
-    console.log(`Evaluating Blueprint ${index + 1}`);
+    console.log(`Evaluating Blueprint ${index + 1}.`);
     const maxGeodes = new GeodeCounter();
     const inventory = { robots: {}, items: {} };
 
@@ -53,10 +53,17 @@ const evaluateBlueprint = (blueprint, index) => {
 };
 
 const buildBotsRecursively = (blueprint, inventory, minute, maxGeodes) => {
+    // add a minute's worth of stock to items to un-cloned inventory
+
     if (minute === 24) {
         // update max number of geodes
         return;
     }
+
+    // loop through blueprint to find any robot we can afford
+    // clone inventory (maybe make a method to do this)
+    // run recursive method for each robot
+    // clone inventory and run recursive method without having bought anything
 };
 
 class GeodeCounter {
