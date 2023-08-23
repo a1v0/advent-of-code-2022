@@ -75,6 +75,10 @@ const addNewlyBuiltStock = ({ robots, items }) => {
     }
 };
 
+const cloneInventory = ({ robots, items }) => {
+    return { ...robots, ...items };
+};
+
 class GeodeCounter {
     constructor() {
         this.maximum = 0;
