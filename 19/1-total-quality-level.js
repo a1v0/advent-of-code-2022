@@ -58,7 +58,8 @@ const buildBotsRecursively = (blueprint, inventory, minute, maxGeodes) => {
     addNewlyBuiltStock(inventory);
 
     if (minute === 24) {
-        // update max number of geodes
+        const geodesInInventory = inventory.items?.geode ?? 0;
+        maxGeodes.updateMaximum(geodesInInventory);
         return;
     }
 
