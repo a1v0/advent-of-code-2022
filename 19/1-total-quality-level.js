@@ -34,6 +34,7 @@ const day19Task1 = (input) => {
     });
 
     const qualityLevel = determineOverallQualityLevel(geodeTotals);
+
     return qualityLevel;
 };
 // console.log(day19Task1(input));
@@ -132,10 +133,15 @@ class GeodeCounter {
 }
 
 const determineOverallQualityLevel = (geodeTotals) => {
-    // loop through totals
-    // multiply totals by index + 1
-    // add to sum
-    // return sum
+    let sumOfQualityLevels = 0;
+
+    geodeTotals.forEach((geodeTotal, index) => {
+        const blueprintID = index + 1;
+        const qualityLevel = geodeTotal * blueprintID;
+        sumOfQualityLevels += qualityLevel;
+    });
+
+    return sumOfQualityLevels;
 };
 
 /*
