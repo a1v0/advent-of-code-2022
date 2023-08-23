@@ -31,12 +31,6 @@ const day19Task1 = (input) => {
         geodeTotals.push(geodeTotal);
     });
 
-    // loop through all blueprints
-    //    add a console log every time a new blueprint is opened
-    //    create variable to store max number of geodes opened per blueprint
-    //        possibly requires closure
-    //    create an inventory object to store no of robots and resources
-    //
     // make recursive/backtracking method to recursively do each possible thing:
     //    build any robot that you can afford
     //       and
