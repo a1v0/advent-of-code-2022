@@ -45,7 +45,7 @@ function day22Task1(input) {
     return multipliedRow + multipliedColumn + directionValue;
 }
 
-console.log(day22Task1(input));
+// console.log(day22Task1(input));
 
 function move(instruction, direction, currentCoordinates, board) {
     const directionValue =

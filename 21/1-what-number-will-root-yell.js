@@ -33,6 +33,6 @@ function day21Task1(input) {
     return Number(monkeys.root[0]);
 }
 
-console.log(day21Task1(input));
+// console.log(day21Task1(input));
 
 module.exports = { day21Task1 };
