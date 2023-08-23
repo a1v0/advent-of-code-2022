@@ -63,9 +63,13 @@ const buildBotsRecursively = (blueprint, inventory, minute, maxGeodes) => {
         return;
     }
 
-    // loop through blueprint to find any robot we can afford
-    // clone inventory (maybe make a method to do this)
-    // run recursive method for each robot
+    for (let robot in blueprint) {
+        // check robot's cost against inventory to see if we can afford
+        // if yes:
+        // clone inventory
+        // run recursive method for each robot
+    }
+
     // clone inventory and run recursive method without having bought anything
 };
 
