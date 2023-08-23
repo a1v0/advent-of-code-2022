@@ -55,7 +55,7 @@ const evaluateBlueprint = (blueprint, index) => {
 };
 
 const buildBotsRecursively = (blueprint, inventory, minute, maxGeodes) => {
-    // add a minute's worth of stock to items to un-cloned inventory
+    addNewlyBuiltStock(inventory);
 
     if (minute === 24) {
         // update max number of geodes
@@ -66,6 +66,12 @@ const buildBotsRecursively = (blueprint, inventory, minute, maxGeodes) => {
     // clone inventory (maybe make a method to do this)
     // run recursive method for each robot
     // clone inventory and run recursive method without having bought anything
+};
+
+const addNewlyBuiltStock = ({ robots, items }) => {
+    for (let robot in robots) {
+        items[robot] += robots[robot];
+    }
 };
 
 class GeodeCounter {
