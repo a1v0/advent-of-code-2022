@@ -1,10 +1,12 @@
 const { input } = require("./input");
 
 /**
- * This solution is a brute-force solution.
- * I'm not overly happy about it, but I can't
- * find any shortcut or heuristic on which to
- * base any alternative solution.
+ * This solution is a brute-force solution. I'm not
+ * overly happy about it, but I can't find any shortcut
+ * or heuristic on which to base any alternative
+ * solution. Many of the avenues this script pursues
+ * are dead ends, e.g. the route where no or only very
+ * few robots get built.
  */
 
 // Trial and error algo
